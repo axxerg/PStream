@@ -28,7 +28,7 @@ jobs:
         run: |
           cd repo
           export STREAMLINK_PLUGIN_DIR=$(pwd)/src/plugins
-          python3 src/generate.py actions/config.json
+          python3 src/generate.py config/config.json
 
       - name: Commit & push
         run: |
