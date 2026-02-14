@@ -1,0 +1,17 @@
+{
+  "output": {
+    "folder": "output",
+    "bestFolder": "best",
+    "masterFolder": "master"
+  },
+  "channels": [
+    {
+      "slug": "eurostar",
+      "url": "https://www.eurostartv.com.tr/canli-izle",
+      "headers": {
+        "Referer": "https://www.eurostartv.com.tr/",
+        "User-Agent": "Mozilla/5.0"
+      }
+    }
+  ]
+}
