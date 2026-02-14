@@ -11,15 +11,14 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Clone repository manually
+      - name: Clone repo (branch)
         run: |
           git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git repo
           cd repo
-          git checkout ${{ github.sha }}
+          git checkout "${{ github.ref_name }}"
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
           cd repo
           python3 -m pip install --upgrade pip
@@ -29,13 +28,13 @@ jobs:
         run: |
           cd repo
           export STREAMLINK_PLUGIN_DIR=$(pwd)/src/plugins
-          python3 src/generate.py config/config.json
+          python3 src/generate.py actions/config.json
 
-      - name: Commit & push changes
+      - name: Commit & push
         run: |
           cd repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add output
+          git add -f output
           git diff --cached --quiet || git commit -m "Update m3u8 playlists"
-          git push
+          git push origin "${{ github.ref_name }}"
