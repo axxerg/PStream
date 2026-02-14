@@ -11,34 +11,28 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout (local)
-        uses: ./.github/actions/local-checkout
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install dependencies
-        shell: bash
+    steps:
+      - name: Clone repository manually
         run: |
-          set -e
+          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git repo
           cd repo
-          python3 --version
+          git checkout ${{ github.sha }}
+
+      - name: Install Python dependencies
+        run: |
+          cd repo
           python3 -m pip install --upgrade pip
           pip3 install -r requirements.txt
 
       - name: Generate playlists
-        shell: bash
-        env:
-          STREAMLINK_PLUGIN_DIR: ${{ github.workspace }}/repo/src/plugins
         run: |
-          set -e
           cd repo
+          export STREAMLINK_PLUGIN_DIR=$(pwd)/src/plugins
           python3 src/generate.py config/config.json
 
       - name: Commit & push changes
-        shell: bash
         run: |
-          set -e
           cd repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
