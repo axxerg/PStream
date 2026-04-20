@@ -1,28 +1,41 @@
 import re
-from urllib.parse import urljoin
+import requests
+import os
 
-from streamlink.plugin import Plugin, pluginmatcher
-from streamlink.stream.hls import HLSStream
+OUTPUT_FILE = "output/showturk.m3u8"
 
+URL = "https://www.showturk.com.tr/canli-yayin"
 
-@pluginmatcher(re.compile(r"https?://(?:www\.)?showturk\.com\.tr/canli-yayin"))
-class ShowTurk(Plugin):
+HEADERS = {
+    "User-Agent": "Mozilla/5.0",
+    "Referer": "https://www.showturk.com.tr/"
+}
 
-    _re_m3u8 = re.compile(r"""https?://[^"'\\\s]+\.m3u8[^"'\\\s]*""")
-
-    def _get_streams(self):
-        # Seite laden
-        res = self.session.http.get(self.url)
-        html = res.text
-
-        # nach m3u8 suchen
-        match = self._re_m3u8.search(html)
-
-        if match:
-            m3u8_url = match.group(0)
-            return HLSStream.parse_variant_playlist(self.session, m3u8_url)
-
-        return None
+def find_m3u8(text):
+    match = re.search(r"https?://[^\"'\\s]+\\.m3u8[^\"'\\s]*", text)
+    return match.group(0) if match else None
 
 
-__plugin__ = ShowTurk
+def main():
+    print("Fetching page...")
+    res = requests.get(URL, headers=HEADERS, timeout=10)
+    html = res.text
+
+    m3u8 = find_m3u8(html)
+
+    if not m3u8:
+        print("❌ No m3u8 found")
+        return
+
+    print("✅ Found stream:", m3u8)
+
+    os.makedirs("output", exist_ok=True)
+
+    with open(OUTPUT_FILE, "w") as f:
+        f.write(m3u8)
+
+    print("💾 Saved to", OUTPUT_FILE)
+
+
+if __name__ == "__main__":
+    main()
