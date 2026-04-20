@@ -13,23 +13,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clone repo
+      - name: Clone repository
         run: |
           git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git repo
-          cd repo
 
-      - name: Install Python & deps
+      - name: Install Python
         run: |
           sudo apt update
           sudo apt install -y python3 python3-pip
+
+      - name: Install dependencies
+        run: |
           pip3 install requests
 
-      - name: Run script
+      - name: Run showturk script
         run: |
           cd repo
           python3 showturk.py
 
-      - name: Commit & push
+      - name: Commit & push result
         run: |
           cd repo
           git config user.name "github-actions[bot]"
