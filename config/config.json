@@ -9,40 +9,43 @@
       "slug": "eurostar",
       "url": "https://www.eurostartv.com.tr/canli-izle",
       "headers": {
-        "Referer": "https://www.eurostartv.com.tr/",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+        "Referer": "https://www.eurostartv.com.tr/"
+      }
+    },
+    {
+      "slug": "showtv",
+      "url": "https://www.showtv.com.tr/canli-yayin",
+      "headers": {
+        "Referer": "https://www.showtv.com.tr/"
       }
     },
     {
       "slug": "showturk",
-      "url": "https://www.showtv.com.tr/canli-yayin/show-turk",
+      "url": "hls://https://ciner-live.ercdn.net/showturk/playlist.m3u8",
       "headers": {
-        "Referer": "https://www.showtv.com.tr/",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+        "Referer": "https://www.showturk.com.tr/",
+        "Origin": "https://www.showturk.com.tr"
       }
     },
     {
       "slug": "nowtv",
       "url": "https://www.nowtv.com.tr/canli-yayin",
       "headers": {
-        "Referer": "https://www.nowtv.com.tr/",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+        "Referer": "https://www.nowtv.com.tr/"
       }
     },
     {
       "slug": "atv",
       "url": "https://www.atv.com.tr/canli-yayin",
       "headers": {
-        "Referer": "https://www.atv.com.tr/",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+        "Referer": "https://www.atv.com.tr/"
       }
     },
     {
       "slug": "startv",
-      "url": "https://www.startv.com.tr/canli-yayin",
+      "url": "hls://https://dygvideo.dygdigital.com/live/hls/startv",
       "headers": {
-        "Referer": "https://www.startv.com.tr/",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+        "Referer": "https://www.startv.com.tr/"
       }
     }
   ]
