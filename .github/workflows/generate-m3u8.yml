@@ -12,19 +12,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      PROXY_URL: ${{ secrets.PROXY_URL }}
+
     steps:
-      # ✅ Repo sauber auschecken
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ✅ Python + Cache
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: "pip"
 
-      # ✅ Dependencies installieren
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -34,16 +34,14 @@ jobs:
             pip install streamlink requests
           fi
 
-      # 🔥 OPTIONAL: Proxy setzen (nur wenn du einen hast)
-      # Secrets anlegen: PROXY_URL = http://user:pass@host:port
+      # ✅ FIX: jetzt über env prüfen (funktioniert immer)
       - name: Set proxy (optional)
-        if: ${{ secrets.PROXY_URL != '' }}
+        if: ${{ env.PROXY_URL != '' }}
         run: |
           echo "Using proxy"
-          export http_proxy=${{ secrets.PROXY_URL }}
-          export https_proxy=${{ secrets.PROXY_URL }}
+          export http_proxy=$PROXY_URL
+          export https_proxy=$PROXY_URL
 
-      # ✅ Stream-Generierung
       - name: Generate playlists
         run: |
           export STREAMLINK_PLUGIN_DIR=$(pwd)/src/plugins
@@ -51,7 +49,6 @@ jobs:
 
           python src/generate.py config/config.json
 
-      # ✅ Commit & Push nur bei Änderungen
       - name: Commit & push changes
         run: |
           git config user.name "github-actions[bot]"
@@ -68,4 +65,3 @@ jobs:
             fi
           else
             echo "Output folder not found, skipping."
-          fi
