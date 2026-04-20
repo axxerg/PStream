@@ -1,70 +1,23 @@
-name: Generate M3U8
+import re
+from streamlink.plugin import Plugin, pluginmatcher
+from streamlink.stream.hls import HLSStream
 
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: "*/20 * * * *"
+@pluginmatcher(re.compile(r"https?://(?:www\.)?showturk\.com\.tr/canli-yayin"))
+class ShowTurk(Plugin):
+    def _get_streams(self):
+        # Wir greifen direkt die Master-Playlist an. 
+        # Ciner-Sender haben oft diesen Pfad als Fallback.
+        hls_url = "https://ciner-live.ercdn.net/showturk/playlist.m3u8"
+        
+        # SSL-Prüfung deaktivieren (wichtig für Runner in den USA)
+        self.session.set_option("http-ssl-verify", False)
+        
+        # Wir tarnen uns als lokaler türkischer Browser
+        return HLSStream.parse_variant_playlist(self.session, hls_url, headers={
+            "Referer": "https://www.showturk.com.tr/",
+            "Origin": "https://www.showturk.com.tr",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+            "X-Forwarded-For": "31.145.120.120" # Wir täuschen eine türkische IP vor
+        })
 
-permissions:
-  contents: write
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    env:
-      PROXY_URL: ${{ secrets.PROXY_URL }}
-
-    steps:
-      - name: Clone repo (branch)
-        run: |
-          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git repo
-          cd repo
-          git checkout "${{ github.ref_name }}"
-
-      - name: Install dependencies
-        run: |
-          cd repo
-          python3 -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then
-            pip3 install -r requirements.txt
-          else
-            pip3 install streamlink requests
-          fi
-
-      # ✅ Proxy optional – ohne YAML-if (wichtig!)
-      - name: Set proxy (optional)
-        run: |
-          if [ -n "$PROXY_URL" ]; then
-            echo "Using proxy"
-            export http_proxy=$PROXY_URL
-            export https_proxy=$PROXY_URL
-          else
-            echo "No proxy set"
-          fi
-
-      - name: Generate playlists
-        run: |
-          cd repo
-          export STREAMLINK_PLUGIN_DIR=$(pwd)/src/plugins
-          export PYTHONPATH=$PYTHONPATH:$(pwd)/src
-          python3 src/generate.py config/config.json
-
-      - name: Commit & push
-        run: |
-          cd repo
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          if [ -d "output" ]; then
-            git add -f output
-
-            if ! git diff --cached --quiet; then
-              git commit -m "Update m3u8 playlists"
-              git push origin "${{ github.ref_name }}"
-            else
-              echo "No changes to commit"
-            fi
-          else
-            echo "Output folder not found, skipping."
-          fi
+__plugin__ = ShowTurk
