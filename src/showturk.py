@@ -1,110 +1,114 @@
-import re
-import requests
-import os
-from urllib.parse import urljoin
+import streamlink
+import sys
+import os 
+import json
 
-URL = "https://www.showturk.com.tr/canli-yayin"
+def info_to_text(stream_info, url):
+    text = '#EXT-X-STREAM-INF:'
+    if stream_info.program_id:
+        text = text + 'PROGRAM-ID=' + str(stream_info.program_id) + ','
+    if stream_info.bandwidth:
+        text = text + 'BANDWIDTH=' + str(stream_info.bandwidth) + ','
+    if stream_info.codecs:
+        text = text + 'CODECS="'
+        codecs = stream_info.codecs
+        for i in range(0, len(codecs)):
+            text = text + codecs[i]
+            if len(codecs) - 1 != i:
+                text = text + ','
+        text = text + '",'
+    if stream_info.resolution.width:
+        text = text + 'RESOLUTION=' + str(stream_info.resolution.width) + 'x' + str(stream_info.resolution.height) 
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0",
-    "Referer": "https://www.showturk.com.tr/"
-}
-
-OUTPUT = "output/showturk.m3u8"
-
-
-def fetch(url):
-    try:
-        res = requests.get(url, headers=HEADERS, timeout=10)
-        res.raise_for_status()
-        return res.text
-    except Exception as e:
-        print(f"❌ Request failed: {url}")
-        print(e)
-        return ""
-
-
-def extract_m3u8(text):
-    return re.findall(r"https?://[^\"'\\s]+\\.m3u8[^\"'\\s]*", text)
-
-
-def extract_iframes(html):
-    return re.findall(r'<iframe[^>]+src=["\']([^"\']+)["\']', html)
-
-
-def is_valid_iframe(url):
-    bad = [
-        "googletagmanager",
-        "doubleclick",
-        "ads",
-        "analytics"
-    ]
-    return not any(b in url for b in bad)
-
-
-def save(url):
-    os.makedirs("output", exist_ok=True)
-    with open(OUTPUT, "w") as f:
-        f.write(url)
-    print("💾 Saved:", OUTPUT)
-
+    text = text + "\n" + url + "\n"
+    return text
 
 def main():
-    print("=== ShowTurk Extractor ===")
+    # Loading config file
+    f = open(sys.argv[1], "r")
+    config = json.load(f)
 
-    # 1️⃣ Hauptseite
-    print("➡️ Load main page")
-    html = fetch(URL)
+    # Getting output options and creating folders
+    folder_name = config["output"]["folder"]
+    best_folder_name = config["output"]["bestFolder"]
+    master_folder_name = config["output"]["masterFolder"]
+    current_dir = os.getcwd()
+    root_folder = os.path.join(current_dir, folder_name)
+    best_folder = os.path.join(root_folder, best_folder_name)
+    master_folder = os.path.join(root_folder, master_folder_name)
+    os.makedirs(best_folder, exist_ok=True)
+    os.makedirs(master_folder, exist_ok=True)
 
-    # 2️⃣ Direkt nach m3u8 suchen
-    m3u8_list = extract_m3u8(html)
-    if m3u8_list:
-        print("✅ Found direct stream")
-        print(m3u8_list[0])
-        save(m3u8_list[0])
-        return
+    channels = config["channels"]
+    for channel in channels:
+        # Get streams and playlists
+        try:
+            url = channel["url"]
+            streams = streamlink.streams(url)
+            playlists = streams['best'].multivariant.playlists
 
-    print("⚠️ No direct stream, checking iframes...")
+            # Text preparation
+            previous_res_height = 0
+            master_text = ''
+            best_text = ''
 
-    # 3️⃣ Alle iframes prüfen
-    iframes = extract_iframes(html)
+            # Check http/https options
+            http_flag = False
+            if url.startswith("http://"):
+                plugin_name, plugin_type, given_url  = streamlink.session.Streamlink().resolve_url(url)
+                http_flag = True
 
-    for iframe in iframes:
-        iframe_url = urljoin(URL, iframe)
+            for playlist in playlists:
+                uri = playlist.uri
+                info = playlist.stream_info
+                # Sorting sub-playlist based on 
+                if info.video != "audio_only": 
+                    sub_text = info_to_text(info, uri)
+                    if info.resolution.height > previous_res_height:
+                        master_text = sub_text  + master_text
+                        best_text = sub_text
+                    else:
+                        master_text = master_text + sub_text
+                    previous_res_height = info.resolution.height
+            
+            # Necessary values for HLS
+            if master_text:
+                if streams['best'].multivariant.version:
+                    master_text = '#EXT-X-VERSION:' + str(streams['best'].multivariant.version) + "\n" + master_text
+                    best_text = '#EXT-X-VERSION:' + str(streams['best'].multivariant.version) + "\n" + best_text
+                master_text = '#EXTM3U\n' + master_text
+                best_text = '#EXTM3U\n' + best_text
 
-        if not is_valid_iframe(iframe_url):
-            print("⏭️ Skip iframe:", iframe_url)
-            continue
+            # HTTPS -> HTTP for cinergroup plugin
+            if http_flag:
+                if plugin_name == "cinergroup":
+                    master_text = master_text.replace("https://", "http://")
+                    best_text = best_text.replace("https://", "http://")
 
-        print("➡️ Checking iframe:", iframe_url)
+            # File operations
+            master_file_path = os.path.join(master_folder, channel["slug"] + ".m3u8")
+            best_file_path = os.path.join(best_folder, channel["slug"] + ".m3u8")
 
-        html2 = fetch(iframe_url)
+            if master_text:
+                master_file = open(master_file_path, "w+")
+                master_file.write(master_text)
+                master_file.close()
 
-        m3u8_list = extract_m3u8(html2)
-        if m3u8_list:
-            print("✅ Found stream in iframe")
-            print(m3u8_list[0])
-            save(m3u8_list[0])
-            return
+                best_file = open(best_file_path, "w+")
+                best_file.write(best_text)
+                best_file.close()
+                
+            else:
+                if os.path.isfile(master_file_path):
+                    os.remove(master_file_path)
+                    os.remove(best_file_path)
+        except Exception as e:
+            master_file_path = os.path.join(master_folder, channel["slug"] + ".m3u8")
+            best_file_path = os.path.join(best_folder, channel["slug"] + ".m3u8")
+            if os.path.isfile(master_file_path):
+                os.remove(master_file_path)
+            if os.path.isfile(best_file_path):
+                os.remove(best_file_path)
 
-    # 4️⃣ Fallback bekannte CDN (optional)
-    print("⚠️ Trying fallback CDN...")
-
-    fallback = "https://ciner-live.ercdn.net/showturk/playlist.m3u8"
-
-    try:
-        r = requests.head(fallback, timeout=5)
-        if r.status_code == 200:
-            print("✅ Fallback works")
-            save(fallback)
-            return
-        else:
-            print("❌ Fallback failed:", r.status_code)
-    except:
-        print("❌ Fallback unreachable")
-
-    print("❌ No stream found at all")
-
-
-if __name__ == "__main__":
-    main()
+if __name__=="__main__": 
+    main() 
