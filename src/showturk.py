@@ -6,36 +6,28 @@ from streamlink.stream.hls import HLSStream
 @pluginmatcher(re.compile(r"https?://(?:www\.)?showturk\.com\.tr/canli-yayin"))
 class ShowTurk(Plugin):
     def _get_streams(self):
-        # 1. Die Webseite mit Browser-Headern laden
-        self.session.set_option("http-ssl-verify", False)
-        res = self.session.http.get(self.url)
+        # 1. Seite mit getürktem User-Agent laden
+        res = self.session.http.get(self.url, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+        })
         
-        # 2. Den dynamischen Token aus dem 'data-hope-video' Attribut extrahieren
-        # Wir suchen nach dem Inhalt zwischen data-hope-video=' und '
+        # 2. Versuch: Suche im JSON-Block (wie zuvor)
         match = re.search(r"data-hope-video='(\{.*?\})'", res.text)
-        
         if match:
             try:
-                # Das gefundene JSON in ein Python-Objekt umwandeln
                 video_conf = json.loads(match.group(1))
-                
-                # Die M3U8-URL aus der Struktur extrahieren:
-                # media -> m3u8 -> [0] -> src
                 hls_url = video_conf.get("media", {}).get("m3u8", [{}])[0].get("src")
-                
                 if hls_url:
-                    # Wir geben die Stream-URL mit den notwendigen Headern zurück
-                    return HLSStream.parse_variant_playlist(self.session, hls_url, headers={
-                        "Referer": self.url,
-                        "Origin": "https://www.showturk.com.tr",
-                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
-                    })
-            except (json.JSONDecodeError, KeyError, IndexError) as e:
-                self.logger.error(f"Fehler beim Verarbeiten der Video-Daten: {e}")
+                    return HLSStream.parse_variant_playlist(self.session, hls_url)
+            except:
+                pass
 
-        # Fallback: Falls die Webseite blockiert, versuchen wir den direkten Link
-        # (Erfolg hierbei hängt stark von der IP-Sperre ab)
-        fallback_url = "https://ciner-live.ercdn.net/showturk/playlist.m3u8"
-        return HLSStream.parse_variant_playlist(self.session, fallback_url, headers={"Referer": self.url})
+        # 3. Versuch: "Brute Force" Suche nach M3U8 URLs auf den Ciner-Servern
+        # Wir suchen direkt nach Links, die auf .m3u8 enden und 'ciner' oder 'ercdn' enthalten
+        links = re.findall(r'https?://[^\s\'"]+showturk[^\s\'"]+\.m3u8[^\s\'"]*', res.text)
+        for link in links:
+            # Entferne HTML-Escaping (falls vorhanden)
+            clean_link = link.replace("\\/", "/").replace("&amp;", "&")
+            return HLSStream.parse_variant_playlist(self.session, clean_link)
 
 __plugin__ = ShowTurk
