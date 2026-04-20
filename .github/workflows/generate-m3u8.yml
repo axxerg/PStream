@@ -12,39 +12,35 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # 1. Nutzt die offizielle Action zum Auschecken (viel stabiler)
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # 2. Python Umgebung einrichten
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      # 3. Abhängigkeiten installieren
-      - name: Install dependencies
+      - name: Clone repo (manual)
         run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git repo
+          cd repo
+          git checkout "${{ github.ref_name }}"
 
-      # 4. Generierung starten
+      - name: Install dependencies (manual)
+        run: |
+          cd repo
+          python3 -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
+
       - name: Generate playlists
         run: |
-          # Pfad für eigene Streamlink-Plugins setzen
+          cd repo
+          # Setze Pfad relativ zum geklonten Ordner
           export STREAMLINK_PLUGIN_DIR=$(pwd)/src/plugins
           python3 src/generate.py config/config.json
 
-      # 5. Änderungen speichern
       - name: Commit & push
         run: |
+          cd repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Nur adden und pushen, wenn der output Ordner existiert
+          # Prüfen ob der Ordner existiert
           if [ -d "output" ]; then
             git add -f output
-            git diff --cached --quiet || (git commit -m "Update m3u8 playlists" && git push)
+            git diff --cached --quiet || (git commit -m "Update m3u8 playlists" && git push origin "${{ github.ref_name }}")
           else
-            echo "Kein Output-Ordner gefunden!"
+            echo "Output folder not found"
           fi
