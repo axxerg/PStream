@@ -33,7 +33,7 @@ jobs:
       - name: Run generator
         run: |
           export STREAMLINK_PLUGIN_DIR=$(pwd)/src/plugins
-          python ./src/generate.py ./config/config.json
+          python ./src/showturk.py ./config/config.json
 
       - name: Commit & push playlists
         run: |
