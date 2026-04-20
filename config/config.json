@@ -12,6 +12,14 @@
         "Referer": "https://www.eurostartv.com.tr/",
         "User-Agent": "Mozilla/5.0"
       }
+    },
+    {
+      "slug": "showtv",
+      "url": "https://www.showtv.com.tr/canli-yayin",
+      "headers": {
+        "Referer": "https://www.showtv.com.tr/",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      }
     }
   ]
 }
