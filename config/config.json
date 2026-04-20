@@ -10,7 +10,7 @@
       "url": "https://www.eurostartv.com.tr/canli-izle",
       "headers": {
         "Referer": "https://www.eurostartv.com.tr/",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
       }
     },
     {
@@ -18,16 +18,15 @@
       "url": "https://www.showtv.com.tr/canli-yayin",
       "headers": {
         "Referer": "https://www.showtv.com.tr/",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
       }
     },
     {
       "slug": "showturk",
-      "url": "https://www.showturk.com.tr/canli-yayin",
+      "url": "https://www.showtv.com.tr/canli-yayin/show-turk",
       "headers": {
-        "Referer": "https://www.showturk.com.tr/",
-        "Origin": "https://www.showturk.com.tr",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        "Referer": "https://www.showtv.com.tr/",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
       }
     },
     {
@@ -35,7 +34,7 @@
       "url": "https://www.nowtv.com.tr/canli-yayin",
       "headers": {
         "Referer": "https://www.nowtv.com.tr/",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
       }
     },
     {
@@ -43,15 +42,16 @@
       "url": "https://www.atv.com.tr/canli-yayin",
       "headers": {
         "Referer": "https://www.atv.com.tr/",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
       }
     },
     {
       "slug": "startv",
-      "url": "hls://https://dygvideo.dygdigital.com/live/hls/startv",
+      "url": "https://www.startv.com.tr/canli-yayin",
       "headers": {
         "Referer": "https://www.startv.com.tr/",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        "Origin": "https://www.startv.com.tr",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
       }
     }
   ]
