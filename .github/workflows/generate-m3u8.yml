@@ -1,30 +1,30 @@
-name: Generate M3U8
+name: Generate Streams
 
 on:
-  workflow_dispatch:
   schedule:
-    - cron: "*/20 * * * *"
-
-permissions:
-  contents: write
+    - cron: '0 */3 * * *' # Läuft alle 3 Stunden
+  workflow_dispatch: # Erlaubt manuelles Starten über das GitHub-Interface
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    env:
-      PROXY_URL: ${{ secrets.PROXY_URL }}
+    permissions:
+      contents: write # Wichtig, damit der Bot Dateien hochladen darf
 
     steps:
-      - name: Clone repo
-        run: |
-          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git repo
-          cd repo
-          git checkout "${{ github.ref_name }}"
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          # Wir checken das Repo ohne Unterordner aus, um Pfadprobleme zu vermeiden
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
       - name: Install dependencies
         run: |
-          cd repo
           python3 -m pip install --upgrade pip
           if [ -f requirements.txt ]; then
             pip3 install -r requirements.txt
@@ -32,33 +32,33 @@ jobs:
             pip3 install streamlink requests
           fi
 
-      - name: Set proxy (optional)
-        if: ${{ env.PROXY_URL != '' }}
+      - name: Run generator
         run: |
-          export http_proxy=$PROXY_URL
-          export https_proxy=$PROXY_URL
-
-      - name: Generate playlists
-        run: |
-          cd repo
+          # Absolute Pfade setzen, damit Streamlink die lokalen Plugins findet
           export STREAMLINK_PLUGIN_DIR=$(pwd)/src/plugins
           export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+          
+          # Starte das Generierungs-Skript
           python3 src/generate.py config/config.json
 
-      - name: Commit & push
+      - name: Push changes
         run: |
-          cd repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
+          
+          # Sicherstellen, dass wir im richtigen Verzeichnis sind
+          # Falls der Output-Ordner existiert, füge ihn hinzu
           if [ -d "output" ]; then
             git add -f output/
-
+            
+            # Prüfen, ob es tatsächlich Änderungen gibt (vermeidet Fehler bei leerem Commit)
             if ! git diff --cached --quiet; then
-              git commit -m "Update m3u8 playlists"
-              git push origin "${{ github.ref_name }}"
+              git commit -m "Update m3u8 playlists [skip ci]"
+              git push origin main
             else
-              echo "No changes to commit"
+              echo "Keine Änderungen an den Playlists festgestellt."
             fi
           else
-            echo "Output folder not found, skipping."
+            echo "Fehler: Output-Ordner wurde nicht erstellt!"
+            exit 1
+          fi
