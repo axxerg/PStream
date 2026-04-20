@@ -21,13 +21,13 @@
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
       }
     },
-    {
-      "slug": "showturk",
-      "url": "https://www.showtv.com.tr/canli-yayin/show-turk",
-      "headers": {
-        "Referer": "https://www.showtv.com.tr/",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
-      }
+{
+  "slug": "showturk",
+  "url": "hls://https://ciner-live.ercdn.net/showturk/playlist.m3u8",
+  "headers": {
+    "Referer": "https://www.showturk.com.tr/",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+  }
     },
     {
       "slug": "nowtv",
