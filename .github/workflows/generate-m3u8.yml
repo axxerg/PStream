@@ -11,45 +11,61 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - name: Clone repo (manual)
-        run: |
-          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git repo
-          cd repo
-          git checkout "${{ github.ref_name }}"
 
-      - name: Install dependencies (manual)
+    steps:
+      # ✅ Repo sauber auschecken
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ✅ Python + Cache
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      # ✅ Dependencies installieren
+      - name: Install dependencies
         run: |
-          cd repo
-          python3 -m pip install --upgrade pip
-          # Installation von streamlink und requests (falls nicht in requirements.txt)
-          if [ -f requirements.txt ]; then 
-            pip3 install -r requirements.txt
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
           else
-            pip3 install streamlink requests
+            pip install streamlink requests
           fi
 
+      # 🔥 OPTIONAL: Proxy setzen (nur wenn du einen hast)
+      # Secrets anlegen: PROXY_URL = http://user:pass@host:port
+      - name: Set proxy (optional)
+        if: ${{ secrets.PROXY_URL != '' }}
+        run: |
+          echo "Using proxy"
+          export http_proxy=${{ secrets.PROXY_URL }}
+          export https_proxy=${{ secrets.PROXY_URL }}
+
+      # ✅ Stream-Generierung
       - name: Generate playlists
         run: |
-          cd repo
-          # Absoluter Pfad für die Plugins, damit Streamlink sie sicher lädt
           export STREAMLINK_PLUGIN_DIR=$(pwd)/src/plugins
-          # PYTHONPATH hinzufügen, damit lokale Skripte ihre Module finden
           export PYTHONPATH=$PYTHONPATH:$(pwd)/src
-          
-          python3 src/generate.py config/config.json
 
-      - name: Commit & push
+          python src/generate.py config/config.json
+
+      # ✅ Commit & Push nur bei Änderungen
+      - name: Commit & push changes
         run: |
-          cd repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Sicherstellen, dass die Verzeichnisse für git bekannt sind
+
           if [ -d "output" ]; then
             git add -f output/
-            # Nur committen, wenn es echte Änderungen gab
-            git diff --cached --quiet || (git commit -m "Update m3u8 playlists" && git push origin "${{ github.ref_name }}")
+
+            if ! git diff --cached --quiet; then
+              git commit -m "Update m3u8 playlists"
+              git push
+            else
+              echo "No changes to commit"
+            fi
           else
             echo "Output folder not found, skipping."
           fi
