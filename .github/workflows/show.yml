@@ -3,7 +3,7 @@ name: Generate ShowTurk M3U8
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/20 * * * *"
+    - cron: "*/30 * * * *"
 
 permissions:
   contents: write
@@ -13,29 +13,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clone repository
+      - name: Clone repo
         run: |
           git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git repo
+          cd repo
+          git checkout "${{ github.ref_name }}"
 
-      - name: Install Python
+      - name: Install Python + dependencies
         run: |
           sudo apt update
           sudo apt install -y python3 python3-pip
+          pip3 install --upgrade pip
+          pip3 install streamlink requests
 
-      - name: Install dependencies
-        run: |
-          pip3 install requests
-
-      - name: Run showturk script
+      - name: Run ShowTurk script
         run: |
           cd repo
           python3 src/showturk.py
 
-      - name: Commit & push result
+      - name: Commit & push if file exists
         run: |
           cd repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add output/showturk.m3u8 || true
-          git diff --cached --quiet || git commit -m "Update ShowTurk stream"
-          git push origin main
+
+          if [ -f output/showturk.m3u8 ]; then
+            git add output/showturk.m3u8
+            git commit -m "Update ShowTurk stream" || echo "No changes"
+            git push origin "${{ github.ref_name }}"
+          else
+            echo "No stream file generated → skip commit"
+          fi
