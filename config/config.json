@@ -18,7 +18,39 @@
       "url": "https://www.showtv.com.tr/canli-yayin",
       "headers": {
         "Referer": "https://www.showtv.com.tr/",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        "User-Agent": "Mozilla/5.0"
+      }
+    },
+    {
+      "slug": "showturk",
+      "url": "https://www.showturk.com.tr/canli-yayin",
+      "headers": {
+        "Referer": "https://www.showturk.com.tr/",
+        "User-Agent": "Mozilla/5.0"
+      }
+    },
+    {
+      "slug": "nowtv",
+      "url": "https://www.nowtv.com.tr/canli-yayin",
+      "headers": {
+        "Referer": "https://www.nowtv.com.tr/",
+        "User-Agent": "Mozilla/5.0"
+      }
+    },
+    {
+      "slug": "atv",
+      "url": "https://www.atv.com.tr/canli-yayin",
+      "headers": {
+        "Referer": "https://www.atv.com.tr/",
+        "User-Agent": "Mozilla/5.0"
+      }
+    },
+    {
+      "slug": "startv",
+      "url": "https://www.startv.com.tr/canli-yayin",
+      "headers": {
+        "Referer": "https://www.startv.com.tr/",
+        "User-Agent": "Mozilla/5.0"
       }
     }
   ]
