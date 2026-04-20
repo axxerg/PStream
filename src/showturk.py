@@ -1,39 +1,68 @@
-name: Generate ShowTurk M3U8
+import re
+import requests
+from urllib.parse import urljoin
+import os
 
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: "*/20 * * * *"
+URL = "https://www.showturk.com.tr/canli-yayin"
+HEADERS = {
+    "User-Agent": "Mozilla/5.0",
+    "Referer": "https://www.showturk.com.tr/"
+}
 
-permissions:
-  contents: write
+OUTPUT = "output/showturk.m3u8"
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+re_m3u8 = re.compile(r"https?://[^\"'\\s]+\\.m3u8[^\"'\\s]*")
+re_iframe = re.compile(r'<iframe[^>]+src=["\']([^"\']+)["\']')
 
-    steps:
-      - name: Clone repo
-        run: |
-          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git repo
-          cd repo
 
-      - name: Install Python & deps
-        run: |
-          sudo apt update
-          sudo apt install -y python3 python3-pip
-          pip3 install requests
+def fetch(url):
+    return requests.get(url, headers=HEADERS, timeout=10).text
 
-      - name: Run script
-        run: |
-          cd repo
-          python3 generate.py
 
-      - name: Commit & push
-        run: |
-          cd repo
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add output/showturk.m3u8 || true
-          git diff --cached --quiet || git commit -m "Update ShowTurk stream"
-          git push origin main
+def find_m3u8(text):
+    m = re_m3u8.search(text)
+    return m.group(0) if m else None
+
+
+def find_iframe(html):
+    m = re_iframe.search(html)
+    return m.group(1) if m else None
+
+
+def main():
+    print("Step 1: load main page")
+    html = fetch(URL)
+
+    # 1️⃣ direkt suchen
+    m3u8 = find_m3u8(html)
+    if m3u8:
+        print("✅ Found direct stream")
+        save(m3u8)
+        return
+
+    # 2️⃣ iframe prüfen
+    iframe = find_iframe(html)
+    if iframe:
+        iframe_url = urljoin(URL, iframe)
+        print("Step 2: load iframe:", iframe_url)
+
+        html2 = fetch(iframe_url)
+
+        m3u8 = find_m3u8(html2)
+        if m3u8:
+            print("✅ Found stream in iframe")
+            save(m3u8)
+            return
+
+    print("❌ No stream found")
+
+
+def save(url):
+    os.makedirs("output", exist_ok=True)
+    with open(OUTPUT, "w") as f:
+        f.write(url)
+    print("💾 Saved:", OUTPUT)
+
+
+if __name__ == "__main__":
+    main()
