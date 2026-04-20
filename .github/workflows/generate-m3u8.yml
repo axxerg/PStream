@@ -22,13 +22,21 @@ jobs:
         run: |
           cd repo
           python3 -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
+          # Installation von streamlink und requests (falls nicht in requirements.txt)
+          if [ -f requirements.txt ]; then 
+            pip3 install -r requirements.txt
+          else
+            pip3 install streamlink requests
+          fi
 
       - name: Generate playlists
         run: |
           cd repo
-          # Setze Pfad relativ zum geklonten Ordner
+          # Absoluter Pfad für die Plugins, damit Streamlink sie sicher lädt
           export STREAMLINK_PLUGIN_DIR=$(pwd)/src/plugins
+          # PYTHONPATH hinzufügen, damit lokale Skripte ihre Module finden
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+          
           python3 src/generate.py config/config.json
 
       - name: Commit & push
@@ -37,10 +45,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Prüfen ob der Ordner existiert
+          # Sicherstellen, dass die Verzeichnisse für git bekannt sind
           if [ -d "output" ]; then
-            git add -f output
+            git add -f output/
+            # Nur committen, wenn es echte Änderungen gab
             git diff --cached --quiet || (git commit -m "Update m3u8 playlists" && git push origin "${{ github.ref_name }}")
           else
-            echo "Output folder not found"
+            echo "Output folder not found, skipping."
           fi
