@@ -1,41 +1,39 @@
-import re
-import requests
-import os
+name: Generate ShowTurk M3U8
 
-OUTPUT_FILE = "output/showturk.m3u8"
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/20 * * * *"
 
-URL = "https://www.showturk.com.tr/canli-yayin"
+permissions:
+  contents: write
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0",
-    "Referer": "https://www.showturk.com.tr/"
-}
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-def find_m3u8(text):
-    match = re.search(r"https?://[^\"'\\s]+\\.m3u8[^\"'\\s]*", text)
-    return match.group(0) if match else None
+    steps:
+      - name: Clone repo
+        run: |
+          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git repo
+          cd repo
 
+      - name: Install Python & deps
+        run: |
+          sudo apt update
+          sudo apt install -y python3 python3-pip
+          pip3 install requests
 
-def main():
-    print("Fetching page...")
-    res = requests.get(URL, headers=HEADERS, timeout=10)
-    html = res.text
+      - name: Run script
+        run: |
+          cd repo
+          python3 generate.py
 
-    m3u8 = find_m3u8(html)
-
-    if not m3u8:
-        print("❌ No m3u8 found")
-        return
-
-    print("✅ Found stream:", m3u8)
-
-    os.makedirs("output", exist_ok=True)
-
-    with open(OUTPUT_FILE, "w") as f:
-        f.write(m3u8)
-
-    print("💾 Saved to", OUTPUT_FILE)
-
-
-if __name__ == "__main__":
-    main()
+      - name: Commit & push
+        run: |
+          cd repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add output/showturk.m3u8 || true
+          git diff --cached --quiet || git commit -m "Update ShowTurk stream"
+          git push origin main
