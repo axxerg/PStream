@@ -11,12 +11,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    env:
-      PROXY_URL: ${{ secrets.PROXY_URL }}
-
     steps:
-      - name: Clone repo
+      - name: Clone repo (branch)
         run: |
           git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git repo
           cd repo
@@ -26,28 +22,12 @@ jobs:
         run: |
           cd repo
           python3 -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then
-            pip3 install -r requirements.txt
-          else
-            pip3 install streamlink requests
-          fi
+          pip3 install -r requirements.txt
 
       - name: Generate playlists
         run: |
           cd repo
-
-          # Proxy optional (kein YAML if → kein Fehler)
-          if [ -n "$PROXY_URL" ]; then
-            echo "Using proxy"
-            export http_proxy=$PROXY_URL
-            export https_proxy=$PROXY_URL
-          else
-            echo "No proxy set"
-          fi
-
           export STREAMLINK_PLUGIN_DIR=$(pwd)/src/plugins
-          export PYTHONPATH=$PYTHONPATH:$(pwd)/src
-
           python3 src/generate.py config/config.json
 
       - name: Commit & push
@@ -55,15 +35,6 @@ jobs:
           cd repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          if [ -d "output" ]; then
-            git add -f output
-
-            if ! git diff --cached --quiet; then
-              git commit -m "Update m3u8 playlists"
-              git push origin "${{ github.ref_name }}"
-            else
-              echo "No changes to commit"
-            fi
-          else
-            echo "Output folder not found, skipping."
+          git add -f output
+          git diff --cached --quiet || git commit -m "Update m3u8 playlists"
+          git push origin "${{ github.ref_name }}"
