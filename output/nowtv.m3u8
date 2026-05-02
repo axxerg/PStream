@@ -1,0 +1,373 @@
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-MEDIA-SEQUENCE:7173703
+#EXT-X-DISCONTINUITY-SEQUENCE:99396
+#EXT-X-TARGETDURATION:10
+#EXTINF:10.000000, no desc,ADV-IN=0,ADV-TYPE=ADV
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757220000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757230000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757240000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:2.000000, no desc,ADV-OUT=2000
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757250000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXT-X-DISCONTINUITY
+#EXTINF:8.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757250000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757260000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757270000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757280000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757290000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757300000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757310000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757320000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757330000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757340000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:8.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757350000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXT-X-DISCONTINUITY
+#EXTINF:2.000000, no desc,ADV-IN=0,ADV-TYPE=ADV
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757350000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757360000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757370000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757380000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc,ADV-OUT=10000
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757390000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXT-X-DISCONTINUITY
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757400000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757410000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757420000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757430000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757440000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757450000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757460000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757470000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757480000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757490000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757500000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757510000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757520000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757530000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757540000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757550000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757560000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757570000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757580000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757590000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757600000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757610000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757620000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757630000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757640000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757650000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757660000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757670000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757680000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757690000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757700000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757710000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757720000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757730000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757740000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757750000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757760000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757770000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757780000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757790000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757800000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757810000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757820000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757830000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757840000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757850000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757860000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757870000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757880000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757890000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757900000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757910000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757920000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757930000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757940000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757950000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757960000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757970000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757980000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777757990000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758000000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758010000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758020000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758030000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758040000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758050000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758060000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758070000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758080000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758090000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758100000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758110000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758120000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758130000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758140000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758150000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758160000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758170000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758180000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758190000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758200000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758210000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758220000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758230000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758240000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758250000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758260000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758270000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758280000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758290000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758300000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758310000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758320000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758330000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:8.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758340000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXT-X-DISCONTINUITY
+#EXTINF:2.000000, no desc,ADV-IN=0,ADV-TYPE=ADV
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758340000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758350000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758360000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758370000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758380000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758390000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758400000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758410000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758420000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758430000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758440000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758450000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758460000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758470000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758480000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:8.000000, no desc,ADV-OUT=8000
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758490000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXT-X-DISCONTINUITY
+#EXTINF:2.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758490000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758500000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758510000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758520000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:8.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758530000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXT-X-DISCONTINUITY
+#EXTINF:2.000000, no desc,ADV-IN=0,ADV-TYPE=ADV
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758530000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758540000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758550000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758560000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758570000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758580000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758590000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758600000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758610000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758620000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758630000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758640000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758650000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758660000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758670000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758680000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758690000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758700000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758710000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758720000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758730000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758740000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758750000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758760000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:8.000000, no desc,ADV-OUT=8000
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758770000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXT-X-DISCONTINUITY
+#EXTINF:2.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758770000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758780000.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXT-X-DISCONTINUITY
+#EXTINF:10.000000, no desc,ADV-IN=0,ADV-TYPE=ADV
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758790000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758800000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758810000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758820000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758830000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758840000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758850000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758860000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758870000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758880000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758890000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758900000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758910000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758920000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758930000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758940000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
+#EXTINF:10.000000, no desc
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p-1777758950000_era.ts?e=1777816529&st=4W7FKweSPKguWxD6OtYSfw
