@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 """
 ATV Avrupa Resolver
-- lädt die Live-Seite
-- extrahiert die aktuelle signierte M3U8
+- lädt Live-Seite
+- durchsucht HTML + eingebundene JS-Dateien nach signierter M3U8
 - lädt die echte Playlist
 - normalisiert relative URLs
-- speichert fertige abspielbare M3U8
+- speichert fertige ATV M3U8
 """
 
+import html
 import os
 import re
 import time
-import html
-import requests
 from urllib.parse import urljoin
+
+import requests
 
 OUTPUT = "output/atv.m3u8"
 PAGE_URL = "https://www.atvavrupa.tv/canli-yayin"
@@ -33,45 +34,63 @@ HEADERS = {
     "Connection": "keep-alive",
 }
 
-PATTERNS = [
+M3U8_PATTERNS = [
     r'https?://[^\s"\']+\.m3u8[^\s"\']*',
     r'"(?:file|src|hls|streamUrl)"\s*:\s*"([^"]+\.m3u8[^"]*)"',
     r"'(?:file|src|hls|streamUrl)'\s*:\s*'([^']+\.m3u8[^']*)'",
     r'(https?:\\/\\/[^"\']+\.m3u8[^"\']*)',
 ]
 
+SCRIPT_SRC_RE = re.compile(r'<script[^>]+src=["\']([^"\']+)["\']', re.I)
 
-def fetch_page(session: requests.Session) -> str:
-    r = session.get(PAGE_URL, timeout=(5, 15))
+
+def find_m3u8(text: str) -> str | None:
+    source = html.unescape(text)
+    for pattern in M3U8_PATTERNS:
+        m = re.search(pattern, source, re.I)
+        if m:
+            url = m.group(1) if m.lastindex else m.group(0)
+            return url.replace("\\/", "/")
+    return None
+
+
+def fetch_text(session: requests.Session, url: str) -> str:
+    r = session.get(url, timeout=(5, 15))
     r.raise_for_status()
     return r.text
 
 
-def extract_m3u8(html_text: str) -> str | None:
-    source = html.unescape(html_text)
+def extract_stream_url(session: requests.Session) -> str | None:
+    page = fetch_text(session, PAGE_URL)
 
-    for pattern in PATTERNS:
-        match = re.search(pattern, source, re.IGNORECASE)
-        if match:
-            url = match.group(1) if match.lastindex else match.group(0)
-            return url.replace("\\/", "/")
+    # 1) Direkt im HTML suchen
+    direct = find_m3u8(page)
+    if direct:
+        return direct
+
+    # 2) JS-Dateien durchsuchen
+    for src in SCRIPT_SRC_RE.findall(page):
+        js_url = urljoin(PAGE_URL, src)
+        try:
+            js = fetch_text(session, js_url)
+        except requests.RequestException:
+            continue
+
+        found = find_m3u8(js)
+        if found:
+            return found
 
     return None
 
 
 def normalize_playlist(content: str, playlist_url: str) -> str:
-    """
-    Convert relative URLs inside M3U8 to absolute URLs.
-    """
     lines = []
     base = playlist_url.rsplit("/", 1)[0] + "/"
 
     for line in content.splitlines():
         stripped = line.strip()
-
         if stripped and not stripped.startswith("#"):
             line = urljoin(base, stripped)
-
         lines.append(line)
 
     return "\n".join(lines) + "\n"
@@ -99,10 +118,8 @@ def fetch_playlist(session: requests.Session, url: str) -> str:
 def save_playlist(content: str) -> None:
     os.makedirs("output", exist_ok=True)
     tmp = OUTPUT + ".tmp"
-
     with open(tmp, "w", encoding="utf-8", newline="\n") as f:
         f.write(content)
-
     os.replace(tmp, OUTPUT)
 
 
@@ -114,12 +131,10 @@ def main() -> int:
         session = requests.Session()
         session.headers.update(HEADERS)
 
-        print("🌍 Lade Live-Seite …")
-        page = fetch_page(session)
-
-        stream_url = extract_m3u8(page)
+        print("🌍 Lade Live-Seite / Skripte …")
+        stream_url = extract_stream_url(session)
         if not stream_url:
-            raise ValueError("Keine Stream-URL im HTML gefunden")
+            raise ValueError("Keine Stream-URL in HTML/JS gefunden")
 
         print(f"🔗 Stream URL: {stream_url}")
 
@@ -133,15 +148,12 @@ def main() -> int:
     except requests.HTTPError as e:
         print(f"❌ HTTP Fehler: {e}")
         return 1
-
     except requests.RequestException as e:
         print(f"❌ Netzwerkfehler: {e}")
         return 2
-
     except (OSError, ValueError) as e:
         print(f"❌ Fehler: {e}")
         return 3
-
     except Exception as e:
         print(f"❌ Unerwarteter Fehler: {type(e).__name__}: {e}")
         return 99
