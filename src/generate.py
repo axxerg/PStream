@@ -1,149 +1,223 @@
-import streamlink
-import sys
-import os
+#!/usr/bin/env python3
+"""
+ATV Extractor
+- nutzt Streamlink nur zum Finden der besten Variante
+- lädt danach die echte Variant-Playlist
+- normalisiert relative URLs
+- speichert eine direkt nutzbare ATV M3U8
+"""
+
+from __future__ import annotations
+
 import json
-import traceback
+import os
+import sys
+from pathlib import Path
+from urllib.parse import urljoin
 
-def info_to_text(stream_info, url):
-    text = '#EXT-X-STREAM-INF:'
-    if getattr(stream_info, "program_id", None):
-        text += f'PROGRAM-ID={stream_info.program_id},'
-    if getattr(stream_info, "bandwidth", None):
-        text += f'BANDWIDTH={stream_info.bandwidth},'
-    if getattr(stream_info, "codecs", None):
-        codecs = ",".join(stream_info.codecs)
-        text += f'CODECS="{codecs}",'
-    if getattr(stream_info, "resolution", None):
-        if stream_info.resolution and stream_info.resolution.width:
-            text += f'RESOLUTION={stream_info.resolution.width}x{stream_info.resolution.height}'
-    text += "\n" + url + "\n"
-    return text
+import requests
+import streamlink
+from streamlink.exceptions import NoPluginError, StreamlinkError
 
-def get_streams(url, headers=None):
-    # Erstellt die Session
+
+DEFAULT_USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/124.0.0.0 Safari/537.36"
+)
+
+
+def load_json(path: str) -> dict:
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def create_streamlink_session(headers: dict | None = None) -> streamlink.Streamlink:
     session = streamlink.Streamlink()
-    
-    # CRITICAL: Lade deine lokalen Plugins explizit
-    plugin_dir = os.environ.get("STREAMLINK_PLUGIN_DIR")
-    if plugin_dir and os.path.exists(plugin_dir):
+
+    plugin_dir = os.getenv("STREAMLINK_PLUGIN_DIR")
+    if plugin_dir and os.path.isdir(plugin_dir):
         session.load_plugins(plugin_dir)
 
-    default_headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-    }
+    merged_headers = {"User-Agent": DEFAULT_USER_AGENT}
     if headers:
-        default_headers.update(headers)
+        merged_headers.update(headers)
 
-    session.set_option("http-headers", default_headers)
-    
+    session.set_option("http-headers", merged_headers)
+    session.set_option("http-timeout", 20)
+    session.set_option("stream-timeout", 20)
+
+    return session
+
+
+def get_streams(url: str, headers: dict | None = None) -> dict:
+    session = create_streamlink_session(headers)
+
     try:
         return session.streams(url)
-    except streamlink.exceptions.NoPluginError:
-        # Fallback für Star TV: Wenn kein Plugin gefunden wird, erzwinge HLS
-        if url.startswith("https"):
-            return session.streams("hls://" + url)
+    except NoPluginError:
+        if url.startswith(("http://", "https://")):
+            return session.streams(f"hls://{url}")
         raise
+    except StreamlinkError as e:
+        raise RuntimeError(f"Streamlink Fehler: {e}") from e
 
-def build_playlists(streams):
+
+def get_best_variant_url(streams: dict) -> str | None:
     best_stream = streams.get("best")
     if not best_stream:
-        return None, None
+        return None
 
-    mv = getattr(best_stream, "multivariant", None)
+    multivariant = getattr(best_stream, "multivariant", None)
 
-    # Fallback: Falls der Stream direkt geliefert wird (keine Master-Playlist)
-    if not mv or not mv.playlists:
-        # Wir extrahieren die URL des 'best' Objekts (oft ein HLSStream Objekt)
-        stream_url = getattr(best_stream, "url", str(best_stream))
-        # Baue eine einfache M3U8 Struktur
-        simple_m3u = f"#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-STREAM-INF:BANDWIDTH=1280000,RESOLUTION=1280x720\n{stream_url}\n"
-        return simple_m3u, simple_m3u
+    # direkter HLS Stream ohne Varianten
+    if not multivariant or not getattr(multivariant, "playlists", None):
+        return getattr(best_stream, "url", None)
 
-    previous_res_height = 0
-    master_text = ""
-    best_text = ""
+    best_url = None
+    best_height = -1
 
-    for playlist in mv.playlists:
-        info = playlist.stream_info
-        uri = playlist.uri
-        if not info or info.video == "audio_only":
+    for playlist in multivariant.playlists:
+        info = getattr(playlist, "stream_info", None)
+        uri = getattr(playlist, "uri", None)
+
+        if not info or not uri:
             continue
 
-        sub_text = info_to_text(info, uri)
-        height = getattr(info.resolution, "height", 0)
+        if getattr(info, "video", None) == "audio_only":
+            continue
 
-        if height > previous_res_height:
-            master_text = sub_text + master_text
-            best_text = sub_text
-        else:
-            master_text += sub_text
-        previous_res_height = height
+        resolution = getattr(info, "resolution", None)
+        height = getattr(resolution, "height", 0) if resolution else 0
 
-    if not master_text:
-        return None, None
+        if height > best_height:
+            best_height = height
+            best_url = uri
 
-    header = "#EXTM3U\n"
-    if mv.version:
-        header += f"#EXT-X-VERSION:{mv.version}\n"
+    return best_url
 
-    return header + master_text, header + best_text
 
-def main():
-    print("=== Starting stream generation ===")
-    config_file = sys.argv[1] if len(sys.argv) > 1 else "config/config.json"
+def normalize_playlist(content: str, playlist_url: str) -> str:
+    """
+    Wandelt relative Segment- oder Sub-Playlist-URLs in absolute URLs um.
+    """
+    lines = []
+    base = playlist_url.rsplit("/", 1)[0] + "/"
+
+    for line in content.splitlines():
+        stripped = line.strip()
+
+        if stripped and not stripped.startswith("#"):
+            line = urljoin(base, stripped)
+
+        lines.append(line)
+
+    return "\n".join(lines) + "\n"
+
+
+def fetch_playlist(url: str, headers: dict | None = None) -> str:
+    req_headers = {
+        "User-Agent": DEFAULT_USER_AGENT,
+        "Accept": "*/*",
+        "Connection": "keep-alive",
+    }
+
+    if headers:
+        req_headers.update(headers)
+
+    with requests.Session() as session:
+        r = session.get(url, headers=req_headers, timeout=(5, 15))
+        r.raise_for_status()
+
+        if "#EXTM3U" not in r.text:
+            raise ValueError("Keine gültige M3U8 erhalten")
+
+        return normalize_playlist(r.text, r.url)
+
+
+def save_playlist(path: Path, content: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+
+    with open(tmp, "w", encoding="utf-8", newline="\n") as f:
+        f.write(content)
+
+    os.replace(tmp, path)
+
+
+def process_channel(channel: dict, output_dir: Path) -> bool:
+    slug = channel.get("slug")
+    url = channel.get("url")
+    headers = channel.get("headers", {})
+
+    if not slug or not url:
+        print(f"❌ Ungültiger Channel: {channel}")
+        return False
 
     try:
-        with open(config_file, "r") as f:
-            config = json.load(f)
+        print(f"▶ Verarbeite: {slug}")
+
+        streams = get_streams(url, headers)
+        if not streams:
+            print("  ❌ Keine Streams gefunden")
+            return False
+
+        best_url = get_best_variant_url(streams)
+        if not best_url:
+            print("  ❌ Keine Variant-URL gefunden")
+            return False
+
+        print(f"  🔗 Beste Variante: {best_url}")
+
+        playlist = fetch_playlist(best_url, headers)
+        save_playlist(output_dir / f"{slug}.m3u8", playlist)
+
+        print(f"  ✅ Gespeichert: {output_dir / f'{slug}.m3u8'}")
+        return True
+
+    except requests.HTTPError as e:
+        print(f"  ❌ HTTP Fehler: {e}")
+        return False
+
+    except requests.RequestException as e:
+        print(f"  ❌ Netzwerkfehler: {e}")
+        return False
+
     except Exception as e:
-        print(f"❌ Failed loading config: {e}")
-        sys.exit(1)
+        print(f"  ❌ Fehler: {type(e).__name__}: {e}")
+        return False
 
-    output_config = config["output"]
+
+def main() -> int:
+    print("=== ATV Extractor ===")
+
+    config_path = sys.argv[1] if len(sys.argv) > 1 else "config/config.json"
+
+    try:
+        config = load_json(config_path)
+    except Exception as e:
+        print(f"❌ Config Fehler: {e}")
+        return 1
+
+    output_dir = Path(config["output"]["folder"])
     channels = config["channels"]
-    
-    root_folder = output_config["folder"]
-    best_folder = os.path.join(root_folder, output_config["bestFolder"])
-    master_folder = os.path.join(root_folder, output_config["masterFolder"])
 
-    os.makedirs(best_folder, exist_ok=True)
-    os.makedirs(master_folder, exist_ok=True)
-
-    success, fail = 0, 0
+    success = 0
+    failed = 0
 
     for channel in channels:
-        slug = channel.get("slug")
-        url = channel.get("url")
-        headers = channel.get("headers", {})
-
-        print(f"\nProcessing: {slug}")
-        
-        try:
-            streams = get_streams(url, headers=headers)
-            if not streams:
-                print("⚠️ No streams found")
-                fail += 1
-                continue
-
-            master_text, best_text = build_playlists(streams)
-            if not master_text:
-                print("⚠️ Playlist build failed")
-                fail += 1
-                continue
-
-            with open(os.path.join(master_folder, f"{slug}.m3u8"), "w") as f:
-                f.write(master_text)
-            with open(os.path.join(best_folder, f"{slug}.m3u8"), "w") as f:
-                f.write(best_text)
-
-            print("✅ Success")
+        if process_channel(channel, output_dir):
             success += 1
-        except Exception as e:
-            print(f"❌ Error: {e}")
-            fail += 1
+        else:
+            failed += 1
 
-    print(f"\n=== Summary ===\nSuccess: {success}\nFailed: {fail}\nTotal: {len(channels)}")
-    if success == 0: sys.exit(1)
+    print("\n=== Summary ===")
+    print(f"Success: {success}")
+    print(f"Failed:  {failed}")
+    print(f"Total:   {len(channels)}")
+
+    return 0 if success > 0 else 1
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
