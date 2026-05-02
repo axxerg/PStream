@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
 ATV Avrupa Fetcher
-- probiert erst den direkten Turkuvaz-Feed
-- fällt bei 403 automatisch auf einen funktionierenden Relay zurück
+- probiert mehrere bekannte ATV-Quellen
+- nimmt die erste funktionierende M3U8
 - normalisiert relative URLs
-- speichert fertige abspielbare M3U8
+- speichert fertige abspielbare Playlist
 """
 
 import os
@@ -15,8 +15,14 @@ import requests
 
 OUTPUT = "output/atv.m3u8"
 
-PRIMARY_URL = "https://trkvz-live.ercdn.net/atvavrupa/atvavrupa.m3u8"
-FALLBACK_URL = "https://ythls-v3.onrender.com/channel/UCUVZ7T_kwkxDOGFcDlFI-hg.m3u8"
+STREAM_SOURCES = [
+    "https://trkvz-live.ercdn.net/atvavrupa/atvavrupa.m3u8",
+    "https://ythls-v3.onrender.com/channel/UCUVZ7T_kwkxDOGFcDlFI-hg.m3u8",
+    "https://ythls.armelin.one/channel/UCUVZ7T_kwkxDOGFcDlFI-hg.m3u8",
+    "https://koprulu.global.ssl.fastly.net/ythls?kanal_id=UCUVZ7T_kwkxDOGFcDlFI-hg&m3u8",
+    "https://livestream.zazerconer.workers.dev/channel/UCUVZ7T_kwkxDOGFcDlFI-hg.m3u8",
+    "https://new.cache-stream.workers.dev/stream/UCUVZ7T_kwkxDOGFcDlFI-hg/live.m3u8",
+]
 
 HEADERS = {
     "User-Agent": (
@@ -54,6 +60,20 @@ def fetch_playlist(session: requests.Session, url: str) -> str:
     return normalize_playlist(r.text, r.url)
 
 
+def resolve_playlist(session: requests.Session) -> str:
+    last_error = None
+
+    for url in STREAM_SOURCES:
+        try:
+            print(f"🔗 Try: {url}")
+            return fetch_playlist(session, url)
+        except Exception as e:
+            print(f"  ⚠️ Failed: {type(e).__name__}: {e}")
+            last_error = e
+
+    raise RuntimeError(f"Alle Quellen fehlgeschlagen: {last_error}")
+
+
 def save_playlist(content: str) -> None:
     os.makedirs("output", exist_ok=True)
     tmp = OUTPUT + ".tmp"
@@ -72,37 +92,16 @@ def main() -> int:
         session = requests.Session()
         session.headers.update(HEADERS)
 
-        playlist = None
-
-        try:
-            print(f"🔗 Primary: {PRIMARY_URL}")
-            playlist = fetch_playlist(session, PRIMARY_URL)
-        except requests.HTTPError as e:
-            if e.response is not None and e.response.status_code == 403:
-                print("⚠️ Primary blocked (403), switching to fallback relay …")
-                print(f"🔗 Fallback: {FALLBACK_URL}")
-                playlist = fetch_playlist(session, FALLBACK_URL)
-            else:
-                raise
-
+        playlist = resolve_playlist(session)
         save_playlist(playlist)
 
         print(f"💾 gespeichert: {OUTPUT}")
         print(f"⏱️ Dauer: {round(time.time() - start, 2)}s")
         return 0
 
-    except requests.HTTPError as e:
-        print(f"❌ HTTP Fehler: {e}")
-        return 1
-    except requests.RequestException as e:
-        print(f"❌ Netzwerkfehler: {e}")
-        return 2
-    except (OSError, ValueError) as e:
-        print(f"❌ Fehler: {e}")
-        return 3
     except Exception as e:
-        print(f"❌ Unerwarteter Fehler: {type(e).__name__}: {e}")
-        return 99
+        print(f"❌ Fehler: {type(e).__name__}: {e}")
+        return 1
 
 
 if __name__ == "__main__":
