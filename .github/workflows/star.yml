@@ -19,6 +19,13 @@ jobs:
           cd repo
           git checkout "${{ github.event.repository.default_branch }}"
 
+      - name: Debug repo structure
+        run: |
+          cd repo
+          pwd
+          ls -la
+          find . -maxdepth 3 -type f
+
       - name: Install Python + dependencies
         run: |
           python3 --version
@@ -28,6 +35,7 @@ jobs:
       - name: Run StarTV script
         run: |
           cd repo
+          test -f src/startv.py || (echo "src/startv.py not found" && find . -maxdepth 3 -type f && exit 1)
           python3 src/startv.py
 
       - name: Commit & push if file changed
