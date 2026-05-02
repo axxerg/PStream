@@ -1,6 +1,8 @@
 import os
 import re
 import time
+import json
+import html
 import requests
 
 OUTPUT = "output/showturk.m3u8"
@@ -21,24 +23,33 @@ HEADERS = {
     "Connection": "keep-alive",
 }
 
-M3U8_RE = re.compile(r'https?://[^\s"\']+\.m3u8[^\s"\']*', re.IGNORECASE)
+PATTERNS = [
+    r'https?://[^\s"\']+\.m3u8[^\s"\']*',
+    r'"(?:file|src|hls|streamUrl)"\s*:\s*"([^"]+\.m3u8[^"]*)"',
+    r"'(?:file|src|hls|streamUrl)'\s*:\s*'([^']+\.m3u8[^']*)'",
+    r'(https?:\\/\\/[^"\']+\.m3u8[^"\']*)',
+]
 
 
 def fetch_page(session: requests.Session) -> str:
-    """Load ShowTurk live page."""
     r = session.get(PAGE_URL, timeout=(5, 15))
     r.raise_for_status()
     return r.text
 
 
-def extract_m3u8(html: str) -> str | None:
-    """Extract first M3U8 URL from page source."""
-    match = M3U8_RE.search(html)
-    return match.group(0) if match else None
+def extract_m3u8(html_text: str) -> str | None:
+    source = html.unescape(html_text)
+
+    for pattern in PATTERNS:
+        match = re.search(pattern, source, re.IGNORECASE)
+        if match:
+            url = match.group(1) if match.lastindex else match.group(0)
+            return url.replace("\\/", "/")
+
+    return None
 
 
 def fetch_playlist(session: requests.Session, url: str) -> str:
-    """Fetch final M3U8 playlist."""
     headers = dict(HEADERS)
     headers.update({
         "Accept": "*/*",
@@ -76,13 +87,13 @@ def main() -> int:
         session.headers.update(HEADERS)
 
         print("🌍 Lade Live-Seite …")
-        html = fetch_page(session)
+        page = fetch_page(session)
 
-        stream_url = extract_m3u8(html)
+        stream_url = extract_m3u8(page)
         if not stream_url:
-            raise ValueError("Keine M3U8 URL im HTML gefunden")
+            raise ValueError("Keine Stream-URL im HTML gefunden")
 
-        print(f"🔗 Stream URL gefunden: {stream_url}")
+        print(f"🔗 Stream URL: {stream_url}")
 
         playlist = fetch_playlist(session, stream_url)
         save_playlist(playlist)
