@@ -1,9 +1,9 @@
 import os
 import re
 import time
-import json
 import html
 import requests
+from urllib.parse import urljoin
 
 OUTPUT = "output/showturk.m3u8"
 PAGE_URL = "https://www.showturk.com.tr/canli-yayin"
@@ -49,6 +49,24 @@ def extract_m3u8(html_text: str) -> str | None:
     return None
 
 
+def normalize_playlist(content: str, playlist_url: str) -> str:
+    """
+    Convert relative variant URLs inside M3U8 to absolute URLs.
+    """
+    lines = []
+    base = playlist_url.rsplit("/", 1)[0] + "/"
+
+    for line in content.splitlines():
+        stripped = line.strip()
+
+        if stripped and not stripped.startswith("#") and ".m3u8" in stripped:
+            line = urljoin(base, stripped)
+
+        lines.append(line)
+
+    return "\n".join(lines) + "\n"
+
+
 def fetch_playlist(session: requests.Session, url: str) -> str:
     headers = dict(HEADERS)
     headers.update({
@@ -65,7 +83,7 @@ def fetch_playlist(session: requests.Session, url: str) -> str:
     if "#EXTM3U" not in r.text:
         raise ValueError("Keine gültige M3U8 erhalten")
 
-    return r.text
+    return normalize_playlist(r.text, r.url)
 
 
 def save_playlist(content: str) -> None:
