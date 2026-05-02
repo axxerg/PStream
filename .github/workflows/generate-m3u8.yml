@@ -11,7 +11,6 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
 
     steps:
       - name: Clone repo
@@ -24,25 +23,24 @@ jobs:
         run: |
           python3 --version
           python3 -m pip install --upgrade pip
-          cd repo
-          python3 -m pip install -r requirements.txt
+          python3 -m pip install -r repo/requirements.txt
 
       - name: Run ATV script
         run: |
           cd repo
           export STREAMLINK_PLUGIN_DIR=$(pwd)/src/plugins
-          python3 src/generate.py config/config.json
+          python3 src/atv.py
 
-      - name: Commit & push if files changed
+      - name: Commit & push if file changed
         run: |
           cd repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          if ls output/*.m3u8 >/dev/null 2>&1; then
-            git add output/*.m3u8
-            git diff --cached --quiet || git commit -m "Update ATV streams"
+          if [ -f output/atv.m3u8 ]; then
+            git add output/atv.m3u8
+            git diff --cached --quiet || git commit -m "Update ATV stream"
             git push origin HEAD
           else
-            echo "No stream files generated → skip commit"
+            echo "No stream file generated → skip commit"
           fi
