@@ -1,0 +1,45 @@
+name: Generate StarTV M3U8
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone repo
+        run: |
+          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git repo
+          cd repo
+          git checkout "${{ github.event.repository.default_branch }}"
+
+      - name: Install Python + dependencies
+        run: |
+          python3 --version
+          python3 -m pip install --upgrade pip
+          python3 -m pip install requests
+
+      - name: Run StarTV script
+        run: |
+          cd repo
+          python3 src/startv.py
+
+      - name: Commit & push if file changed
+        run: |
+          cd repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if [ -f output/startv.m3u8 ]; then
+            git add output/startv.m3u8
+            git diff --cached --quiet || git commit -m "Update StarTV stream"
+            git push origin HEAD
+          else
+            echo "No stream file generated → skip commit"
+          fi
