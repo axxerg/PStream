@@ -1,38 +1,45 @@
-import requests
-import os
+name: Generate ShowTurk M3U8
 
-OUTPUT = "output/showturk.m3u8"
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
 
-def main():
-    print("=== ShowTurk Extractor ===")
+permissions:
+  contents: write
 
-    os.makedirs("output", exist_ok=True)
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-    # bekannte CDN URL (Fallback)
-    url = "https://ciner-live.ercdn.net/showturk/playlist.m3u8"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    headers = {
-        "User-Agent": "Mozilla/5.0",
-        "Referer": "https://www.showturk.com.tr/",
-        "Origin": "https://www.showturk.com.tr"
-    }
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-    try:
-        r = requests.get(url, headers=headers, timeout=10)
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install streamlink requests
 
-        if r.status_code == 200 and "#EXTM3U" in r.text:
-            print("✅ Stream gefunden")
+      - name: Run ShowTurk script
+        run: python src/showturk.py
 
-            with open(OUTPUT, "w") as f:
-                f.write(r.text)
+      - name: Commit & push if file exists
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-            print(f"💾 gespeichert: {OUTPUT}")
-        else:
-            print(f"❌ Fehler: {r.status_code}")
-
-    except Exception as e:
-        print(f"❌ Exception: {e}")
-
-
-if __name__ == "__main__":
-    main()
+          if [ -f output/showturk.m3u8 ]; then
+            git add output/showturk.m3u8
+            git diff --cached --quiet || git commit -m "Update ShowTurk stream"
+            git push
+          else
+            echo "No stream file generated → skip commit"
+          fi
