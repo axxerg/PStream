@@ -1,23 +1,20 @@
 #!/usr/bin/env python3
 """
-ATV Avrupa Resolver
-- lädt Live-Seite
-- durchsucht HTML + eingebundene JS-Dateien nach signierter M3U8
+ATV Avrupa Fetcher
+- nutzt den stabilen öffentlichen ATV Avrupa HLS-Endpunkt
 - lädt die echte Playlist
 - normalisiert relative URLs
-- speichert fertige ATV M3U8
+- speichert fertige abspielbare M3U8
 """
 
-import html
 import os
-import re
 import time
 from urllib.parse import urljoin
 
 import requests
 
 OUTPUT = "output/atv.m3u8"
-PAGE_URL = "https://www.atvavrupa.tv/canli-yayin"
+STREAM_URL = "https://trkvz-live.ercdn.net/atvavrupa/atvavrupa.m3u8"
 
 HEADERS = {
     "User-Agent": (
@@ -25,62 +22,11 @@ HEADERS = {
         "AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/124.0.0.0 Safari/537.36"
     ),
-    "Accept": (
-        "text/html,application/xhtml+xml,application/xml;q=0.9,"
-        "image/avif,image/webp,*/*;q=0.8"
-    ),
-    "Accept-Language": "en-US,en;q=0.9",
+    "Accept": "*/*",
     "Referer": "https://www.atvavrupa.tv/",
+    "Origin": "https://www.atvavrupa.tv",
     "Connection": "keep-alive",
 }
-
-M3U8_PATTERNS = [
-    r'https?://[^\s"\']+\.m3u8[^\s"\']*',
-    r'"(?:file|src|hls|streamUrl)"\s*:\s*"([^"]+\.m3u8[^"]*)"',
-    r"'(?:file|src|hls|streamUrl)'\s*:\s*'([^']+\.m3u8[^']*)'",
-    r'(https?:\\/\\/[^"\']+\.m3u8[^"\']*)',
-]
-
-SCRIPT_SRC_RE = re.compile(r'<script[^>]+src=["\']([^"\']+)["\']', re.I)
-
-
-def find_m3u8(text: str) -> str | None:
-    source = html.unescape(text)
-    for pattern in M3U8_PATTERNS:
-        m = re.search(pattern, source, re.I)
-        if m:
-            url = m.group(1) if m.lastindex else m.group(0)
-            return url.replace("\\/", "/")
-    return None
-
-
-def fetch_text(session: requests.Session, url: str) -> str:
-    r = session.get(url, timeout=(5, 15))
-    r.raise_for_status()
-    return r.text
-
-
-def extract_stream_url(session: requests.Session) -> str | None:
-    page = fetch_text(session, PAGE_URL)
-
-    # 1) Direkt im HTML suchen
-    direct = find_m3u8(page)
-    if direct:
-        return direct
-
-    # 2) JS-Dateien durchsuchen
-    for src in SCRIPT_SRC_RE.findall(page):
-        js_url = urljoin(PAGE_URL, src)
-        try:
-            js = fetch_text(session, js_url)
-        except requests.RequestException:
-            continue
-
-        found = find_m3u8(js)
-        if found:
-            return found
-
-    return None
 
 
 def normalize_playlist(content: str, playlist_url: str) -> str:
@@ -97,16 +43,7 @@ def normalize_playlist(content: str, playlist_url: str) -> str:
 
 
 def fetch_playlist(session: requests.Session, url: str) -> str:
-    headers = dict(HEADERS)
-    headers.update({
-        "Accept": "*/*",
-        "Origin": "https://www.atvavrupa.tv",
-        "Sec-Fetch-Dest": "empty",
-        "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Site": "cross-site",
-    })
-
-    r = session.get(url, headers=headers, timeout=(5, 15))
+    r = session.get(url, timeout=(5, 15))
     r.raise_for_status()
 
     if "#EXTM3U" not in r.text:
@@ -118,27 +55,24 @@ def fetch_playlist(session: requests.Session, url: str) -> str:
 def save_playlist(content: str) -> None:
     os.makedirs("output", exist_ok=True)
     tmp = OUTPUT + ".tmp"
+
     with open(tmp, "w", encoding="utf-8", newline="\n") as f:
         f.write(content)
+
     os.replace(tmp, OUTPUT)
 
 
 def main() -> int:
-    print("=== ATV Avrupa Resolver ===")
+    print("=== ATV Avrupa Fetcher ===")
     start = time.time()
 
     try:
         session = requests.Session()
         session.headers.update(HEADERS)
 
-        print("🌍 Lade Live-Seite / Skripte …")
-        stream_url = extract_stream_url(session)
-        if not stream_url:
-            raise ValueError("Keine Stream-URL in HTML/JS gefunden")
+        print(f"🔗 Lade Stream: {STREAM_URL}")
+        playlist = fetch_playlist(session, STREAM_URL)
 
-        print(f"🔗 Stream URL: {stream_url}")
-
-        playlist = fetch_playlist(session, stream_url)
         save_playlist(playlist)
 
         print(f"💾 gespeichert: {OUTPUT}")
