@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 ATV Avrupa Fetcher
-- nutzt den stabilen öffentlichen ATV Avrupa HLS-Endpunkt
-- lädt die echte Playlist
+- probiert erst den direkten Turkuvaz-Feed
+- fällt bei 403 automatisch auf einen öffentlichen Relay zurück
 - normalisiert relative URLs
 - speichert fertige abspielbare M3U8
 """
@@ -14,7 +14,9 @@ from urllib.parse import urljoin
 import requests
 
 OUTPUT = "output/atv.m3u8"
-STREAM_URL = "https://trkvz-live.ercdn.net/atvavrupa/atvavrupa.m3u8"
+
+PRIMARY_URL = "https://trkvz-live.ercdn.net/atvavrupa/atvavrupa.m3u8"
+FALLBACK_URL = "https://ythls.onrender.com/channel/UCUVZ7T_kwkxDOGFcDlFI-hg.m3u8"
 
 HEADERS = {
     "User-Agent": (
@@ -70,8 +72,18 @@ def main() -> int:
         session = requests.Session()
         session.headers.update(HEADERS)
 
-        print(f"🔗 Lade Stream: {STREAM_URL}")
-        playlist = fetch_playlist(session, STREAM_URL)
+        playlist = None
+
+        try:
+            print(f"🔗 Primary: {PRIMARY_URL}")
+            playlist = fetch_playlist(session, PRIMARY_URL)
+        except requests.HTTPError as e:
+            if e.response is not None and e.response.status_code == 403:
+                print("⚠️ Primary blocked (403), switching to fallback relay …")
+                print(f"🔗 Fallback: {FALLBACK_URL}")
+                playlist = fetch_playlist(session, FALLBACK_URL)
+            else:
+                raise
 
         save_playlist(playlist)
 
