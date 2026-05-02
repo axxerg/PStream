@@ -2,7 +2,7 @@
 """
 ATV Avrupa Fetcher
 - probiert erst den direkten Turkuvaz-Feed
-- fällt bei 403 automatisch auf einen öffentlichen Relay zurück
+- fällt bei 403 automatisch auf einen funktionierenden Relay zurück
 - normalisiert relative URLs
 - speichert fertige abspielbare M3U8
 """
@@ -16,7 +16,7 @@ import requests
 OUTPUT = "output/atv.m3u8"
 
 PRIMARY_URL = "https://trkvz-live.ercdn.net/atvavrupa/atvavrupa.m3u8"
-FALLBACK_URL = "https://ythls.onrender.com/channel/UCUVZ7T_kwkxDOGFcDlFI-hg.m3u8"
+FALLBACK_URL = "https://ythls-v3.onrender.com/channel/UCUVZ7T_kwkxDOGFcDlFI-hg.m3u8"
 
 HEADERS = {
     "User-Agent": (
