@@ -1,5 +1,4 @@
-name: Generate ATV M3U8
-
+name: Generate Universal
 on:
   workflow_dispatch:
   schedule:
