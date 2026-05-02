@@ -1,28 +1,19 @@
 #!/usr/bin/env python3
 """
-ATV Avrupa Fetcher
-- probiert mehrere bekannte ATV-Quellen
-- nimmt die erste funktionierende M3U8
-- normalisiert relative URLs
-- speichert fertige abspielbare Playlist
+ATV Avrupa Token Resolver
+- lädt die ATV Avrupa Live-Seite
+- extrahiert den aktuellen signierten CDN-Link
+- speichert nur die frische signierte URL als M3U8
 """
 
 import os
+import re
+import html
 import time
-from urllib.parse import urljoin
-
 import requests
 
 OUTPUT = "output/atv.m3u8"
-
-STREAM_SOURCES = [
-    "https://trkvz-live.ercdn.net/atvavrupa/atvavrupa.m3u8",
-    "https://ythls-v3.onrender.com/channel/UCUVZ7T_kwkxDOGFcDlFI-hg.m3u8",
-    "https://ythls.armelin.one/channel/UCUVZ7T_kwkxDOGFcDlFI-hg.m3u8",
-    "https://koprulu.global.ssl.fastly.net/ythls?kanal_id=UCUVZ7T_kwkxDOGFcDlFI-hg&m3u8",
-    "https://livestream.zazerconer.workers.dev/channel/UCUVZ7T_kwkxDOGFcDlFI-hg.m3u8",
-    "https://new.cache-stream.workers.dev/stream/UCUVZ7T_kwkxDOGFcDlFI-hg/live.m3u8",
-]
+PAGE_URL = "https://www.atvavrupa.tv/canli-yayin"
 
 HEADERS = {
     "User-Agent": (
@@ -30,78 +21,81 @@ HEADERS = {
         "AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/124.0.0.0 Safari/537.36"
     ),
-    "Accept": "*/*",
+    "Accept": (
+        "text/html,application/xhtml+xml,application/xml;q=0.9,"
+        "image/avif,image/webp,*/*;q=0.8"
+    ),
+    "Accept-Language": "en-US,en;q=0.9",
     "Referer": "https://www.atvavrupa.tv/",
-    "Origin": "https://www.atvavrupa.tv",
     "Connection": "keep-alive",
 }
 
-
-def normalize_playlist(content: str, playlist_url: str) -> str:
-    lines = []
-    base = playlist_url.rsplit("/", 1)[0] + "/"
-
-    for line in content.splitlines():
-        stripped = line.strip()
-        if stripped and not stripped.startswith("#"):
-            line = urljoin(base, stripped)
-        lines.append(line)
-
-    return "\n".join(lines) + "\n"
+TOKEN_PATTERN = re.compile(
+    r'https?:\/\/trkvz-live\.ercdn\.net\/atvavrupa\/atvavrupa\.m3u8\?st=[^"\']+',
+    re.I
+)
 
 
-def fetch_playlist(session: requests.Session, url: str) -> str:
-    r = session.get(url, timeout=(5, 15))
+def fetch_page(session: requests.Session) -> str:
+    r = session.get(PAGE_URL, timeout=(5, 15))
     r.raise_for_status()
-
-    if "#EXTM3U" not in r.text:
-        raise ValueError("Keine gültige M3U8 erhalten")
-
-    return normalize_playlist(r.text, r.url)
+    return r.text
 
 
-def resolve_playlist(session: requests.Session) -> str:
-    last_error = None
-
-    for url in STREAM_SOURCES:
-        try:
-            print(f"🔗 Try: {url}")
-            return fetch_playlist(session, url)
-        except Exception as e:
-            print(f"  ⚠️ Failed: {type(e).__name__}: {e}")
-            last_error = e
-
-    raise RuntimeError(f"Alle Quellen fehlgeschlagen: {last_error}")
+def extract_stream_url(page: str) -> str | None:
+    source = html.unescape(page)
+    match = TOKEN_PATTERN.search(source)
+    return match.group(0).replace("\\/", "/") if match else None
 
 
-def save_playlist(content: str) -> None:
+def save_stream_url(url: str) -> None:
     os.makedirs("output", exist_ok=True)
     tmp = OUTPUT + ".tmp"
 
     with open(tmp, "w", encoding="utf-8", newline="\n") as f:
-        f.write(content)
+        f.write(f"#EXTM3U\n{url}\n")
 
     os.replace(tmp, OUTPUT)
 
 
 def main() -> int:
-    print("=== ATV Avrupa Fetcher ===")
+    print("=== ATV Avrupa Token Resolver ===")
     start = time.time()
 
     try:
         session = requests.Session()
         session.headers.update(HEADERS)
 
-        playlist = resolve_playlist(session)
-        save_playlist(playlist)
+        print("🌍 Lade Live-Seite …")
+        page = fetch_page(session)
+
+        stream_url = extract_stream_url(page)
+        if not stream_url:
+            raise ValueError("Keine signierte Stream-URL gefunden")
+
+        print(f"🔗 Stream URL: {stream_url}")
+
+        save_stream_url(stream_url)
 
         print(f"💾 gespeichert: {OUTPUT}")
         print(f"⏱️ Dauer: {round(time.time() - start, 2)}s")
         return 0
 
-    except Exception as e:
-        print(f"❌ Fehler: {type(e).__name__}: {e}")
+    except requests.HTTPError as e:
+        print(f"❌ HTTP Fehler: {e}")
         return 1
+
+    except requests.RequestException as e:
+        print(f"❌ Netzwerkfehler: {e}")
+        return 2
+
+    except (OSError, ValueError) as e:
+        print(f"❌ Fehler: {e}")
+        return 3
+
+    except Exception as e:
+        print(f"❌ Unerwarteter Fehler: {type(e).__name__}: {e}")
+        return 99
 
 
 if __name__ == "__main__":
