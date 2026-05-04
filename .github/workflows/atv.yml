@@ -3,7 +3,9 @@ name: Generate ATV M3U8
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/20 * * * *"
+    # alle 30 Minuten, versetzt für stabilere GitHub-Ausführung
+    - cron: "17,47 * * * *"
+      timezone: "Europe/Berlin"
 
 permissions:
   contents: write
@@ -39,8 +41,13 @@ jobs:
 
           if [ -f output/atv.m3u8 ]; then
             git add output/atv.m3u8
-            git diff --cached --quiet || git commit -m "Update ATV stream"
-            git push origin HEAD
+
+            if git diff --cached --quiet; then
+              echo "No changes to commit"
+            else
+              git commit -m "Update ATV stream"
+              git push origin HEAD
+            fi
           else
             echo "No stream file generated → skip commit"
           fi
