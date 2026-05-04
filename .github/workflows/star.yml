@@ -1,4 +1,4 @@
-name: Generate StarTV M3U8
+name: Generate EUROSTAR M3U8
 
 on:
   workflow_dispatch:
@@ -28,7 +28,7 @@ jobs:
       - name: Run StarTV script
         run: |
           cd repo
-          python3 src/star.py
+          python3 src/eurostar.py
 
       - name: Commit & push if file changed
         run: |
