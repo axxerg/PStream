@@ -13,8 +13,8 @@ HEADERS = {
         "Chrome/124.0.0.0 Safari/537.36"
     ),
     "Accept": "*/*",
-    "Referer": "https://www.eurostartv.com.tr/",
-    "Origin": "https://www.eurostartv.com.tr",
+    "Referer": "https://www.startv.com.tr/",
+    "Origin": "https://www.startv.com.tr",
     "Connection": "keep-alive",
 }
 
@@ -36,6 +36,12 @@ def normalize_playlist(content: str, playlist_url: str) -> str:
 
 def fetch_playlist(session: requests.Session) -> str:
     r = session.get(STREAM_URL, timeout=(5, 15))
+    print(f"HTTP Status: {r.status_code}")
+
+    if r.status_code != 200:
+        print("Response Preview:")
+        print(r.text[:500])
+
     r.raise_for_status()
 
     if "#EXTM3U" not in r.text:
