@@ -3,7 +3,9 @@ name: Generate ShowTurk M3U8
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/30 * * * *"
+    # alle 30 Minuten, aber nicht auf :00 / :30 (zuverlässiger als */30)
+    - cron: "7,37 * * * *"
+      timezone: "Europe/Berlin"
 
 permissions:
   contents: write
@@ -38,8 +40,13 @@ jobs:
 
           if [ -f output/showturk.m3u8 ]; then
             git add output/showturk.m3u8
-            git diff --cached --quiet || git commit -m "Update ShowTurk stream"
-            git push origin HEAD
+
+            if git diff --cached --quiet; then
+              echo "No changes to commit"
+            else
+              git commit -m "Update ShowTurk stream"
+              git push origin HEAD
+            fi
           else
             echo "No stream file generated → skip commit"
           fi
