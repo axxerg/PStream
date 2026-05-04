@@ -1,10 +1,10 @@
 import os
+import re
 import time
 import requests
-from urllib.parse import urljoin
 
 OUTPUT = "output/eurostar.m3u8"
-STREAM_URL = "https://dogusdyg-eurostar.lg.mncdn.com/dogusdyg_eurostar/live.m3u8"
+PAGE_URL = "https://www.eurostartv.com.tr/canli-izle"
 
 HEADERS = {
     "User-Agent": (
@@ -12,47 +12,25 @@ HEADERS = {
         "AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/124.0.0.0 Safari/537.36"
     ),
-    "Accept": "*/*",
-    "Referer": "https://www.startv.com.tr/",
-    "Origin": "https://www.startv.com.tr",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Referer": "https://www.eurostartv.com.tr/",
+    "Origin": "https://www.eurostartv.com.tr",
     "Connection": "keep-alive",
 }
 
 
-def normalize_playlist(content: str, playlist_url: str) -> str:
-    lines = []
-    base = playlist_url.rsplit("/", 1)[0] + "/"
-
-    for line in content.splitlines():
-        stripped = line.strip()
-
-        if stripped and not stripped.startswith("#") and ".m3u8" in stripped:
-            line = urljoin(base, stripped)
-
-        lines.append(line)
-
-    return "\n".join(lines) + "\n"
+def extract_live_url(html: str) -> str:
+    match = re.search(r"var\s+liveUrl\s*=\s*'([^']+)'", html)
+    if not match:
+        raise ValueError("liveUrl nicht gefunden")
+    return match.group(1)
 
 
-def fetch_playlist(session: requests.Session) -> str:
-    r = session.get(STREAM_URL, timeout=(5, 15))
-    print(f"HTTP Status: {r.status_code}")
-
-    if r.status_code != 200:
-        print("Response Preview:")
-        print(r.text[:500])
-
-    r.raise_for_status()
-
-    if "#EXTM3U" not in r.text:
-        raise ValueError("Keine gültige M3U8 erhalten")
-
-    return normalize_playlist(r.text, r.url)
-
-
-def save_playlist(content: str) -> None:
+def save_playlist(url: str) -> None:
     os.makedirs("output", exist_ok=True)
     tmp = OUTPUT + ".tmp"
+
+    content = "#EXTM3U\n" + url + "\n"
 
     with open(tmp, "w", encoding="utf-8", newline="\n") as f:
         f.write(content)
@@ -61,15 +39,17 @@ def save_playlist(content: str) -> None:
 
 
 def main() -> int:
-    print("=== EuroStar Direct Extractor ===")
+    print("=== EuroStar Extractor ===")
     start = time.time()
 
     try:
-        session = requests.Session()
-        session.headers.update(HEADERS)
+        r = requests.get(PAGE_URL, headers=HEADERS, timeout=15)
+        r.raise_for_status()
 
-        playlist = fetch_playlist(session)
-        save_playlist(playlist)
+        live_url = extract_live_url(r.text)
+        print(f"Live URL gefunden: {live_url}")
+
+        save_playlist(live_url)
 
         print(f"💾 gespeichert: {OUTPUT}")
         print(f"⏱️ Dauer: {round(time.time() - start, 2)}s")
