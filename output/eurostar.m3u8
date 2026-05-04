@@ -1,10 +1,2 @@
 #EXTM3U
-#EXT-X-VERSION:3
-#EXT-X-MEDIA-SEQUENCE:1999183
-#EXT-X-TARGETDURATION:6
-#EXTINF:6.000,
-https://dogusdyg-eurostar.lg.mncdn.com/dogusdyg_eurostar/live_1080p3000000kbps/1777759058524.ts?st=6fBcJFfj15gXJlrlbkQZzw&e=1777845480
-#EXTINF:6.000,
-https://dogusdyg-eurostar.lg.mncdn.com/dogusdyg_eurostar/live_1080p3000000kbps/1777759064571.ts?st=6fBcJFfj15gXJlrlbkQZzw&e=1777845480
-#EXTINF:6.000,
-https://dogusdyg-eurostar.lg.mncdn.com/dogusdyg_eurostar/live_1080p3000000kbps/1777759070609.ts?st=6fBcJFfj15gXJlrlbkQZzw&e=1777845480
+https://dygvideo.dygdigital.com/live/hls/staravrupa?token=6a75f82ba2ab360d34c25ae4e187eee7198be39c091013b4
