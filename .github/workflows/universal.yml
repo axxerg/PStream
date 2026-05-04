@@ -1,8 +1,11 @@
 name: Generate Universal
+
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/20 * * * *"
+    # alle 30 Minuten, versetzt für stabilere GitHub-Ausführung
+    - cron: "27,57 * * * *"
+      timezone: "Europe/Berlin"
 
 permissions:
   contents: write
@@ -24,7 +27,7 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install -r repo/requirements.txt
 
-      - name: Run ATV script
+      - name: Run Universal script
         run: |
           cd repo
           export STREAMLINK_PLUGIN_DIR=$(pwd)/src/plugins
@@ -36,10 +39,15 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          if [ -f output/atv.m3u8 ]; then
-            git add output/atv.m3u8
-            git diff --cached --quiet || git commit -m "Update ATV stream"
-            git push origin HEAD
+          if [ -f output/universal.m3u8 ]; then
+            git add output/universal.m3u8
+
+            if git diff --cached --quiet; then
+              echo "No changes to commit"
+            else
+              git commit -m "Update Universal stream"
+              git push origin HEAD
+            fi
           else
             echo "No stream file generated → skip commit"
           fi
