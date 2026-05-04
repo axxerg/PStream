@@ -30,7 +30,12 @@ def save_playlist(url: str) -> None:
     os.makedirs("output", exist_ok=True)
     tmp = OUTPUT + ".tmp"
 
-    content = "#EXTM3U\n" + url + "\n"
+    content = (
+        "#EXTM3U\n"
+        "#EXT-X-VERSION:3\n"
+        "#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1500000,RESOLUTION=1920x1080\n"
+        f"{url}\n"
+    )
 
     with open(tmp, "w", encoding="utf-8", newline="\n") as f:
         f.write(content)
