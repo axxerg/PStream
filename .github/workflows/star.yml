@@ -3,7 +3,8 @@ name: Generate EUROSTAR M3U8
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/30 * * * *"
+    # alle 30 Minuten, aber nicht auf :00 / :30
+    - cron: "7,37 * * * *"
 
 permissions:
   contents: write
@@ -36,7 +37,7 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install requests
 
-      - name: Run StarTV script
+      - name: Run EUROSTAR script
         run: |
           set -e
           cd repo
@@ -47,18 +48,17 @@ jobs:
         run: |
           set -e
           cd repo
-
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          if [ -f output/startv.m3u8 ]; then
-            git add output/startv.m3u8
+          if [ -f output/eurostar.m3u8 ]; then
+            git add output/eurostar.m3u8
 
-            if ! git diff --cached --quiet; then
-              git commit -m "Update StarTV stream"
-              git push origin HEAD
-            else
+            if git diff --cached --quiet; then
               echo "No changes to commit"
+            else
+              git commit -m "Update EUROSTAR stream"
+              git push origin HEAD
             fi
           else
             echo "No stream file generated → skip commit"
