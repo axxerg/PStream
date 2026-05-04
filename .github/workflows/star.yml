@@ -13,30 +13,53 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: true
+      - name: Clone repo
+        env:
+          REPO: ${{ github.repository }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REF: ${{ github.ref_name }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -e
+
+          BRANCH="${REF:-$DEFAULT_BRANCH}"
+          echo "Using branch: $BRANCH"
+
+          git clone "https://x-access-token:${TOKEN}@github.com/${REPO}.git" repo
+          cd repo
+          git checkout "$BRANCH"
 
       - name: Install Python + dependencies
         run: |
+          set -e
           python3 --version
           python3 -m pip install --upgrade pip
           python3 -m pip install requests
 
-      - name: Run EuroStarTV script
+      - name: Run StarTV script
         run: |
+          set -e
+          cd repo
+          mkdir -p output
           python3 src/eurostar.py
 
       - name: Commit & push if file changed
         run: |
+          set -e
+          cd repo
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          if [ -f output/eurostartv.m3u8 ]; then
-            git add output/eurostartv.m3u8
-            git diff --cached --quiet || git commit -m "Update StarTV stream"
-            git push
+          if [ -f output/startv.m3u8 ]; then
+            git add output/startv.m3u8
+
+            if ! git diff --cached --quiet; then
+              git commit -m "Update StarTV stream"
+              git push origin HEAD
+            else
+              echo "No changes to commit"
+            fi
           else
             echo "No stream file generated → skip commit"
           fi
