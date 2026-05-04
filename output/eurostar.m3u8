@@ -1,2 +1,4 @@
 #EXTM3U
-https://dygvideo.dygdigital.com/live/hls/staravrupa?token=6a75f82ba2ab360d34c25ae4e187eee7198be39c091013b4
+#EXT-X-VERSION:3
+#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1500000,RESOLUTION=1920x1080
+https://dygvideo.dygdigital.com/live/hls/staravrupa?token=8f54e6aa37ea3f0e0c5760e8341c4e2ee0106589b645b19b
