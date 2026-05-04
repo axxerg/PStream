@@ -1,8 +1,8 @@
 #EXTM3U
 #EXT-X-VERSION:3
 #EXT-X-STREAM-INF:BANDWIDTH=1050000,AVERAGE-BANDWIDTH=950000,RESOLUTION=1280x720
-https://dogus.daioncdn.net/startv/startv_720p.m3u8?&sid=8dt652qgawut&app=a20ac41e-bdc3-4aa1-934d-26b484480ac9&ce=3
+https://dogus.daioncdn.net/startv/startv_720p.m3u8?&sid=8dtloizwn0y3&app=a20ac41e-bdc3-4aa1-934d-26b484480ac9&ce=3
 #EXT-X-STREAM-INF:BANDWIDTH=800000,AVERAGE-BANDWIDTH=700000,RESOLUTION=854x480
-https://dogus.daioncdn.net/startv/startv_480p.m3u8?&sid=8dt652qgawut&app=a20ac41e-bdc3-4aa1-934d-26b484480ac9&ce=3
+https://dogus.daioncdn.net/startv/startv_480p.m3u8?&sid=8dtloizwn0y3&app=a20ac41e-bdc3-4aa1-934d-26b484480ac9&ce=3
 #EXT-X-STREAM-INF:BANDWIDTH=550000,AVERAGE-BANDWIDTH=500000,RESOLUTION=640x360
-https://dogus.daioncdn.net/startv/startv_360p.m3u8?&sid=8dt652qgawut&app=a20ac41e-bdc3-4aa1-934d-26b484480ac9&ce=3
+https://dogus.daioncdn.net/startv/startv_360p.m3u8?&sid=8dtloizwn0y3&app=a20ac41e-bdc3-4aa1-934d-26b484480ac9&ce=3
