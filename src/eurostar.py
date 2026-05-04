@@ -2,6 +2,7 @@ import os
 import re
 import time
 import requests
+from urllib.parse import urljoin
 
 OUTPUT = "output/eurostar.m3u8"
 PAGE_URL = "https://www.eurostartv.com.tr/canli-izle"
@@ -26,16 +27,34 @@ def extract_live_url(html: str) -> str:
     return match.group(1)
 
 
-def save_playlist(url: str) -> None:
+def fetch_master(session: requests.Session, url: str) -> str:
+    r = session.get(url, timeout=15)
+    r.raise_for_status()
+
+    if "#EXTM3U" not in r.text:
+        raise ValueError("Keine gültige Master-M3U8 erhalten")
+
+    return r.text, r.url
+
+
+def normalize_master(content: str, master_url: str) -> str:
+    lines = []
+    base = master_url.rsplit("/", 1)[0] + "/"
+
+    for line in content.splitlines():
+        stripped = line.strip()
+
+        if stripped and not stripped.startswith("#"):
+            line = urljoin(base, stripped)
+
+        lines.append(line)
+
+    return "\n".join(lines) + "\n"
+
+
+def save_playlist(content: str) -> None:
     os.makedirs("output", exist_ok=True)
     tmp = OUTPUT + ".tmp"
-
-    content = (
-        "#EXTM3U\n"
-        "#EXT-X-VERSION:3\n"
-        "#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1500000,RESOLUTION=1920x1080\n"
-        f"{url}\n"
-    )
 
     with open(tmp, "w", encoding="utf-8", newline="\n") as f:
         f.write(content)
@@ -48,13 +67,19 @@ def main() -> int:
     start = time.time()
 
     try:
-        r = requests.get(PAGE_URL, headers=HEADERS, timeout=15)
-        r.raise_for_status()
+        session = requests.Session()
+        session.headers.update(HEADERS)
 
-        live_url = extract_live_url(r.text)
+        page = session.get(PAGE_URL, timeout=15)
+        page.raise_for_status()
+
+        live_url = extract_live_url(page.text)
         print(f"Live URL gefunden: {live_url}")
 
-        save_playlist(live_url)
+        master_content, master_url = fetch_master(session, live_url)
+        normalized = normalize_master(master_content, master_url)
+
+        save_playlist(normalized)
 
         print(f"💾 gespeichert: {OUTPUT}")
         print(f"⏱️ Dauer: {round(time.time() - start, 2)}s")
