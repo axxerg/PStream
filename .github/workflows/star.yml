@@ -13,11 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clone repo
-        run: |
-          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git repo
-          cd repo
-          git checkout "${{ github.event.repository.default_branch }}"
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Install Python + dependencies
         run: |
@@ -25,21 +24,19 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install requests
 
-      - name: Run StarTV script
+      - name: Run EuroStarTV script
         run: |
-          cd repo
           python3 src/eurostar.py
 
       - name: Commit & push if file changed
         run: |
-          cd repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          if [ -f output/startv.m3u8 ]; then
-            git add output/startv.m3u8
+          if [ -f output/eurostartv.m3u8 ]; then
+            git add output/eurostartv.m3u8
             git diff --cached --quiet || git commit -m "Update StarTV stream"
-            git push origin HEAD
+            git push
           else
             echo "No stream file generated → skip commit"
           fi
