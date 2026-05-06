@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     # alle 30 Minuten, aber nicht auf :00 / :30
-    - cron: "7,37 * * * *"
+      - cron: "*/30 * * * *"
 
 permissions:
   contents: write
