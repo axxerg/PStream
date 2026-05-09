@@ -1,11 +1,10 @@
-name: Generate ShowTurk M3U8
+name: Generate SHOWTURK M3U8
 
 on:
   workflow_dispatch:
   schedule:
-    # alle 30 Minuten, aber nicht auf :00 / :30 (zuverlässiger als */30)
+    # alle 30 Minuten, aber nicht auf :00 / :30
       - cron: "*/30 * * * *"
-      timezone: "Europe/Berlin"
       
 permissions:
   contents: write
