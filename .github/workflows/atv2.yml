@@ -21,8 +21,13 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install Requests
-        run: pip install requests
+      - name: Install Python Packages
+        run: |
+          pip install requests playwright
+
+      - name: Install Chromium
+        run: |
+          playwright install chromium
 
       - name: Run ATV Token Script
         run: python atv/atv_token.py
