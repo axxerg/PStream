@@ -1,37 +1,38 @@
-import requests
+from playwright.sync_api import sync_playwright
 import re
 
-url = "https://www.atvavrupa.tv/canli-yayin"
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)
 
-headers = {
-    "User-Agent": "Mozilla/5.0"
-}
+    page = browser.new_page()
 
-html = requests.get(url, headers=headers).text
+    urls = []
 
-scripts = re.findall(r'<script[^>]+src="([^"]+)"', html)
+    def handle_response(response):
+        url = response.url
 
-output = []
+        if ".m3u8" in url:
+            urls.append(url)
 
-for script in scripts:
-    if script.startswith("/"):
-        script = "https://www.atvavrupa.tv" + script
+    page.on("response", handle_response)
 
-    try:
-        r = requests.get(script, headers=headers, timeout=10)
+    page.goto(
+        "https://www.atvavrupa.tv/canli-yayin",
+        wait_until="networkidle",
+        timeout=60000
+    )
 
-        content = r.text
+    page.wait_for_timeout(10000)
 
-        if "m3u8" in content or "jwplayer" in content or "playlist" in content:
-            output.append("\n==== SCRIPT ====\n")
-            output.append(script)
-            output.append("\n")
-            output.append(content[:10000])
+    browser.close()
 
-    except Exception as e:
-        output.append(str(e))
+if urls:
+    stream = urls[0]
 
-with open("atv/debug.txt", "w") as f:
-    f.write("\n".join(output))
+    with open("atv/stream.txt", "w") as f:
+        f.write(stream)
 
-print("DONE")
+    print("FOUND:", stream)
+
+else:
+    print("No stream found")
