@@ -1,3 +1,6 @@
 #EXTM3U
-#EXTINF:-1,ATV Avrupa
+#EXTINF:-1 tvg-name="ATV Avrupa",ATV Avrupa
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
+#EXTVLCOPT:http-referrer=https://www.atvavrupa.tv/
+#EXTVLCOPT:http-origin=https://www.atvavrupa.tv
 https://trkvz-live.ercdn.net/atvavrupa/atvavrupa_576p.m3u8?st=VDOyFxzAmypTERgZLmoXVg&e=1779178098
