@@ -1,1 +1,1 @@
-https://securevideotoken.tmgrup.com.tr/webtv/secure?798082&url=https%3A%2F%2Ftrkvz-live.ercdn.net%2Fatvavrupa%2Fatvavrupa.m3u8&url2=https%3A%2F%2Ftrkvz-live.ercdn.net%2Fatvavrupa%2Fatvavrupa.m3u8
+https://trkvz-live.ercdn.net/atvavrupa/atvavrupa_576p.m3u8?st=VDOyFxzAmypTERgZLmoXVg&e=1779178098
