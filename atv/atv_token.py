@@ -1,10 +1,26 @@
 from playwright.sync_api import sync_playwright
-import re
+
+found = False
 
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
 
     page = browser.new_page()
+
+    def handle_response(response):
+        global found
+
+        url = response.url
+
+        if ".m3u8" in url and not found:
+            found = True
+
+            print("FOUND:", url)
+
+            with open("atv/stream.txt", "w") as f:
+                f.write(url)
+
+    page.on("response", handle_response)
 
     page.goto(
         "https://www.atvavrupa.tv/canli-yayin",
@@ -12,27 +28,12 @@ with sync_playwright() as p:
         timeout=60000
     )
 
-    page.wait_for_timeout(10000)
-
-    content = page.content()
-
-    with open("atv/debug.txt", "w", encoding="utf-8") as f:
-        f.write(content)
-
-    urls = re.findall(r'https://[^"]+\.m3u8[^"]*', content)
-
-    found = False
-
-    for url in urls:
-        if ".m3u8" in url:
-            with open("atv/stream.txt", "w") as f:
-                f.write(url)
-
-            print("FOUND:", url)
-            found = True
-            break
+    page.wait_for_timeout(20000)
 
     if not found:
-        print("NO M3U8 FOUND")
+        with open("atv/debug.txt", "w") as f:
+            f.write("No m3u8 request found")
+
+        print("NO STREAM FOUND")
 
     browser.close()
