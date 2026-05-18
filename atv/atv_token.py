@@ -1,5 +1,4 @@
 from playwright.sync_api import sync_playwright
-from urllib.parse import urlparse, parse_qs, unquote
 
 found = False
 
@@ -13,21 +12,13 @@ with sync_playwright() as p:
 
         url = response.url
 
-        if "securevideotoken" in url and not found:
+        if ".m3u8" in url and not found:
             found = True
 
-            print("TOKEN URL:", url)
+            print("FOUND:", url)
 
-            parsed = urlparse(url)
-            params = parse_qs(parsed.query)
-
-            if "url" in params:
-                stream = unquote(params["url"][0])
-
-                print("STREAM:", stream)
-
-                with open("atv/stream.txt", "w") as f:
-                    f.write(stream)
+            with open("atv/stream.txt", "w") as f:
+                f.write(url)
 
     page.on("response", handle_response)
 
@@ -37,11 +28,11 @@ with sync_playwright() as p:
         timeout=60000
     )
 
-    page.wait_for_timeout(15000)
+    page.wait_for_timeout(20000)
 
     if not found:
         with open("atv/debug.txt", "w") as f:
-            f.write("No token URL found")
+            f.write("No m3u8 request found")
 
         print("NO STREAM FOUND")
 
