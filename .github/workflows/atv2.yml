@@ -1,9 +1,9 @@
 name: update-stream
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "*/30 * * * *"
-  workflow_dispatch:
 
 jobs:
   update-stream:
@@ -20,21 +20,26 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install streamlink
+          pip install playwright
+          playwright install chromium
 
-      - name: Get ATV stream
+      - name: Run ATV script
         run: |
           mkdir -p atv
+          python atv/atv_token.py
 
-          streamlink \
-          --stream-url \
-          "https://www.atvavrupa.tv/canli-yayin" \
-          best > atv/stream.txt || true
+      - name: Show debug
+        run: |
+          echo "========== DEBUG =========="
+          
+          if [ -f atv/debug.txt ]; then
+            cat atv/debug.txt
+          fi
 
       - name: Create M3U
         run: |
           echo "#EXTM3U" > atv/stream.m3u
-          echo '#EXTINF:-1,ATV Avrupa' >> atv/stream.m3u
+          echo "#EXTINF:-1,ATV Avrupa" >> atv/stream.m3u
 
           if [ -f atv/stream.txt ]; then
             cat atv/stream.txt >> atv/stream.m3u
