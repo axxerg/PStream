@@ -1,15 +1,25 @@
 import requests
 import re
 
-url = "https://www.atvavrupa.tv/canli-yayin"
+url = "https://www.atvavrupa.tv/ajax/streaming"
 
 headers = {
-    "User-Agent": "Mozilla/5.0"
+    "User-Agent": "Mozilla/5.0",
+    "Referer": "https://www.atvavrupa.tv/canli-yayin",
+    "X-Requested-With": "XMLHttpRequest"
 }
 
-html = requests.get(url, headers=headers).text
+response = requests.get(
+    url,
+    headers=headers,
+    params={
+        "menuType": "CANLIYAYIN"
+    }
+)
 
-match = re.search(r'https://.*?\.m3u8\?st=.*?&e=\d+', html)
+data = response.text
+
+match = re.search(r'https://[^"]+\.m3u8[^"]*', data)
 
 if match:
     stream = match.group(0)
@@ -20,4 +30,5 @@ if match:
     print(stream)
 
 else:
-    print("No stream found")
+    print(data)
+    raise Exception("No m3u8 found")
