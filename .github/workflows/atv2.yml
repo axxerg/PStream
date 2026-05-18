@@ -9,6 +9,9 @@ jobs:
   update-stream:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -21,19 +24,22 @@ jobs:
       - name: Install Requests
         run: pip install requests
 
-      - name: Run Token Script
-        run: python atv/token.py
+      - name: Run ATV Token Script
+        run: python atv/atv_token.py
 
-      - name: Create stream.m3u
+      - name: Create Playlist
         run: |
           echo "#EXTM3U" > atv/stream.m3u
           echo "#EXTINF:-1,ATV Avrupa" >> atv/stream.m3u
           cat atv/stream.txt >> atv/stream.m3u
 
-      - name: Commit Updated Playlist
+      - name: Commit Updated Files
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add atv/stream.m3u atv/stream.txt
+
+          git add atv/stream.txt atv/stream.m3u
+
           git commit -m "Update ATV stream" || echo "No changes"
+
           git push
