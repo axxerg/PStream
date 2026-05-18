@@ -31,14 +31,19 @@ jobs:
         run: |
           echo "#EXTM3U" > atv/stream.m3u
           echo "#EXTINF:-1,ATV Avrupa" >> atv/stream.m3u
-          cat atv/stream.txt >> atv/stream.m3u
 
-      - name: Commit Updated Files
+          if [ -f atv/stream.txt ]; then
+            cat atv/stream.txt >> atv/stream.m3u
+          fi
+
+      - name: Commit Files
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
-          git add atv/stream.txt atv/stream.m3u
+          git pull --rebase origin main
+
+          git add atv/stream.txt atv/stream.m3u atv/debug.txt
 
           git commit -m "Update ATV stream" || echo "No changes"
 
