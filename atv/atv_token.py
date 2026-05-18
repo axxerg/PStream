@@ -1,42 +1,37 @@
 import requests
 import re
 
-js_url = "https://i.tmgrup.com.tr/aav/site/v1/j/live-broadcast.js?v=17809"
+url = "https://www.atvavrupa.tv/canli-yayin"
 
 headers = {
-    "User-Agent": "Mozilla/5.0",
-    "Referer": "https://www.atvavrupa.tv/canli-yayin"
+    "User-Agent": "Mozilla/5.0"
 }
 
-response = requests.get(js_url, headers=headers)
+html = requests.get(url, headers=headers).text
 
-content = response.text
+scripts = re.findall(r'<script[^>]+src="([^"]+)"', html)
 
-print(content[:5000])
+output = []
 
-patterns = [
-    r'https://[^"\']+\.m3u8[^"\']*',
-    r'https:\/\/[^"\']+\.m3u8[^"\']*',
-]
+for script in scripts:
+    if script.startswith("/"):
+        script = "https://www.atvavrupa.tv" + script
 
-stream = None
+    try:
+        r = requests.get(script, headers=headers, timeout=10)
 
-for pattern in patterns:
-    match = re.search(pattern, content)
+        content = r.text
 
-    if match:
-        stream = match.group(0)
-        stream = stream.replace("\\/", "/")
-        break
+        if "m3u8" in content or "jwplayer" in content or "playlist" in content:
+            output.append("\n==== SCRIPT ====\n")
+            output.append(script)
+            output.append("\n")
+            output.append(content[:10000])
 
-if stream:
-    with open("atv/stream.txt", "w") as f:
-        f.write(stream)
+    except Exception as e:
+        output.append(str(e))
 
-    print("FOUND:", stream)
+with open("atv/debug.txt", "w") as f:
+    f.write("\n".join(output))
 
-else:
-    with open("atv/debug.txt", "w") as f:
-        f.write(content)
-
-    print("No stream found")
+print("DONE")
