@@ -1,19 +1,16 @@
-name: Update ATV Stream
+name: update-stream
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/30 * * * *"
   workflow_dispatch:
 
 jobs:
   update-stream:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-
     steps:
-      - name: Checkout Repo
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Python
@@ -21,27 +18,29 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install Python Packages
+      - name: Install dependencies
         run: |
-          pip install requests playwright
+          pip install streamlink
 
-      - name: Install Chromium
+      - name: Get ATV stream
         run: |
-          playwright install chromium
+          mkdir -p atv
 
-      - name: Run ATV Token Script
-        run: python atv/atv_token.py
+          streamlink \
+          --stream-url \
+          "https://www.atvavrupa.tv/canli-yayin" \
+          best > atv/stream.txt || true
 
-      - name: Create Playlist
+      - name: Create M3U
         run: |
           echo "#EXTM3U" > atv/stream.m3u
-          echo "#EXTINF:-1,ATV Avrupa" >> atv/stream.m3u
+          echo '#EXTINF:-1,ATV Avrupa' >> atv/stream.m3u
 
           if [ -f atv/stream.txt ]; then
             cat atv/stream.txt >> atv/stream.m3u
           fi
 
-      - name: Commit Files
+      - name: Push changes
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
@@ -50,6 +49,6 @@ jobs:
 
           git commit -m "Update ATV stream" || echo "No changes"
 
-          git pull --rebase origin main
+          git pull --rebase origin main || true
 
           git push
