@@ -14,10 +14,10 @@ match = re.search(r'https://.*?\.m3u8\?st=.*?&e=\d+', html)
 if match:
     stream = match.group(0)
 
-    with open("stream.txt", "w") as f:
+    with open("atv/stream.txt", "w") as f:
         f.write(stream)
 
     print(stream)
 
 else:
-    print("Kein Stream gefunden")
+    print("No stream found")
