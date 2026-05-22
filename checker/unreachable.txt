@@ -1,17 +1,54 @@
+#EXTINF:-1 group-title="Ulusal" tvg-logo="https://assets.uzunmuhalefet.com/logos/8a33c746-0aff-44e0-9f1a-1bb3515de3ad.png" tvg-url="https://www.tv8.com.tr/" tvg-id="TV8.tr",TV8
 https://rkhubpaomb.turknet.ercdn.net/fwjkgpasof/tv8/tv8_1080p.m3u8
+
+#EXTINF:-1,KANAL B
 https://baskentaudiovideo.xyz/LiveApp/streams/mUE22idl26lA1683879097431.m3u8
+
+#EXTINF:-1,TÜRK KLİNİKLERİ TV
 http://mn-nl.mncdn.com/turkiyeklinikleri/smil:turkiyeklinikleri/chunklist_b3128000.m3u8
+
+#EXTINF:-1,TV 48
 https://ajansplay.com:5443/LiveApp/streams/tv48.m3u8
+
+#EXTINF:-1,VRT
 https://vrttv.ozelip.com:3644/multi_web/play_720.m3u8
+
+#EXTINF:-1,VTV TÜRK
 https://ip252.ozelip.com:22524/marstv/marstv/chunklist.m3u8
+
+#EXTINF:-1,PAZARCIK TV
 https://pazarciktv.ozelip.net:3962/hybrid/play.m3u8
+
+#EXTINF:-1,FiNEST TV
 http://media.finest.tv/hls/live.m3u8
+
+#EXTINF:-1,ALANYA ATV
+https://helga.iptv2022.com/sh/AlanyaTV/tracks-v1a1/mono.m3u8
+
+#EXTINF:-1,ÖNDE TV
 https://ondetv.ozelip.com.tr:3390/hybrid/play.m3u8
+
+#EXTINF:-1 Yedek="https://tgn.bozztv.com/dvrfl05/gin-trtspor2/playlist.m3u8" Yedek2="http://162.212.179.33:80/dvrfl05/gin-trtspor2/playlist.m3u8" Yedek3="http://176.65.146.123:6001/play/a02g/index.m3u8" Yedek4="https://iptv-worker.mark-clark.workers.dev/?ID=54" tvg-id="TRT SPOR YILDIZ.tr" tvg-logo="https://tv.kolaytv.org/trt-spor-yildiz.png" group-title="Spor",TRT SPOR YILDIZ
 http://162.212.179.33:80/dvrfl05/gin-trtspor2/playlist.m3u8
+
+#EXTINF:-1 tvg-name="TVNET" tvg-id="TVNET.tr" tvg-logo="https://i.ibb.co/2jtzN6F/tvnet.png" group-title="HABER",TVNET
 https://mn-nl.mncdn.com/tvnet/tvnet/playlist.m3u8
+
+#EXTINF:-1 tvg-name="EKOTURK" tvg-id="Ekoturk.tr" tvg-logo="https://i.ibb.co/F4csSTY/ekoturk.png" group-title="HABER",EKOTURK
 https://ythls.kekikakademi.org/youtube/channel/UCAGVKxpAKwXMWdmcHbrvcwQ.m3u8
+
+#EXTINF:-1 tvg-id="MovieSmart Turk.tr" tvg-logo="https://dsmart-static-v2.ercdn.net//resize-width/400//content/e/ZI/13863/Thumbnail.png?v=636987856299906443" group-title="Sinema", Moviesmart Türk HD
 https://ds.ayakkabiparti.lol/mvturk/index.m3u8
+
+#EXTINF:-1 tvg-id="Film Screen.tr" tvg-logo="https://feo.kablowebtv.com/resize/168A635D265A4328C2883FB4CD8FF/0/0/Vod/HLS/7d58e86c-d38e-4ef5-8ee0-fda0a7e65914.png" group-title="Sinema", Film Screen HD
 https://edge-e3.evrideo.tv/f2dcbecf-5af0-47db-a82e-032112050a23_1000027346_HLS/manifest.m3u8
+
+#EXTINF:1600,SPORTS TV
 https://live.sportstv.com.tr/hls/low/sportstv_hd/index.m3u8
+
+#EXTINF:30,TVNET
 https://mn-nl.mncdn.com/tvnet/tvnet/playlist.m3u8
+
+#EXTINF:1800,AKIT TV
 https://akittv-live.ercdn.net/akittv/akittv_720p.m3u8
+
