@@ -17,10 +17,12 @@ jobs:
         run: |
           echo "Checking stream URLs..."
 
+          # Ergebnisordner (NICHT im Repo!)
           mkdir -p output
           > output/reachable.txt
           > output/unreachable.txt
 
+          # Playlist aus checker/ lesen
           grep -E "^http" checker/playlist.m3u | while IFS= read -r url || [ -n "$url" ]; do
             echo "Testing: $url"
             if curl -Is --max-time 5 "$url" >/dev/null; then
