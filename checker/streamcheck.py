@@ -1,24 +1,25 @@
 import os
 import requests
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# Browser Header (wichtig für türkische Streams)
 HEADERS = {
     'User-Agent':
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
         '(KHTML, like Gecko) Chrome/120.0 Safari/537.36'
 }
 
-# Schneller HEAD + GET Check
 def check_url(url):
     try:
-        # HEAD Check (1 Sekunde)
-        r = requests.head(url, headers=HEADERS, timeout=1, allow_redirects=True)
-        head_ok = r.status_code in (200, 301, 302)
-
-        # GET Check (2 Sekunden)
+        # HEAD Check (0.3 Sekunden)
         try:
-            content = requests.get(url, headers=HEADERS, timeout=2).text
+            r = requests.head(url, headers=HEADERS, timeout=0.3, allow_redirects=True)
+            head_ok = r.status_code in (200, 301, 302)
+        except:
+            head_ok = False
+
+        # GET Check (0.5 Sekunden)
+        try:
+            content = requests.get(url, headers=HEADERS, timeout=0.5).text
         except:
             content = ""
 
@@ -28,11 +29,10 @@ def check_url(url):
 
         return url, (head_ok or m3u_ok or master_ok or seg_ok)
 
-    except Exception:
+    except:
         return url, False
 
 
-# Playlist einlesen und EXTINF + URL paaren
 def load_playlist(path):
     with open(path, "r", encoding="utf-8") as f:
         lines = f.readlines()
@@ -54,7 +54,6 @@ def load_playlist(path):
     return entries
 
 
-# Sortieren nach Sendername (Text nach letztem Komma)
 def sort_entries(entries):
     def key_func(entry):
         extinf, _ = entry
@@ -65,7 +64,6 @@ def sort_entries(entries):
     return sorted(entries, key=key_func)
 
 
-# Schreiben der funktionierenden Streams
 def write_output(path, entries):
     with open(path, "w", encoding="utf-8") as f:
         for extinf, url in entries:
@@ -85,24 +83,25 @@ if __name__ == "__main__":
 
     print(f"Prüfe {len(urls)} Streams parallel…")
 
-    # Parallel prüfen (10 Threads)
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        results = list(executor.map(check_url, urls))
-
     reachable = []
     unreachable = []
 
-    for (extinf, url), (_, ok) in zip(entries, results):
-        if ok:
-            reachable.append((extinf, url))
-        else:
-            unreachable.append((extinf, url))
+    # 50 Threads → ultraschnell
+    with ThreadPoolExecutor(max_workers=50) as executor:
+        future_map = {executor.submit(check_url, url): (extinf, url) for extinf, url in entries}
 
-    # Sortieren
+        for future in as_completed(future_map):
+            extinf, url = future_map[future]
+            _, ok = future.result()
+
+            if ok:
+                reachable.append((extinf, url))
+            else:
+                unreachable.append((extinf, url))
+
     reachable = sort_entries(reachable)
     unreachable = sort_entries(unreachable)
 
-    # Schreiben
     write_output(output_file, reachable)
     write_output(unreachable_file, unreachable)
 
