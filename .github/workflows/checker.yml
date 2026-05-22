@@ -84,4 +84,9 @@ jobs:
 
           git add checker/reachable.txt checker/unreachable.txt
           git commit -m "Update stream check results" || echo "No changes"
-          git push
+
+          # Remote Änderungen holen (verhindert Push-Fehler)
+          git pull --rebase origin main
+
+          # Pushen
+          git push origin main
