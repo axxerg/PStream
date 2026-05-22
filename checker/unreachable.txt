@@ -1,150 +1,147 @@
-#EXTINF:-1 tvg-name="TV 8" tvg-id="" tvg-logo="https://upload.wikimedia.org/wikipedia/tr/6/68/Tv8_Yeni_Logo.png" group-title="Ulusal",TV 8
-https://rkhubpaomb.turknet.ercdn.net/fwjkgpasof/tv8/tv8_1080p.m3u8
 
-#EXTINF:-1 group-title="Ulusal" tvg-logo="https://assets.uzunmuhalefet.com/logos/8a33c746-0aff-44e0-9f1a-1bb3515de3ad.png" tvg-url="https://www.tv8.com.tr/" tvg-id="TV8.tr",TV8
-https://rkhubpaomb.turknet.ercdn.net/fwjkgpasof/tv8/tv8_1080p.m3u8
 
-#EXTINF:-1,KANAL B
-https://baskentaudiovideo.xyz/LiveApp/streams/mUE22idl26lA1683879097431.m3u8
 
-#EXTINF:-1,TÜRK KLİNİKLERİ TV
-http://mn-nl.mncdn.com/turkiyeklinikleri/smil:turkiyeklinikleri/chunklist_b3128000.m3u8
 
-#EXTINF:-1,TV 48
-https://ajansplay.com:5443/LiveApp/streams/tv48.m3u8
 
-#EXTINF:-1,VRT
-https://vrttv.ozelip.com:3644/multi_web/play_720.m3u8
 
-#EXTINF:-1,VTV TÜRK
-https://ip252.ozelip.com:22524/marstv/marstv/chunklist.m3u8
 
-#EXTINF:-1,PAZARCIK TV
-https://pazarciktv.ozelip.net:3962/hybrid/play.m3u8
 
-#EXTINF:-1,FiNEST TV
-http://media.finest.tv/hls/live.m3u8
 
-#EXTINF:-1,ÖNDE TV
-https://ondetv.ozelip.com.tr:3390/hybrid/play.m3u8
 
-#EXTINF:-1 Yedek="https://tgn.bozztv.com/dvrfl05/gin-trtspor2/playlist.m3u8" Yedek2="http://162.212.179.33:80/dvrfl05/gin-trtspor2/playlist.m3u8" Yedek3="http://176.65.146.123:6001/play/a02g/index.m3u8" Yedek4="https://iptv-worker.mark-clark.workers.dev/?ID=54" tvg-id="TRT SPOR YILDIZ.tr" tvg-logo="https://tv.kolaytv.org/trt-spor-yildiz.png" group-title="Spor",TRT SPOR YILDIZ
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 http://162.212.179.33:80/dvrfl05/gin-trtspor2/playlist.m3u8
-
-#EXTINF:-1 tvg-name="TVNET" tvg-id="TVNET.tr" tvg-logo="https://i.ibb.co/2jtzN6F/tvnet.png" group-title="HABER",TVNET
-https://mn-nl.mncdn.com/tvnet/tvnet/playlist.m3u8
-
-#EXTINF:-1 tvg-name="EKOTURK" tvg-id="Ekoturk.tr" tvg-logo="https://i.ibb.co/F4csSTY/ekoturk.png" group-title="HABER",EKOTURK
-https://ythls.kekikakademi.org/youtube/channel/UCAGVKxpAKwXMWdmcHbrvcwQ.m3u8
-
-#EXTINF:-1 tvg-id="MovieSmart Turk.tr" tvg-logo="https://dsmart-static-v2.ercdn.net//resize-width/400//content/e/ZI/13863/Thumbnail.png?v=636987856299906443" group-title="Sinema", Moviesmart Türk HD
-https://ds.ayakkabiparti.lol/mvturk/index.m3u8
-
-#EXTINF:-1 tvg-id="Film Screen.tr" tvg-logo="https://feo.kablowebtv.com/resize/168A635D265A4328C2883FB4CD8FF/0/0/Vod/HLS/7d58e86c-d38e-4ef5-8ee0-fda0a7e65914.png" group-title="Sinema", Film Screen HD
-https://edge-e3.evrideo.tv/f2dcbecf-5af0-47db-a82e-032112050a23_1000027346_HLS/manifest.m3u8
-
-#EXTINF:1600,SPORTS TV
-https://live.sportstv.com.tr/hls/low/sportstv_hd/index.m3u8
-
-#EXTINF:30,TVNET
-https://mn-nl.mncdn.com/tvnet/tvnet/playlist.m3u8
-
-#EXTINF:1800,AKIT TV
-https://akittv-live.ercdn.net/akittv/akittv_720p.m3u8
-
-#EXTINF:-1 tvg-logo="https://i.hizliresim.com/i21k4te.png" group-title="GENEL",🌿GENEL🌿
-https://ornek.m3u8
-
-#EXTINF:-1 tvg-id="ATV" tvg-name="ATV" tvg-logo="https://i.ibb.co/n1SCYqN/atv.png" group-title="GENEL",ATV
-https://rnttwmjcin.turknet.ercdn.net/lcpmvefbyo/atv/atv_720p.m3u8
-
-#EXTINF:-1 tvg-id="BEYAZ TV" tvg-name="BEYAZ TV" tvg-logo="https://www.beyaztv.com.tr/images/logo.png" group-title="GENEL",BEYAZ TV
-https://beyaztv-live.daioncdn.net/beyaztv/beyaztv_720p.m3u8 
-
-#EXTINF:-1 tvg-id="CNN TÜRK" tvg-name="CNN TÜRK" tvg-logo="https://tv.canlitvme.com/poster/cnn-turk-canli-yayin.png" group-title="GENEL",CNN TÜRK çalışmıyor
-http://stream.tvcdn.net/haber/cnn-turk.m3u8
-
-#EXTINF:-1 tvg-logo="https://bit.ly/302Lfmo" group-title="SPOR",TrGoals Yayını1 
-https://56r.d72577a9dd0ec17.sbs/yayin1.m3u8
-
-#EXTINF:-1 tvg-logo="https://bit.ly/3f86zet" group-title="SPOR",test3 Spor Kanalı
-https://56r.d72577a9dd0ec17.sbs/yayin1.m3u8
-
-#EXTINF:-1 tvg-logo="https://bit.ly/3f86zet" group-title="SPOR",test2 Spor Kanalı
-https://56r.d72577a9dd0ec17.sbs/yayin1.m3u8
-
-#EXTINF:-1 tvg-logo="https://bit.ly/3f86zet" group-title="SPOR",VPN BEIN SPORTS 4K (REAL 4K)
-http://37.49.224.17:8000/besho1990/mLKFJqVKKejc/14795
-
-#EXTINF:-1 tvg-logo="https://bit.ly/3f86zet" group-title="SPOR",VPN BEİNSPORTS 1 FHD
-http://37.49.224.17:8000/besho1990/mLKFJqVKKejc/115033
-
-#EXTINF:-1 tvg-logo="https://bit.ly/3f86zet" group-title="SPOR",VPN BEINSPORTS 1 HD
+http://162.212.179.33:80/dvrfl05/gin-trtspor2/playlist.m3u8
 http://37.49.224.17:8000/besho1990/mLKFJqVKKejc/111898
-
-#EXTINF:-1 tvg-logo="https://i.hizliresim.com/i21k4te.png" group-title="YEDEKLER",Atv
-https://rnttwmjcin.turknet.ercdn.net/lcpmvefbyo/atv/atv_480p.m3u8
-
-#EXTINF:-1 tvg-logo="https://i.hizliresim.com/i21k4te.png" group-title="Filmler",Görevimiz Tehlike 3 2006 (vidrame)
-https://vidrame.pro/vr/get/c42c540d/1080.txt?=.mp4 
-
-#EXTINF:-1 tvg-logo="https://i.hizliresim.com/i21k4te.png" group-title="Filmler",###deneme### 
-https://ornek.m3u8
-
-#EXTINF:-1 tvg-logo="https://i.hizliresim.com/i21k4te.png" group-title="Filmler",---deneme---
-https://ornek.m3u8
-
-#EXTINF:-1 tvg-logo="https://i.hizliresim.com/i21k4te.png" group-title="Filmler",•••deneme•••
-https://ornek.m3u8
-
-#EXTINF:-1,KANAL B
-https://baskentaudiovideo.xyz/LiveApp/streams/mUE22idl26lA1683879097431.m3u8
-
-#EXTINF:-1,OLAY TURK
-https://live.artidijitalmedya.com/artidijital_olayturk/olayturk/playlist.m3u8
-
-#EXTINF:-1,TÜRK KLİNİKLERİ TV
-http://mn-nl.mncdn.com/turkiyeklinikleri/smil:turkiyeklinikleri/chunklist_b3128000.m3u8
-
-#EXTINF:-1,TV 48
-https://ajansplay.com:5443/LiveApp/streams/tv48.m3u8
-
-#EXTINF:-1,VRT
-https://vrttv.ozelip.com:3644/multi_web/play_720.m3u8
-
-#EXTINF:-1,VTV TÜRK
-https://ip252.ozelip.com:22524/marstv/marstv/chunklist.m3u8
-
-#EXTINF:-1,PAZARCIK TV
-https://pazarciktv.ozelip.net:3962/hybrid/play.m3u8
-
-#EXTINF:-1,FiNEST TV
+http://37.49.224.17:8000/besho1990/mLKFJqVKKejc/115033
+http://37.49.224.17:8000/besho1990/mLKFJqVKKejc/14795
 http://media.finest.tv/hls/live.m3u8
-
-#EXTINF:-1,ÖNDE TV
-https://ondetv.ozelip.com.tr:3390/hybrid/play.m3u8
-
-#EXTINF:-1 Yedek="https://tgn.bozztv.com/dvrfl05/gin-trtspor2/playlist.m3u8" Yedek2="http://162.212.179.33:80/dvrfl05/gin-trtspor2/playlist.m3u8" Yedek3="http://176.65.146.123:6001/play/a02g/index.m3u8" Yedek4="https://iptv-worker.mark-clark.workers.dev/?ID=54" tvg-id="TRT SPOR YILDIZ.tr" tvg-logo="https://tv.kolaytv.org/trt-spor-yildiz.png" group-title="Spor",TRT SPOR YILDIZ
-http://162.212.179.33:80/dvrfl05/gin-trtspor2/playlist.m3u8
-
-#EXTINF:-1 tvg-name="TVNET" tvg-id="TVNET.tr" tvg-logo="https://i.ibb.co/2jtzN6F/tvnet.png" group-title="HABER",TVNET
-https://mn-nl.mncdn.com/tvnet/tvnet/playlist.m3u8
-
-#EXTINF:-1 tvg-name="EKOTURK" tvg-id="Ekoturk.tr" tvg-logo="https://i.ibb.co/F4csSTY/ekoturk.png" group-title="HABER",EKOTURK
-https://ythls.kekikakademi.org/youtube/channel/UCAGVKxpAKwXMWdmcHbrvcwQ.m3u8
-
-#EXTINF:-1 tvg-id="MovieSmart Turk.tr" tvg-logo="https://dsmart-static-v2.ercdn.net//resize-width/400//content/e/ZI/13863/Thumbnail.png?v=636987856299906443" group-title="Sinema", Moviesmart Türk HD
-https://ds.ayakkabiparti.lol/mvturk/index.m3u8
-
-#EXTINF:-1 tvg-id="Film Screen.tr" tvg-logo="https://feo.kablowebtv.com/resize/168A635D265A4328C2883FB4CD8FF/0/0/Vod/HLS/7d58e86c-d38e-4ef5-8ee0-fda0a7e65914.png" group-title="Sinema", Film Screen HD
-https://edge-e3.evrideo.tv/f2dcbecf-5af0-47db-a82e-032112050a23_1000027346_HLS/manifest.m3u8
-
-#EXTINF:1600,SPORTS TV
-https://live.sportstv.com.tr/hls/low/sportstv_hd/index.m3u8
-
-#EXTINF:30,TVNET
-https://mn-nl.mncdn.com/tvnet/tvnet/playlist.m3u8
-
-#EXTINF:1800,AKIT TV
+http://media.finest.tv/hls/live.m3u8
+http://mn-nl.mncdn.com/turkiyeklinikleri/smil:turkiyeklinikleri/chunklist_b3128000.m3u8
+http://mn-nl.mncdn.com/turkiyeklinikleri/smil:turkiyeklinikleri/chunklist_b3128000.m3u8
+http://stream.tvcdn.net/haber/cnn-turk.m3u8
+https://56r.d72577a9dd0ec17.sbs/yayin1.m3u8
+https://56r.d72577a9dd0ec17.sbs/yayin1.m3u8
+https://56r.d72577a9dd0ec17.sbs/yayin1.m3u8
+https://ajansplay.com:5443/LiveApp/streams/tv48.m3u8
+https://ajansplay.com:5443/LiveApp/streams/tv48.m3u8
 https://akittv-live.ercdn.net/akittv/akittv_720p.m3u8
-
+https://akittv-live.ercdn.net/akittv/akittv_720p.m3u8
+https://baskentaudiovideo.xyz/LiveApp/streams/mUE22idl26lA1683879097431.m3u8
+https://baskentaudiovideo.xyz/LiveApp/streams/mUE22idl26lA1683879097431.m3u8
+https://beyaztv-live.daioncdn.net/beyaztv/beyaztv_720p.m3u8 
+https://ds.ayakkabiparti.lol/mvturk/index.m3u8
+https://ds.ayakkabiparti.lol/mvturk/index.m3u8
+https://edge-e3.evrideo.tv/f2dcbecf-5af0-47db-a82e-032112050a23_1000027346_HLS/manifest.m3u8
+https://edge-e3.evrideo.tv/f2dcbecf-5af0-47db-a82e-032112050a23_1000027346_HLS/manifest.m3u8
+https://ip252.ozelip.com:22524/marstv/marstv/chunklist.m3u8
+https://ip252.ozelip.com:22524/marstv/marstv/chunklist.m3u8
+https://live.artidijitalmedya.com/artidijital_mavikaradeniz/mavikaradeniz/playlist.m3u8
+https://live.artidijitalmedya.com/artidijital_tivi6/tivi6/playlist.m3u8
+https://live.sportstv.com.tr/hls/low/sportstv_hd/index.m3u8
+https://live.sportstv.com.tr/hls/low/sportstv_hd/index.m3u8
+https://mn-nl.mncdn.com/tvnet/tvnet/playlist.m3u8
+https://mn-nl.mncdn.com/tvnet/tvnet/playlist.m3u8
+https://mn-nl.mncdn.com/tvnet/tvnet/playlist.m3u8
+https://mn-nl.mncdn.com/tvnet/tvnet/playlist.m3u8
+https://ondetv.ozelip.com.tr:3390/hybrid/play.m3u8
+https://ondetv.ozelip.com.tr:3390/hybrid/play.m3u8
+https://ornek.m3u8
+https://ornek.m3u8
+https://ornek.m3u8
+https://ornek.m3u8
+https://pazarciktv.ozelip.net:3962/hybrid/play.m3u8
+https://pazarciktv.ozelip.net:3962/hybrid/play.m3u8
+https://rkhubpaomb.turknet.ercdn.net/fwjkgpasof/tv8/tv8_1080p.m3u8
+https://uycyyuuzyh.turknet.ercdn.net/nphindgytw/nowtv/nowtv_720p.m3u8
+https://vidrame.pro/vr/get/c42c540d/1080.txt?=.mp4 
+https://vrttv.ozelip.com:3644/multi_web/play_720.m3u8
+https://vrttv.ozelip.com:3644/multi_web/play_720.m3u8
+https://ythls.kekikakademi.org/youtube/channel/UCAGVKxpAKwXMWdmcHbrvcwQ.m3u8
+https://ythls.kekikakademi.org/youtube/channel/UCAGVKxpAKwXMWdmcHbrvcwQ.m3u8
+#EXTINF:-1 tvg-id="Film Screen.tr" tvg-logo="https://feo.kablowebtv.com/resize/168A635D265A4328C2883FB4CD8FF/0/0/Vod/HLS/7d58e86c-d38e-4ef5-8ee0-fda0a7e65914.png" group-title="Sinema", Film Screen HD
+#EXTINF:-1 tvg-id="Film Screen.tr" tvg-logo="https://feo.kablowebtv.com/resize/168A635D265A4328C2883FB4CD8FF/0/0/Vod/HLS/7d58e86c-d38e-4ef5-8ee0-fda0a7e65914.png" group-title="Sinema", Film Screen HD
+#EXTINF:-1 tvg-id="MovieSmart Turk.tr" tvg-logo="https://dsmart-static-v2.ercdn.net//resize-width/400//content/e/ZI/13863/Thumbnail.png?v=636987856299906443" group-title="Sinema", Moviesmart Türk HD
+#EXTINF:-1 tvg-id="MovieSmart Turk.tr" tvg-logo="https://dsmart-static-v2.ercdn.net//resize-width/400//content/e/ZI/13863/Thumbnail.png?v=636987856299906443" group-title="Sinema", Moviesmart Türk HD
+#EXTINF:-1 tvg-id="FOX.HD.tr" tvg-logo="https://i.ibb.co/WDfRpwV/now.jpg", NOW HD
+#EXTINF:-1 tvg-logo="https://i.hizliresim.com/i21k4te.png" group-title="Filmler",###deneme### 
+#EXTINF:-1 tvg-logo="https://i.hizliresim.com/i21k4te.png" group-title="Filmler",---deneme---
+#EXTINF:1800,AKIT TV
+#EXTINF:1800,AKIT TV
+#EXTINF:-1 tvg-id="BEYAZ TV" tvg-name="BEYAZ TV" tvg-logo="https://www.beyaztv.com.tr/images/logo.png" group-title="GENEL",BEYAZ TV
+#EXTINF:-1 tvg-id="CNN TÜRK" tvg-name="CNN TÜRK" tvg-logo="https://tv.canlitvme.com/poster/cnn-turk-canli-yayin.png" group-title="GENEL",CNN TÜRK çalışmıyor
+#EXTINF:-1 tvg-name="EKOTURK" tvg-id="Ekoturk.tr" tvg-logo="https://i.ibb.co/F4csSTY/ekoturk.png" group-title="HABER",EKOTURK
+#EXTINF:-1 tvg-name="EKOTURK" tvg-id="Ekoturk.tr" tvg-logo="https://i.ibb.co/F4csSTY/ekoturk.png" group-title="HABER",EKOTURK
+#EXTINF:-1,FiNEST TV
+#EXTINF:-1,FiNEST TV
+#EXTINF:-1 tvg-logo="https://i.hizliresim.com/i21k4te.png" group-title="Filmler",Görevimiz Tehlike 3 2006 (vidrame)
+#EXTINF:-1,KANAL B
+#EXTINF:-1,KANAL B
+#EXTINF:-1,MAVi KARADENiZ TV
+#EXTINF:-1,PAZARCIK TV
+#EXTINF:-1,PAZARCIK TV
+#EXTINF:1600,SPORTS TV
+#EXTINF:1600,SPORTS TV
+#EXTINF:-1 tvg-name="Tivi 6" tvg-id="Tivi6.tr" tvg-logo="https://i.ibb.co/9H3DMWz/tivi6.png" group-title="ULUSAL",TIVI 6
+#EXTINF:-1 Yedek="https://tgn.bozztv.com/dvrfl05/gin-trtspor2/playlist.m3u8" Yedek2="http://162.212.179.33:80/dvrfl05/gin-trtspor2/playlist.m3u8" Yedek3="http://176.65.146.123:6001/play/a02g/index.m3u8" Yedek4="https://iptv-worker.mark-clark.workers.dev/?ID=54" tvg-id="TRT SPOR YILDIZ.tr" tvg-logo="https://tv.kolaytv.org/trt-spor-yildiz.png" group-title="Spor",TRT SPOR YILDIZ
+#EXTINF:-1 Yedek="https://tgn.bozztv.com/dvrfl05/gin-trtspor2/playlist.m3u8" Yedek2="http://162.212.179.33:80/dvrfl05/gin-trtspor2/playlist.m3u8" Yedek3="http://176.65.146.123:6001/play/a02g/index.m3u8" Yedek4="https://iptv-worker.mark-clark.workers.dev/?ID=54" tvg-id="TRT SPOR YILDIZ.tr" tvg-logo="https://tv.kolaytv.org/trt-spor-yildiz.png" group-title="Spor",TRT SPOR YILDIZ
+#EXTINF:-1,TV 48
+#EXTINF:-1,TV 48
+#EXTINF:-1 Yedek="https://x.canlitvapp.com/kanal8/index.m3u8" Yedek2="https://trn03.tulix.tv/gt-tv8-tv/tracks-v1a1/mono.m3u8" Yedek3="http://89.187.191.41/TV8-HD-TR/video.m3u8" Yedek4="http://89.36.94.225:80/956bassem/BHrMOpKtyb/1633" Yedek5="https://rkhubpaomb.turknet.ercdn.net/fwjkgpasof/tv8/tv8_1080p.m3u8" Yedek6="https://bcovlive-a.akamaihd.net/ccee7091e86040d18e14cd0efef2a51b/eu-central-1/6415845530001/profile_0/chunklist.m3u8" tvg-id="TV8 HD.tr" tvg-logo="https://i.ibb.co/Kr5SFY1/tv8.png" group-title="Ulusal",TV 8
+#EXTINF:-1 tvg-name="TVNET" tvg-id="TVNET.tr" tvg-logo="https://i.ibb.co/2jtzN6F/tvnet.png" group-title="HABER",TVNET
+#EXTINF:-1 tvg-name="TVNET" tvg-id="TVNET.tr" tvg-logo="https://i.ibb.co/2jtzN6F/tvnet.png" group-title="HABER",TVNET
+#EXTINF:30,TVNET
+#EXTINF:30,TVNET
+#EXTINF:-1 tvg-logo="https://bit.ly/302Lfmo" group-title="SPOR",TrGoals Yayını1 
+#EXTINF:-1,TÜRK KLİNİKLERİ TV
+#EXTINF:-1,TÜRK KLİNİKLERİ TV
+#EXTINF:-1 tvg-logo="https://bit.ly/3f86zet" group-title="SPOR",VPN BEIN SPORTS 4K (REAL 4K)
+#EXTINF:-1 tvg-logo="https://bit.ly/3f86zet" group-title="SPOR",VPN BEINSPORTS 1 HD
+#EXTINF:-1 tvg-logo="https://bit.ly/3f86zet" group-title="SPOR",VPN BEİNSPORTS 1 FHD
+#EXTINF:-1,VRT
+#EXTINF:-1,VRT
+#EXTINF:-1,VTV TÜRK
+#EXTINF:-1,VTV TÜRK
+#EXTINF:-1 tvg-logo="https://bit.ly/3f86zet" group-title="SPOR",test2 Spor Kanalı
+#EXTINF:-1 tvg-logo="https://bit.ly/3f86zet" group-title="SPOR",test3 Spor Kanalı
+#EXTINF:-1,ÖNDE TV
+#EXTINF:-1,ÖNDE TV
+#EXTINF:-1 tvg-logo="https://i.hizliresim.com/i21k4te.png" group-title="Filmler",•••deneme•••
+#EXTINF:-1 tvg-logo="https://i.hizliresim.com/i21k4te.png" group-title="GENEL",🌿GENEL🌿
