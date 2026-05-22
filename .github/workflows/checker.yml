@@ -1,4 +1,4 @@
-name: Check M3U Streams (Python)
+name: Check M3U Streams (Python Async)
 
 on:
   workflow_dispatch:
@@ -16,7 +16,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           python3 -m pip install --upgrade pip
-          pip install requests
+          pip install aiohttp
 
       - name: Run Python stream checker
         run: |
@@ -26,16 +26,15 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: stream-check-results
-          path: ~/Documents/Test/output.m3u8
+          path: checker/
 
       - name: Commit results to repo
         run: |
-          cp ~/Documents/Test/output.m3u8 checker/reachable.txt
-
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add checker/reachable.txt
+          git add checker/reachable.txt checker/unreachable.txt
           git commit -m "Update stream check results" || echo "No changes"
+
           git pull --rebase origin main
           git push origin main
