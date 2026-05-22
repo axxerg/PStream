@@ -1,36 +1,32 @@
+import asyncio
+import aiohttp
 import os
-import requests
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 HEADERS = {
-    'User-Agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-        '(KHTML, like Gecko) Chrome/120.0 Safari/537.36'
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                  "AppleWebKit/537.36 (KHTML, like Gecko) "
+                  "Chrome/120.0 Safari/537.36"
 }
 
-def check_url(url):
+TIMEOUT = aiohttp.ClientTimeout(total=1.5)  # HARTE DEADLINE
+
+async def check_url(session, url):
     try:
-        # HEAD Check (0.3 Sekunden)
-        try:
-            r = requests.head(url, headers=HEADERS, timeout=0.3, allow_redirects=True)
-            head_ok = r.status_code in (200, 301, 302)
-        except:
-            head_ok = False
-
-        # GET Check (0.5 Sekunden)
-        try:
-            content = requests.get(url, headers=HEADERS, timeout=0.5).text
-        except:
-            content = ""
-
-        m3u_ok = "#EXTM3U" in content
-        master_ok = ".m3u8" in content
-        seg_ok = any(x in content for x in [".ts", ".m4s", ".aac"])
-
-        return url, (head_ok or m3u_ok or master_ok or seg_ok)
-
+        async with session.head(url, allow_redirects=True) as r:
+            if r.status in (200, 301, 302):
+                return url, True
     except:
-        return url, False
+        pass
+
+    try:
+        async with session.get(url) as r:
+            text = await r.text()
+            if "#EXTM3U" in text or ".m3u8" in text or ".ts" in text:
+                return url, True
+    except:
+        pass
+
+    return url, False
 
 
 def load_playlist(path):
@@ -55,13 +51,7 @@ def load_playlist(path):
 
 
 def sort_entries(entries):
-    def key_func(entry):
-        extinf, _ = entry
-        if "," in extinf:
-            return extinf.split(",")[-1].strip().lower()
-        return extinf.lower()
-
-    return sorted(entries, key=key_func)
+    return sorted(entries, key=lambda e: e[0].split(",")[-1].strip().lower())
 
 
 def write_output(path, entries):
@@ -71,33 +61,28 @@ def write_output(path, entries):
             f.write(url + "\n\n")
 
 
-if __name__ == "__main__":
+async def main():
     input_file = "checker/playlist.m3u"
     output_file = "checker/reachable.txt"
     unreachable_file = "checker/unreachable.txt"
 
-    print("Lade Playlist…")
     entries = load_playlist(input_file)
-
     urls = [url for _, url in entries]
 
-    print(f"Prüfe {len(urls)} Streams parallel…")
+    print(f"Prüfe {len(urls)} Streams… (ASYNC)")
+
+    async with aiohttp.ClientSession(headers=HEADERS, timeout=TIMEOUT) as session:
+        tasks = [check_url(session, url) for url in urls]
+        results = await asyncio.gather(*tasks, return_exceptions=False)
 
     reachable = []
     unreachable = []
 
-    # 50 Threads → ultraschnell
-    with ThreadPoolExecutor(max_workers=50) as executor:
-        future_map = {executor.submit(check_url, url): (extinf, url) for extinf, url in entries}
-
-        for future in as_completed(future_map):
-            extinf, url = future_map[future]
-            _, ok = future.result()
-
-            if ok:
-                reachable.append((extinf, url))
-            else:
-                unreachable.append((extinf, url))
+    for (extinf, url), (_, ok) in zip(entries, results):
+        if ok:
+            reachable.append((extinf, url))
+        else:
+            unreachable.append((extinf, url))
 
     reachable = sort_entries(reachable)
     unreachable = sort_entries(unreachable)
@@ -106,4 +91,7 @@ if __name__ == "__main__":
     write_output(unreachable_file, unreachable)
 
     print(f"FERTIG! {len(reachable)} OK, {len(unreachable)} FAILED")
-    print(f"Ergebnis gespeichert in: {output_file}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
