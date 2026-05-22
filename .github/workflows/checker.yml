@@ -1,3 +1,24 @@
+name: Check M3U Streams
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  check-streams:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
       - name: Check URLs (Real IPTV Validation)
         run: |
           echo "Checking stream URLs..."
@@ -66,3 +87,28 @@
             fi
 
           done < checker/playlist.m3u
+
+      - name: Sort results alphabetically
+        run: |
+          sort -t',' -k2 output/reachable.txt -o output/reachable.txt
+          sort -t',' -k2 output/unreachable.txt -o output/unreachable.txt
+
+      - name: Upload results as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: stream-check-results
+          path: output/
+
+      - name: Commit results to repo
+        run: |
+          cp output/reachable.txt checker/reachable.txt
+          cp output/unreachable.txt checker/unreachable.txt
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add checker/reachable.txt checker/unreachable.txt
+          git commit -m "Update stream check results" || echo "No changes"
+
+          git pull --rebase origin main
+          git push origin main
