@@ -15,21 +15,20 @@ jobs:
 
       - name: Check URLs
         run: |
-          set +e
           echo "Checking stream URLs..."
 
-          mkdir -p checker
-          > checker/reachable.txt
-          > checker/unreachable.txt
+          mkdir -p output
+          > output/reachable.txt
+          > output/unreachable.txt
 
           grep -E "^http" checker/playlist.m3u | while IFS= read -r url || [ -n "$url" ]; do
             echo "Testing: $url"
             if curl -Is --max-time 5 "$url" >/dev/null; then
               echo "[OK] $url"
-              echo "$url" >> checker/reachable.txt
+              echo "$url" >> output/reachable.txt
             else
               echo "[FAILED] $url"
-              echo "$url" >> checker/unreachable.txt
+              echo "$url" >> output/unreachable.txt
             fi
           done
 
@@ -37,4 +36,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: stream-check-results
-          path: checker/
+          path: output/
