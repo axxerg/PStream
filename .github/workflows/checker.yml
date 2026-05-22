@@ -19,7 +19,7 @@ jobs:
           persist-credentials: true
           fetch-depth: 0
 
-      - name: Check URLs with real stream validation
+      - name: Check URLs (Hybrid Stream Validation)
         run: |
           echo "Checking stream URLs..."
 
@@ -31,14 +31,17 @@ jobs:
 
           while IFS= read -r line || [ -n "$line" ]; do
 
+            # EXTINF speichern
             if [[ "$line" == \#EXTINF* ]]; then
               last_extinf="$line"
               continue
             fi
 
+            # URL erkannt
             if [[ "$line" == http* ]]; then
               url="$line"
 
+              # Wenn kein EXTINF → Dummy
               if [[ -z "$last_extinf" ]]; then
                 extinf="#EXTINF:-1 ,TEST"
               else
@@ -47,21 +50,52 @@ jobs:
 
               echo "Testing: $url"
 
-              if ffprobe -v error -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 "$url" > /dev/null 2>&1; then
-                echo "[OK] $url"
-                {
-                  echo "$extinf"
-                  echo "$url"
-                  echo
-                } >> output/reachable.txt
-              else
-                echo "[FAILED] $url"
+              # 1. HEAD-Check
+              if ! curl -Is --max-time 5 "$url" >/dev/null; then
+                echo "[FAILED] HEAD: $url"
                 {
                   echo "$extinf"
                   echo "$url"
                   echo
                 } >> output/unreachable.txt
+                last_extinf=""
+                continue
               fi
+
+              # 2. Inhalt abrufen
+              content=$(curl -L --max-time 10 -s "$url")
+
+              # 3. Prüfen ob M3U8
+              if ! echo "$content" | grep -q "#EXTM3U"; then
+                echo "[FAILED] NO M3U8: $url"
+                {
+                  echo "$extinf"
+                  echo "$url"
+                  echo
+                } >> output/unreachable.txt
+                last_extinf=""
+                continue
+              fi
+
+              # 4. Prüfen ob Segmente existieren
+              if ! echo "$content" | grep -E -q "\.ts|\.m4s|\.aac"; then
+                echo "[FAILED] NO SEGMENTS: $url"
+                {
+                  echo "$extinf"
+                  echo "$url"
+                  echo
+                } >> output/unreachable.txt
+                last_extinf=""
+                continue
+              fi
+
+              # Wenn alle Checks bestanden → OK
+              echo "[OK] $url"
+              {
+                echo "$extinf"
+                echo "$url"
+                echo
+              } >> output/reachable.txt
 
               last_extinf=""
             fi
