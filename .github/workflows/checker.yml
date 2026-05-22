@@ -16,7 +16,7 @@ jobs:
           persist-credentials: true
           fetch-depth: 0
 
-      - name: Check URLs
+      - name: Check URLs with real stream validation
         run: |
           echo "Checking stream URLs..."
 
@@ -47,7 +47,8 @@ jobs:
 
               echo "Testing: $url"
 
-              if curl -Is --max-time 5 "$url" >/dev/null; then
+              # ECHTER STREAM-TEST mit ffprobe
+              if ffprobe -v error -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 "$url" > /dev/null 2>&1; then
                 echo "[OK] $url"
                 {
                   echo "$extinf"
@@ -68,6 +69,11 @@ jobs:
 
           done < checker/playlist.m3u
 
+      - name: Sort results alphabetically
+        run: |
+          sort -t',' -k2 output/reachable.txt -o output/reachable.txt
+          sort -t',' -k2 output/unreachable.txt -o output/unreachable.txt
+
       - name: Upload results as artifact
         uses: actions/upload-artifact@v4
         with:
@@ -85,8 +91,5 @@ jobs:
           git add checker/reachable.txt checker/unreachable.txt
           git commit -m "Update stream check results" || echo "No changes"
 
-          # Remote Änderungen holen (verhindert Push-Fehler)
           git pull --rebase origin main
-
-          # Pushen
           git push origin main
