@@ -68,12 +68,6 @@ jobs:
 
           done < checker/playlist.m3u
 
-      - name: Sort results alphabetically
-        run: |
-          # Sortieren nach dem Sendernamen (Teil nach dem letzten Komma)
-          sort -t',' -k2 output/reachable.txt -o output/reachable.txt
-          sort -t',' -k2 output/unreachable.txt -o output/unreachable.txt
-
       - name: Upload results as artifact
         uses: actions/upload-artifact@v4
         with:
@@ -91,5 +85,8 @@ jobs:
           git add checker/reachable.txt checker/unreachable.txt
           git commit -m "Update stream check results" || echo "No changes"
 
+          # Remote Änderungen holen (verhindert Push-Fehler)
           git pull --rebase origin main
+
+          # Pushen
           git push origin main
