@@ -2,7 +2,7 @@ name: Check M3U Streams
 
 on:
   schedule:
-    - cron: "0 */6 * * *"   # alle 6 Stunden
+    - cron: "0 */6 * * *"
   workflow_dispatch:
 
 jobs:
@@ -16,11 +16,24 @@ jobs:
       - name: Check URLs
         run: |
           echo "Checking stream URLs..."
+
+          mkdir -p checker
+          > checker/reachable.txt
+          > checker/unreachable.txt
+
           grep -E "^http" checker/playlist.m3u | while read -r url; do
             echo "Testing: $url"
             if curl -Is --max-time 5 "$url" >/dev/null; then
               echo "[OK] $url"
+              echo "$url" >> checker/reachable.txt
             else
               echo "[FAILED] $url"
+              echo "$url" >> checker/unreachable.txt
             fi
           done
+
+      - name: Upload results
+        uses: actions/upload-artifact@v3
+        with:
+          name: stream-check-results
+          path: checker/
