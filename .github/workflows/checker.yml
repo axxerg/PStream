@@ -1,5 +1,8 @@
 name: Check M3U Streams
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   schedule:
     - cron: "0 */6 * * *"
@@ -28,17 +31,14 @@ jobs:
 
           while IFS= read -r line || [ -n "$line" ]; do
 
-            # EXTINF speichern
             if [[ "$line" == \#EXTINF* ]]; then
               last_extinf="$line"
               continue
             fi
 
-            # URL erkannt
             if [[ "$line" == http* ]]; then
               url="$line"
 
-              # Wenn kein EXTINF → Dummy
               if [[ -z "$last_extinf" ]]; then
                 extinf="#EXTINF:-1 ,TEST"
               else
@@ -47,7 +47,6 @@ jobs:
 
               echo "Testing: $url"
 
-              # ECHTER STREAM-TEST mit ffprobe
               if ffprobe -v error -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 "$url" > /dev/null 2>&1; then
                 echo "[OK] $url"
                 {
