@@ -1,114 +1,41 @@
-name: Check M3U Streams
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+name: Check M3U Streams (Python)
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 */6 * * *"
-  workflow_dispatch:
 
 jobs:
   check-streams:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          persist-credentials: true
-          fetch-depth: 0
 
-      - name: Check URLs (Real IPTV Validation)
+      - name: Install Python dependencies
         run: |
-          echo "Checking stream URLs..."
+          python3 -m pip install --upgrade pip
+          pip install requests
 
-          mkdir -p output
-          > output/reachable.txt
-          > output/unreachable.txt
-
-          last_extinf=""
-
-          while IFS= read -r line || [ -n "$line" ]; do
-
-            if [[ "$line" == \#EXTINF* ]]; then
-              last_extinf="$line"
-              continue
-            fi
-
-            if [[ "$line" == http* ]]; then
-              url="$line"
-
-              if [[ -z "$last_extinf" ]]; then
-                extinf="#EXTINF:-1 ,TEST"
-              else
-                extinf="$last_extinf"
-              fi
-
-              echo "Testing: $url"
-
-              # HEAD-Check (Timeout 10s, Fehler abfangen)
-              if curl -Is --max-time 10 "$url" >/dev/null 2>&1; then
-                head_ok=true
-              else
-                head_ok=false
-              fi
-
-              # Inhalt abrufen (Timeout 20s, Fehler abfangen)
-              content=$(curl -L --max-time 20 -s "$url" 2>/dev/null || echo "")
-
-              # M3U8?
-              [[ "$content" == *"#EXTM3U"* ]] && m3u_ok=true || m3u_ok=false
-
-              # Master Playlist?
-              echo "$content" | grep -q "\.m3u8" && master_ok=true || master_ok=false
-
-              # Segmente?
-              echo "$content" | grep -E -q "\.ts|\.m4s|\.aac" && seg_ok=true || seg_ok=false
-
-              # FINAL DECISION
-              if $head_ok || $m3u_ok || $master_ok || $seg_ok; then
-                echo "[OK] $url"
-                {
-                  echo "$extinf"
-                  echo "$url"
-                  echo
-                } >> output/reachable.txt
-              else
-                echo "[FAILED] $url"
-                {
-                  echo "$extinf"
-                  echo "$url"
-                  echo
-                } >> output/unreachable.txt
-              fi
-
-              last_extinf=""
-            fi
-
-          done < checker/playlist.m3u
-
-      - name: Sort results alphabetically
+      - name: Run Python stream checker
         run: |
-          sort -t',' -k2 output/reachable.txt -o output/reachable.txt
-          sort -t',' -k2 output/unreachable.txt -o output/unreachable.txt
+          python3 checker/streamcheck.py
 
-      - name: Upload results as artifact
+      - name: Upload results
         uses: actions/upload-artifact@v4
         with:
           name: stream-check-results
-          path: output/
+          path: ~/Documents/Test/output.m3u8
 
       - name: Commit results to repo
         run: |
-          cp output/reachable.txt checker/reachable.txt
-          cp output/unreachable.txt checker/unreachable.txt
+          cp ~/Documents/Test/output.m3u8 checker/reachable.txt
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add checker/reachable.txt checker/unreachable.txt
+          git add checker/reachable.txt
           git commit -m "Update stream check results" || echo "No changes"
-
           git pull --rebase origin main
           git push origin main
