@@ -12,17 +12,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
 
       - name: Check URLs
         run: |
           echo "Checking stream URLs..."
 
-          # Ergebnisordner (NICHT im Repo!)
           mkdir -p output
           > output/reachable.txt
           > output/unreachable.txt
 
-          # Playlist aus checker/ lesen
           grep -E "^http" checker/playlist.m3u | while IFS= read -r url || [ -n "$url" ]; do
             echo "Testing: $url"
             if curl -Is --max-time 5 "$url" >/dev/null; then
@@ -34,8 +35,22 @@ jobs:
             fi
           done
 
-      - name: Upload results
+      - name: Upload results as artifact
         uses: actions/upload-artifact@v4
         with:
           name: stream-check-results
           path: output/
+
+      - name: Commit results back to repo
+        run: |
+          echo "Committing results to repo..."
+
+          cp output/reachable.txt checker/reachable.txt
+          cp output/unreachable.txt checker/unreachable.txt
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add checker/reachable.txt checker/unreachable.txt
+          git commit -m "Update stream check results" || echo "No changes to commit"
+          git push
