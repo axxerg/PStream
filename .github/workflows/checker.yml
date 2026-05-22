@@ -15,13 +15,14 @@ jobs:
 
       - name: Check URLs
         run: |
+          set +e
           echo "Checking stream URLs..."
 
           mkdir -p checker
           > checker/reachable.txt
           > checker/unreachable.txt
 
-          grep -E "^http" checker/playlist.m3u | while read -r url; do
+          grep -E "^http" checker/playlist.m3u | while IFS= read -r url || [ -n "$url" ]; do
             echo "Testing: $url"
             if curl -Is --max-time 5 "$url" >/dev/null; then
               echo "[OK] $url"
