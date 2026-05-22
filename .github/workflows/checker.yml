@@ -1,4 +1,4 @@
-      - name: Check URLs (Real IPTV Validation)
+name: Check M3U Streams
         run: |
           echo "Checking stream URLs..."
 
