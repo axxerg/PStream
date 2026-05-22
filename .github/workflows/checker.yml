@@ -1,0 +1,26 @@
+name: Check M3U Streams
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # alle 6 Stunden
+  workflow_dispatch:
+
+jobs:
+  check-streams:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Check URLs
+        run: |
+          echo "Checking stream URLs..."
+          grep -E "^http" checker/playlist.m3u | while read -r url; do
+            echo "Testing: $url"
+            if curl -Is --max-time 5 "$url" >/dev/null; then
+              echo "[OK] $url"
+            else
+              echo "[FAILED] $url"
+            fi
+          done
