@@ -1,8 +1,8 @@
 #EXTM3U
 #EXT-X-VERSION:3
 #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1500000,RESOLUTION=1920x1080
-https://ciner-live.ercdn.net/showturk/showturk_1080p.m3u8?e=1785021139&st=j_KfrFKixm4rNKMy5md8pQ&tv=1
+https://ciner-live.ercdn.net/showturk/showturk_1080p.m3u8?e=1785024770&st=2o1xhvpqDqCMA5QPzVrfyQ&tv=1
 #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1200000,RESOLUTION=1280x720
-https://ciner-live.ercdn.net/showturk/showturk_720p.m3u8?e=1785021139&st=j_KfrFKixm4rNKMy5md8pQ&tv=1
+https://ciner-live.ercdn.net/showturk/showturk_720p.m3u8?e=1785024770&st=2o1xhvpqDqCMA5QPzVrfyQ&tv=1
 #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=600000,RESOLUTION=640x360
-https://ciner-live.ercdn.net/showturk/showturk_360p.m3u8?e=1785021139&st=j_KfrFKixm4rNKMy5md8pQ&tv=1
+https://ciner-live.ercdn.net/showturk/showturk_360p.m3u8?e=1785024770&st=2o1xhvpqDqCMA5QPzVrfyQ&tv=1
