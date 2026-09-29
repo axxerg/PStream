@@ -1,342 +1,51 @@
-import json
-import os
-import re
-import time
-from urllib.parse import urlencode
+name: update-stream
 
-import requests
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
 
+jobs:
+  update-stream:
+    runs-on: ubuntu-latest
 
-PAGE_URL = "https://www.atv.com.tr/canli-yayin"
-OUTPUT = "output/atv.m3u8"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-WEBSITE_ID = "0FE2A405-8AFA-4238-B429-E5F96AEC3A5C"
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
 
-HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/140.0.0.0 Safari/537.36"
-    ),
-    "Accept": "*/*",
-    "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
-    "Referer": PAGE_URL,
-    "Origin": "https://www.atv.com.tr",
-}
+      - name: Install requests
+        run: python -m pip install requests
 
+      - name: Run ATV
+        run: python src/atv.py
 
-def get_page(session):
-    print("🌐 Lade ATV-Seite ...")
+      - name: Check output
+        run: |
+          echo "===== OUTPUT ====="
+          ls -la
+          ls -la output || true
 
-    response = session.get(
-        PAGE_URL,
-        timeout=30,
-    )
+          if [ ! -f output/atv.m3u8 ]; then
+            echo "ERROR: output/atv.m3u8 wurde nicht erzeugt."
+            exit 1
+          fi
 
-    response.raise_for_status()
+          echo "ATV M3U8 gefunden:"
+          cat output/atv.m3u8
 
-    print("✅ ATV-Seite geladen")
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
 
-    return response.text
+          git add output/atv.m3u8
 
+          git diff --cached --quiet || git commit -m "Update ATV stream"
 
-def extract_player_config(html):
-    """
-    Extrahiert die TMD-Playerdaten aus der ATV-Seite.
-    """
-
-    website_match = re.search(
-        r'data-websiteid=["\']([^"\']+)["\']',
-        html,
-        re.IGNORECASE,
-    )
-
-    video_match = re.search(
-        r'data-videoid=["\']([^"\']+)["\']',
-        html,
-        re.IGNORECASE,
-    )
-
-    sid_match = re.search(
-        r'data-sid=["\']([^"\']+)["\']',
-        html,
-        re.IGNORECASE,
-    )
-
-    website_id = (
-        website_match.group(1)
-        if website_match
-        else WEBSITE_ID
-    )
-
-    video_id = (
-        video_match.group(1)
-        if video_match
-        else "00000000-0000-0000-0000-000000000000"
-    )
-
-    session_id = (
-        sid_match.group(1)
-        if sid_match
-        else ""
-    )
-
-    print()
-    print("📺 Player-Konfiguration")
-    print(f"   Website ID : {website_id}")
-    print(f"   Video ID   : {video_id}")
-
-    if session_id:
-        print(f"   Session ID : {session_id}")
-
-    return {
-        "websiteId": website_id,
-        "videoId": video_id,
-        "sessionId": session_id,
-    }
-
-
-def get_atv_base_url():
-    """
-    ATV Avrupa verwendet laut Player-JavaScript
-    diesen Stream als Europa-Basis.
-    """
-
-    return (
-        "https://trkvz-live.ercdn.net/"
-        "atvavrupahd/atvavrupahd.m3u8"
-    )
-
-
-def request_secure_url(session, stream_url):
-    """
-    Entspricht:
-
-        https://securevideotoken.tmgrup.com.tr/webtv/secure
-
-    Die Antwort enthält videoUrls.Url.
-    """
-
-    endpoint = (
-        "https://securevideotoken.tmgrup.com.tr/"
-        "webtv/secure"
-    )
-
-    random_number = str(
-        int(time.time() * 1000) % 1000000
-    )
-
-    params = {
-        "url": stream_url,
-    }
-
-    headers = {
-        **HEADERS,
-        "X-isApp": "false",
-        "X-Rand": str(
-            int(time.time() * 1000)
-        ),
-        "Accept": "application/json",
-    }
-
-    url = endpoint + "?" + random_number
-
-    print()
-    print("🔐 Fordere aktuellen ATV-Token an ...")
-
-    response = session.get(
-        url,
-        params=params,
-        headers=headers,
-        timeout=30,
-    )
-
-    response.raise_for_status()
-
-    data = response.json()
-
-    print("✅ Secure-Token Antwort erhalten")
-
-    if not isinstance(data, dict):
-        raise RuntimeError(
-            "Secure-Token Antwort ist kein Objekt."
-        )
-
-    # Exakt der Wert, den der Player verwendet:
-    #
-    # videoUrls.Url
-    #
-    stream = data.get("Url")
-
-    if isinstance(stream, str) and stream:
-        return stream.strip()
-
-    # Fallback
-    stream = data.get("url")
-
-    if isinstance(stream, str) and stream:
-        return stream.strip()
-
-    print()
-    print("❌ Keine Url gefunden.")
-    print(
-        json.dumps(
-            data,
-            indent=2,
-            ensure_ascii=False,
-        )
-    )
-
-    raise RuntimeError(
-        "Secure-Token enthält keine Url."
-    )
-
-
-def download_m3u8(session, url):
-    print()
-    print("📥 Lade aktuelle ATV M3U8:")
-    print(url)
-
-    response = session.get(
-        url,
-        headers={
-            **HEADERS,
-            "Accept": (
-                "application/vnd.apple.mpegurl,"
-                "application/x-mpegURL,"
-                "*/*"
-            ),
-        },
-        timeout=30,
-    )
-
-    response.raise_for_status()
-
-    content = response.text
-
-    if "#EXTM3U" not in content:
-        raise RuntimeError(
-            "Die Antwort ist keine gültige M3U8."
-        )
-
-    print("✅ M3U8 geladen")
-
-    return content
-
-
-def save_playlist(content):
-    os.makedirs(
-        os.path.dirname(OUTPUT),
-        exist_ok=True,
-    )
-
-    temp = OUTPUT + ".tmp"
-
-    with open(
-        temp,
-        "w",
-        encoding="utf-8",
-        newline="\n",
-    ) as file:
-        file.write(content)
-
-    os.replace(
-        temp,
-        OUTPUT,
-    )
-
-    print()
-    print(f"💾 Gespeichert: {OUTPUT}")
-
-
-def main():
-
-    print()
-    print("========================================")
-    print("       ATV AVRUPA LIVE EXTRACTOR")
-    print("========================================")
-    print()
-
-    start = time.time()
-
-    session = requests.Session()
-    session.headers.update(HEADERS)
-
-    try:
-
-        # ---------------------------------------------
-        # 1. ATV-Seite
-        # ---------------------------------------------
-
-        html = get_page(session)
-
-        config = extract_player_config(
-            html
-        )
-
-        # ---------------------------------------------
-        # 2. Europa-Basis aus Player-Code
-        # ---------------------------------------------
-
-        base_url = get_atv_base_url()
-
-        print()
-        print("🎯 ATV Avrupa Basis:")
-        print(base_url)
-
-        # ---------------------------------------------
-        # 3. Secure Token
-        # ---------------------------------------------
-
-        current_url = request_secure_url(
-            session,
-            base_url,
-        )
-
-        print()
-        print("🔗 AKTUELLE ATV-URL:")
-        print(current_url)
-
-        # ---------------------------------------------
-        # 4. M3U8 laden
-        # ---------------------------------------------
-
-        playlist = download_m3u8(
-            session,
-            current_url,
-        )
-
-        # ---------------------------------------------
-        # 5. Speichern
-        # ---------------------------------------------
-
-        save_playlist(
-            playlist
-        )
-
-        print()
-        print("========================================")
-        print("                  FERTIG")
-        print("========================================")
-        print()
-        print(
-            f"⏱️ Dauer: "
-            f"{round(time.time() - start, 2)} Sekunden"
-        )
-        print()
-
-        return 0
-
-    except Exception as error:
-
-        print()
-        print(
-            f"❌ {type(error).__name__}: {error}"
-        )
-        print()
-
-        return 1
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+          git pull --rebase origin main
+          git push
