@@ -1,5 +1,5 @@
-import re
 import json
+import re
 import time
 import random
 import requests
@@ -13,65 +13,70 @@ OUTPUT_FILE = Path("output/atv.m3u8")
 WEBSITE_ID = "0fe2a405-8afa-4238-b429-e5f96aec3a5c"
 VIDEO_ID = "00000000-0000-0000-0000-000000000000"
 
-HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/140.0.0.0 Safari/537.36"
-    ),
-    "Accept": "application/json,text/plain,*/*",
-}
+USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/140.0.0.0 Safari/537.36"
+)
 
 
-def find_player_script(html):
-    """
-    Findet tmdplayersetupv2.js auf der ATV-Seite.
-    """
+def recursive_find(obj, wanted):
+    """Sucht einen Wert rekursiv im JSON."""
+
+    if isinstance(obj, dict):
+        for key, value in obj.items():
+
+            if key.lower() == wanted.lower():
+                return value
+
+            result = recursive_find(value, wanted)
+
+            if result is not None:
+                return result
+
+    elif isinstance(obj, list):
+        for item in obj:
+            result = recursive_find(item, wanted)
+
+            if result is not None:
+                return result
+
+    return None
+
+
+def find_tmd_script(html):
+    """Findet tmdplayersetupv2.js."""
 
     match = re.search(
         r'https?://[^"\']*tmdplayersetupv2\.js[^"\']*',
         html,
-        re.IGNORECASE,
+        re.IGNORECASE
     )
 
     if match:
         return match.group(0).replace("\\/", "/")
 
-    # Relative Variante
-    match = re.search(
-        r'(?:src=["\'])([^"\']*tmdplayersetupv2\.js[^"\']*)',
-        html,
-        re.IGNORECASE,
+    return (
+        "https://i.tmgrup.com.tr/"
+        "videojs/js/tmdplayersetupv2.js?v=926"
     )
 
-    if match:
-        url = match.group(1)
 
-        if url.startswith("//"):
-            return "https:" + url
-
-        if url.startswith("/"):
-            return "https://www.atv.com.tr" + url
-
-        return url
-
-    return None
-
-
-def find_base_request_url(js):
-    """
-    Versucht baseRequestUrl aus der TMD-JS-Datei zu extrahieren.
-    """
+def find_base_url(js):
+    """Findet baseRequestUrl."""
 
     patterns = [
-        r'baseRequestUrl\s*:\s*["\']([^"\']+)["\']',
-        r'baseRequestUrl\s*=\s*["\']([^"\']+)["\']',
-        r'"baseRequestUrl"\s*:\s*"([^"]+)"',
-        r"'baseRequestUrl'\s*:\s*'([^']+)'",
+        r'baseRequestUrl\s*:\s*["\']([^"\']+)',
+        r'baseRequestUrl\s*=\s*["\']([^"\']+)',
+        r'"baseRequestUrl"\s*:\s*"([^"]+)',
     ]
 
     for pattern in patterns:
-        match = re.search(pattern, js)
+        match = re.search(
+            pattern,
+            js,
+            re.IGNORECASE
+        )
 
         if match:
             return match.group(1)
@@ -80,9 +85,6 @@ def find_base_request_url(js):
 
 
 def get_tmd_data(session, base_url):
-    """
-    Ruft den TMD getvideo Endpoint auf.
-    """
 
     url = (
         base_url.rstrip("/")
@@ -98,274 +100,278 @@ def get_tmd_data(session, base_url):
     response = session.get(
         url,
         headers={
+            "User-Agent": USER_AGENT,
             "X-isApp": "false",
             "Content-Type": "application/json",
+            "Referer": PAGE_URL,
+            "Origin": "https://www.atv.com.tr",
         },
-        timeout=30,
+        timeout=30
     )
 
     print("TMD HTTP:", response.status_code)
 
     response.raise_for_status()
 
-    data = response.json()
-
-    if not data.get("success"):
-        raise RuntimeError(
-            "TMD API meldet success=false"
-        )
-
-    return data
+    return response.json()
 
 
-def build_atv_avrupa_url(video):
-    """
-    ATV Avrupa URL entsprechend PlayerDaion.
-    """
+def get_secure_url(session, stream_url):
 
-    is_europe = video.get("isAtvEU")
-
-    print("isAtvEU:", is_europe)
-
-    if not is_europe:
-        raise RuntimeError(
-            "TMD meldet isAtvEU=false. "
-            "Damit würde der normale ATV-Stream verwendet werden."
-        )
-
-    # Der europäische Basisstream aus PlayerDaion.
-    return (
-        "https://trkvz-live.ercdn.net/"
-        "atvavrupa/"
-        "atvavrupa_576p.m3u8"
+    random_number = random.randint(
+        1,
+        1000000
     )
-
-
-def secure_token(session, video_url):
-    """
-    Reproduziert RequestSecureToken().
-    """
-
-    random_number = random.randint(1, 1_000_000)
 
     url = (
         "https://securevideotoken.tmgrup.com.tr/"
         "webtv/secure?"
         + str(random_number)
         + "&url="
-        + quote(video_url, safe="")
+        + quote(stream_url, safe="")
     )
 
-    headers = {
-        "X-isApp": "false",
-        "X-Rand": str(int(time.time() * 1000)),
-        "User-Agent": HEADERS["User-Agent"],
-        "Referer": PAGE_URL,
-        "Origin": "https://www.atv.com.tr",
-    }
-
-    print()
     print("Secure Token Request:")
     print(url)
 
     response = session.get(
         url,
-        headers=headers,
-        timeout=30,
+        headers={
+            "User-Agent": USER_AGENT,
+            "X-isApp": "false",
+            "X-Rand": str(
+                int(time.time() * 1000)
+            ),
+            "Referer": PAGE_URL,
+            "Origin": "https://www.atv.com.tr",
+            "Accept": "application/json,text/plain,*/*",
+        },
+        timeout=30
     )
 
-    print("Token HTTP:", response.status_code)
+    print(
+        "Secure Token HTTP:",
+        response.status_code
+    )
 
     response.raise_for_status()
 
     data = response.json()
 
-    print("Token Response erhalten.")
-
-    # TMD verwendet videoUrls.Url
+    # Normal response
     if isinstance(data, dict):
+
         if data.get("Url"):
             return data["Url"]
 
         if data.get("url"):
             return data["url"]
 
-        # Falls die Antwort verschachtelt ist
-        for key in ("data", "video", "videoUrls"):
-            obj = data.get(key)
+    # Verschachtelte Response
+    for key in (
+        "data",
+        "video",
+        "videoUrls"
+    ):
 
-            if isinstance(obj, dict):
-                if obj.get("Url"):
-                    return obj["Url"]
+        value = data.get(key)
 
-                if obj.get("url"):
-                    return obj["url"]
+        if isinstance(value, dict):
+
+            if value.get("Url"):
+                return value["Url"]
+
+            if value.get("url"):
+                return value["url"]
 
     raise RuntimeError(
-        "Secure-Token-Antwort enthält keine Url."
+        "Secure Token liefert keine Stream-URL."
     )
 
 
 def main():
 
     session = requests.Session()
-    session.headers.update(HEADERS)
 
-    # --------------------------------------------------
-    # 1. ATV Seite
-    # --------------------------------------------------
+    session.headers.update({
+        "User-Agent": USER_AGENT,
+        "Accept": (
+            "text/html,application/xhtml+xml,"
+            "application/xml;q=0.9,image/webp,*/*;q=0.8"
+        ),
+        "Accept-Language": "tr-TR,tr;q=0.9,en;q=0.8",
+    })
+
+    # ========================================================
+    # 1. ATV-Seite
+    # ========================================================
 
     print("Lade ATV-Seite...")
 
-    page_response = session.get(
+    page = session.get(
         PAGE_URL,
-        timeout=30,
+        timeout=30
     )
 
-    page_response.raise_for_status()
+    page.raise_for_status()
 
-    html = page_response.text
+    html = page.text
 
     print("ATV-Seite geladen.")
 
-    # --------------------------------------------------
-    # 2. TMD JS
-    # --------------------------------------------------
+    # ========================================================
+    # 2. TMD Player
+    # ========================================================
 
-    player_script = find_player_script(html)
-
-    if not player_script:
-        raise RuntimeError(
-            "tmdplayersetupv2.js wurde nicht gefunden."
-        )
+    tmd_script = find_tmd_script(html)
 
     print()
     print("TMD Player:")
-    print(player_script)
+    print(tmd_script)
 
     js_response = session.get(
-        player_script,
-        timeout=30,
+        tmd_script,
+        timeout=30
     )
 
     js_response.raise_for_status()
 
     js = js_response.text
 
-    # --------------------------------------------------
+    # ========================================================
     # 3. baseRequestUrl
-    # --------------------------------------------------
+    # ========================================================
 
-    base_url = find_base_request_url(js)
+    base_url = find_base_url(js)
 
     if not base_url:
 
         Path("output").mkdir(
             parents=True,
-            exist_ok=True,
+            exist_ok=True
         )
 
-        Path("output/tmdplayersetupv2.js").write_text(
+        Path(
+            "output/tmdplayersetupv2.js"
+        ).write_text(
             js,
-            encoding="utf-8",
+            encoding="utf-8"
         )
 
         raise RuntimeError(
-            "baseRequestUrl konnte nicht gefunden werden. "
-            "Die heruntergeladene JS-Datei liegt unter "
-            "output/tmdplayersetupv2.js"
+            "baseRequestUrl nicht gefunden."
         )
 
     print()
     print("baseRequestUrl:")
     print(base_url)
 
-    # --------------------------------------------------
-    # 4. TMD getvideo
-    # --------------------------------------------------
+    # ========================================================
+    # 4. TMD API
+    # ========================================================
 
     data = get_tmd_data(
         session,
-        base_url,
+        base_url
     )
 
     # Debug speichern
     Path("output").mkdir(
         parents=True,
-        exist_ok=True,
+        exist_ok=True
     )
 
-    Path("output/tmd.json").write_text(
+    Path(
+        "output/tmd.json"
+    ).write_text(
         json.dumps(
             data,
             indent=2,
-            ensure_ascii=False,
+            ensure_ascii=False
         ),
-        encoding="utf-8",
+        encoding="utf-8"
     )
 
-    video = data.get("video")
+    # ========================================================
+    # 5. isAtvEU überall suchen
+    # ========================================================
 
-    if not isinstance(video, dict):
-        raise RuntimeError(
-            "TMD-Antwort enthält kein video-Objekt."
-        )
+    is_europe = recursive_find(
+        data,
+        "isAtvEU"
+    )
 
-    # --------------------------------------------------
-    # 5. ATV Europa URL
-    # --------------------------------------------------
-
-    video_url = build_atv_avrupa_url(video)
-
-    print()
-    print("ATV Europa Basis-URL:")
-    print(video_url)
-
-    # --------------------------------------------------
-    # 6. Secure Token
-    # --------------------------------------------------
-
-    is_ztk = video.get("IsZtkTokenActive")
-
-    print("IsZtkTokenActive:", is_ztk)
-
-    if is_ztk:
-        stream_url = secure_token(
-            session,
-            video_url,
-        )
-    else:
-        stream_url = video_url
-
-    # --------------------------------------------------
-    # 7. Kontrolle
-    # --------------------------------------------------
-
-    if "trkvz-live.ercdn.net/atvavrupa/" not in stream_url:
-        raise RuntimeError(
-            "Die erhaltene URL ist NICHT ATV Avrupa:\n"
-            + stream_url
-        )
-
-    if ".m3u8" not in stream_url:
-        raise RuntimeError(
-            "Die erhaltene URL ist keine M3U8:\n"
-            + stream_url
+    if is_europe is None:
+        is_europe = recursive_find(
+            data,
+            "IsAtvEU"
         )
 
     print()
-    print("======================================")
-    print("ATV EUROPA STREAM")
-    print("======================================")
+    print("isAtvEU:", is_europe)
+
+    # ========================================================
+    # 6. ATV EUROPA erzwingen
+    # ========================================================
+
+    # Wir wollen ausdrücklich ATV Europa.
+    #
+    # Die Seite liefert den Europa-Stream:
+    #
+    # trkvz-live.ercdn.net/atvavrupa/
+    #
+    # Die nackte URL darf NICHT direkt aufgerufen werden.
+    # Sie wird anschließend über securevideotoken signiert.
+
+    stream_base = (
+        "https://trkvz-live.ercdn.net/"
+        "atvavrupa/"
+        "atvavrupa_576p.m3u8"
+    )
+
+    print()
+    print("ATV Avrupa Basis:")
+    print(stream_base)
+
+    # ========================================================
+    # 7. Secure Token
+    # ========================================================
+
+    stream_url = get_secure_url(
+        session,
+        stream_base
+    )
+
+    print()
+    print("Signierte URL:")
     print(stream_url)
 
-    # --------------------------------------------------
-    # 8. M3U schreiben
-    # --------------------------------------------------
+    # ========================================================
+    # 8. Prüfen
+    # ========================================================
+
+    if (
+        "trkvz-live.ercdn.net/atvavrupa/"
+        not in stream_url.lower()
+    ):
+        raise RuntimeError(
+            "Secure Token hat keine ATV-Avrupa-URL geliefert:\n"
+            + stream_url
+        )
+
+    if ".m3u8" not in stream_url.lower():
+        raise RuntimeError(
+            "Keine M3U8-URL erhalten:\n"
+            + stream_url
+        )
+
+    # ========================================================
+    # 9. M3U8 schreiben
+    # ========================================================
 
     OUTPUT_FILE.parent.mkdir(
         parents=True,
-        exist_ok=True,
+        exist_ok=True
     )
 
     OUTPUT_FILE.write_text(
@@ -373,9 +379,14 @@ def main():
         "#EXTINF:-1,ATV Avrupa\n"
         + stream_url
         + "\n",
-        encoding="utf-8",
+        encoding="utf-8"
     )
 
+    print()
+    print("====================================")
+    print("ATV EUROPA ERFOLGREICH")
+    print("====================================")
+    print(stream_url)
     print()
     print("Gespeichert:")
     print(OUTPUT_FILE)
