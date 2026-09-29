@@ -1,12 +1,13 @@
+import json
 import os
 import re
 import time
-import html
 import requests
 from urllib.parse import urljoin
 
-OUTPUT = "output/showturk.m3u8"
+
 PAGE_URL = "https://www.showturk.com.tr/canli-yayin"
+OUTPUT = "output/showturk.m3u8"
 
 HEADERS = {
     "User-Agent": (
@@ -18,121 +19,208 @@ HEADERS = {
         "text/html,application/xhtml+xml,application/xml;q=0.9,"
         "image/avif,image/webp,*/*;q=0.8"
     ),
-    "Accept-Language": "en-US,en;q=0.9",
+    "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
     "Referer": "https://www.showturk.com.tr/",
-    "Connection": "keep-alive",
 }
 
-PATTERNS = [
-    r'https?://[^\s"\']+\.m3u8[^\s"\']*',
-    r'"(?:file|src|hls|streamUrl)"\s*:\s*"([^"]+\.m3u8[^"]*)"',
-    r"'(?:file|src|hls|streamUrl)'\s*:\s*'([^']+\.m3u8[^']*)'",
-    r'(https?:\\/\\/[^"\']+\.m3u8[^"\']*)',
-]
+
+def fetch_page(session):
+    print("🌍 Lade ShowTürk-Seite ...")
+
+    response = session.get(
+        PAGE_URL,
+        headers=HEADERS,
+        timeout=(10, 20),
+    )
+
+    response.raise_for_status()
+
+    print(f"✅ Webseite geladen: HTTP {response.status_code}")
+
+    return response.text
 
 
-def fetch_page(session: requests.Session) -> str:
-    r = session.get(PAGE_URL, timeout=(5, 15))
-    r.raise_for_status()
-    return r.text
+def extract_master_url(page):
+    print("🔎 Suche data-hope-video ...")
+
+    # data-hope-video='{...}'
+    match = re.search(
+        r'data-hope-video=[\'"](.+?)[\'"]\s*>',
+        page,
+        re.DOTALL,
+    )
+
+    if not match:
+        raise ValueError("data-hope-video wurde nicht gefunden")
+
+    json_text = match.group(1)
+
+    # HTML/JSON-Escapes zurückwandeln
+    json_text = (
+        json_text
+        .replace("&quot;", '"')
+        .replace("&#39;", "'")
+        .replace("&amp;", "&")
+        .replace("\\/", "/")
+    )
+
+    try:
+        data = json.loads(json_text)
+    except json.JSONDecodeError as e:
+        raise ValueError(
+            f"data-hope-video konnte nicht als JSON gelesen werden: {e}"
+        )
+
+    try:
+        url = data["media"]["m3u8"][0]["src"]
+    except (KeyError, IndexError, TypeError):
+        raise ValueError(
+            "media.m3u8[0].src wurde im data-hope-video nicht gefunden"
+        )
+
+    if not url.startswith(("http://", "https://")):
+        url = urljoin(PAGE_URL, url)
+
+    print("✅ Aktuelle Master-M3U8 gefunden:")
+    print(url)
+
+    return url
 
 
-def extract_m3u8(html_text: str) -> str | None:
-    source = html.unescape(html_text)
+def fetch_master_playlist(session, master_url):
+    print("📡 Lade Master-M3U8 ...")
 
-    for pattern in PATTERNS:
-        match = re.search(pattern, source, re.IGNORECASE)
-        if match:
-            url = match.group(1) if match.lastindex else match.group(0)
-            return url.replace("\\/", "/")
+    headers = {
+        "User-Agent": HEADERS["User-Agent"],
+        "Accept": "*/*",
+        "Referer": PAGE_URL,
+        "Origin": "https://www.showturk.com.tr",
+    }
 
-    return None
+    response = session.get(
+        master_url,
+        headers=headers,
+        timeout=(10, 20),
+    )
+
+    response.raise_for_status()
+
+    content = response.text
+
+    if "#EXTM3U" not in content:
+        raise ValueError("Die Antwort ist keine gültige M3U8-Datei")
+
+    print("✅ Master-M3U8 erfolgreich geladen")
+
+    return content, response.url
 
 
-def normalize_playlist(content: str, playlist_url: str) -> str:
+def normalize_playlist(content, master_url):
     """
-    Convert relative variant URLs inside M3U8 to absolute URLs.
+    Macht relative URLs in der Master-Playlist absolut.
+    Absolute URLs bleiben unverändert.
     """
-    lines = []
-    base = playlist_url.rsplit("/", 1)[0] + "/"
+
+    result = []
+
+    base_url = master_url.rsplit("/", 1)[0] + "/"
 
     for line in content.splitlines():
-        stripped = line.strip()
+        line = line.strip()
 
-        if stripped and not stripped.startswith("#") and ".m3u8" in stripped:
-            line = urljoin(base, stripped)
+        if (
+            line
+            and not line.startswith("#")
+            and not line.startswith("http://")
+            and not line.startswith("https://")
+        ):
+            line = urljoin(base_url, line)
 
-        lines.append(line)
+        result.append(line)
 
-    return "\n".join(lines) + "\n"
-
-
-def fetch_playlist(session: requests.Session, url: str) -> str:
-    headers = dict(HEADERS)
-    headers.update({
-        "Accept": "*/*",
-        "Origin": "https://www.showturk.com.tr",
-        "Sec-Fetch-Dest": "empty",
-        "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Site": "cross-site",
-    })
-
-    r = session.get(url, headers=headers, timeout=(5, 15))
-    r.raise_for_status()
-
-    if "#EXTM3U" not in r.text:
-        raise ValueError("Keine gültige M3U8 erhalten")
-
-    return normalize_playlist(r.text, r.url)
+    return "\n".join(result) + "\n"
 
 
-def save_playlist(content: str) -> None:
-    os.makedirs("output", exist_ok=True)
-    tmp = OUTPUT + ".tmp"
+def save_playlist(content):
+    os.makedirs(os.path.dirname(OUTPUT), exist_ok=True)
 
-    with open(tmp, "w", encoding="utf-8", newline="\n") as f:
-        f.write(content)
+    temp_file = OUTPUT + ".tmp"
 
-    os.replace(tmp, OUTPUT)
+    with open(temp_file, "w", encoding="utf-8", newline="\n") as file:
+        file.write(content)
+
+    os.replace(temp_file, OUTPUT)
+
+    print(f"💾 Gespeichert: {OUTPUT}")
 
 
-def main() -> int:
-    print("=== ShowTurk Extractor ===")
+def main():
+    print()
+    print("======================================")
+    print("       SHOWTÜRK M3U8 EXTRACTOR")
+    print("======================================")
+    print()
+
     start = time.time()
 
     try:
         session = requests.Session()
-        session.headers.update(HEADERS)
 
-        print("🌍 Lade Live-Seite …")
+        # 1. ShowTürk-Seite laden
         page = fetch_page(session)
 
-        stream_url = extract_m3u8(page)
-        if not stream_url:
-            raise ValueError("Keine Stream-URL im HTML gefunden")
+        # 2. aktuellen signierten M3U8-Link aus data-hope-video holen
+        master_url = extract_master_url(page)
 
-        print(f"🔗 Stream URL: {stream_url}")
+        # 3. Master-M3U8 herunterladen
+        playlist, final_url = fetch_master_playlist(
+            session,
+            master_url,
+        )
 
-        playlist = fetch_playlist(session, stream_url)
+        # 4. URLs normalisieren
+        playlist = normalize_playlist(
+            playlist,
+            final_url,
+        )
+
+        # 5. Playlist speichern
         save_playlist(playlist)
 
-        print(f"💾 gespeichert: {OUTPUT}")
-        print(f"⏱️ Dauer: {round(time.time() - start, 2)}s")
+        print()
+        print("======================================")
+        print("              FERTIG")
+        print("======================================")
+        print(f"⏱️ Dauer: {round(time.time() - start, 2)} Sekunden")
+        print()
+        print("Die erzeugte Datei ist:")
+        print(os.path.abspath(OUTPUT))
+        print()
+
         return 0
 
     except requests.HTTPError as e:
-        print(f"❌ HTTP Fehler: {e}")
+        print()
+        print(f"❌ HTTP-Fehler: {e}")
         return 1
 
     except requests.RequestException as e:
+        print()
         print(f"❌ Netzwerkfehler: {e}")
         return 2
 
-    except (OSError, ValueError) as e:
-        print(f"❌ Fehler: {e}")
+    except (ValueError, KeyError, IndexError) as e:
+        print()
+        print(f"❌ Fehler beim Auslesen: {e}")
         return 3
 
+    except OSError as e:
+        print()
+        print(f"❌ Datei-/Systemfehler: {e}")
+        return 4
+
     except Exception as e:
+        print()
         print(f"❌ Unerwarteter Fehler: {type(e).__name__}: {e}")
         return 99
 
