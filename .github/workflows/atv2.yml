@@ -10,42 +10,161 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+      # --------------------------------------------------
+      # 1. Repository
+      # --------------------------------------------------
+
       - name: Checkout
         uses: actions/checkout@v4
+
+      # --------------------------------------------------
+      # 2. Python
+      # --------------------------------------------------
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      - name: Install requests
-        run: python -m pip install requests
+      # --------------------------------------------------
+      # 3. Requests
+      # --------------------------------------------------
 
-      - name: Run ATV
-        run: python src/atv.py
-
-      - name: Check output
+      - name: Install dependencies
         run: |
-          echo "===== OUTPUT ====="
-          ls -la
-          ls -la output || true
+          python -m pip install --upgrade pip
+          python -m pip install requests
+
+      # --------------------------------------------------
+      # 4. ATV Stream erzeugen
+      # --------------------------------------------------
+
+      - name: Run ATV extractor
+        run: |
+          python src/atv.py
+
+      # --------------------------------------------------
+      # 5. Datei prüfen
+      # --------------------------------------------------
+
+      - name: Check ATV output
+        run: |
+
+          echo "======================================"
+          echo "ATV OUTPUT"
+          echo "======================================"
 
           if [ ! -f output/atv.m3u8 ]; then
-            echo "ERROR: output/atv.m3u8 wurde nicht erzeugt."
+            echo "FEHLER: output/atv.m3u8 fehlt!"
             exit 1
           fi
 
-          echo "ATV M3U8 gefunden:"
           cat output/atv.m3u8
+
+          echo
+          echo "======================================"
+          echo "EXTRACTED URL"
+          echo "======================================"
+
+          URL=$(sed -n '3p' output/atv.m3u8)
+
+          echo "$URL"
+
+          if [[ "$URL" != https://trkvz-live.ercdn.net/atvavrupa/* ]]; then
+            echo
+            echo "FEHLER: Keine ATV Avrupa URL!"
+            exit 1
+          fi
+
+          if [[ "$URL" != *"st="* ]]; then
+            echo
+            echo "FEHLER: st= Token fehlt!"
+            exit 1
+          fi
+
+          if [[ "$URL" != *"e="* ]]; then
+            echo
+            echo "FEHLER: e= Ablaufzeit fehlt!"
+            exit 1
+          fi
+
+      # --------------------------------------------------
+      # 6. CDN testen
+      # --------------------------------------------------
+
+      - name: Test ATV CDN
+        run: |
+
+          URL=$(sed -n '3p' output/atv.m3u8)
+
+          echo "======================================"
+          echo "TEST ATV CDN"
+          echo "======================================"
+
+          echo "URL:"
+          echo "$URL"
+
+          echo
+          echo "HTTP RESPONSE:"
+
+          curl \
+            -L \
+            --max-time 20 \
+            -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/140 Safari/537.36" \
+            -e "https://www.atv.com.tr/" \
+            -H "Origin: https://www.atv.com.tr" \
+            -D /tmp/headers.txt \
+            -o /tmp/atv.m3u8 \
+            "$URL"
+
+          echo
+          echo "======================================"
+          echo "HEADERS"
+          echo "======================================"
+
+          cat /tmp/headers.txt
+
+          echo
+          echo "======================================"
+          echo "M3U8 RESPONSE"
+          echo "======================================"
+
+          head -30 /tmp/atv.m3u8
+
+          echo
+          echo "======================================"
+          echo "CHECK"
+          echo "======================================"
+
+          if grep -q "#EXTM3U" /tmp/atv.m3u8; then
+            echo "OK: CDN liefert gültige M3U8."
+          else
+            echo "FEHLER: CDN liefert keine gültige M3U8."
+
+            echo
+            echo "Response:"
+            cat /tmp/atv.m3u8
+
+            exit 1
+          fi
+
+      # --------------------------------------------------
+      # 7. Commit
+      # --------------------------------------------------
 
       - name: Commit and push
         run: |
+
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
           git add output/atv.m3u8
 
-          git diff --cached --quiet || git commit -m "Update ATV stream"
-
-          git pull --rebase origin main
-          git push
+          if git diff --cached --quiet; then
+            echo "Keine Änderung."
+          else
+            git commit -m "Update ATV stream"
+            git pull --rebase origin main
+            git push
+          fi
