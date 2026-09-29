@@ -20,29 +20,22 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install playwright
-          playwright install chromium
+          python -m pip install --upgrade pip
+          pip install requests
 
-      - name: Run ATV script
+      - name: Run ATV extractor
         run: |
-          mkdir -p atv
-          python atv/atv_token.py
+          python atv/atv.py
 
-      - name: Show debug
+      - name: Show generated playlist
         run: |
-          echo "========== DEBUG =========="
-          
-          if [ -f atv/debug.txt ]; then
-            cat atv/debug.txt
-          fi
+          echo "========== ATV M3U8 =========="
 
-      - name: Create M3U
-        run: |
-          echo "#EXTM3U" > atv/stream.m3u
-          echo "#EXTINF:-1,ATV Avrupa" >> atv/stream.m3u
-
-          if [ -f atv/stream.txt ]; then
-            cat atv/stream.txt >> atv/stream.m3u
+          if [ -f output/atv.m3u8 ]; then
+            cat output/atv.m3u8
+          else
+            echo "ERROR: output/atv.m3u8 not found"
+            exit 1
           fi
 
       - name: Push changes
@@ -50,10 +43,10 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
-          git add .
+          git add output/atv.m3u8
 
           git commit -m "Update ATV stream" || echo "No changes"
 
-          git pull --rebase origin main || true
+          git pull --rebase origin main
 
           git push
