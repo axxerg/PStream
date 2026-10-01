@@ -18,7 +18,6 @@ CHANNEL = {
 }
 
 REFERER = "https://www.nowtv.com.tr/"
-
 ORIGIN = "https://www.nowtv.com.tr"
 
 USER_AGENT = (
@@ -27,14 +26,17 @@ USER_AGENT = (
     "Chrome/131.0.0.0 Safari/537.36"
 )
 
-# ZIELDATEI
-OUTPUT_FILE = "streams/nowtv.m3u8"
+# ============================================================
+# WICHTIG:
+# Genau diese Datei wird von deiner YAML erwartet
+# ============================================================
 
+OUTPUT_FILE = "streams/nowtv.m3u8"
 ERROR_FILE = "streams/nowtv.error.txt"
 
 
 # ============================================================
-# REGEX
+# M3U8 REGEX
 # ============================================================
 
 STREAM_REGEX = re.compile(
@@ -49,7 +51,7 @@ RELATIVE_M3U8_REGEX = re.compile(
 
 
 # ============================================================
-# URL
+# URL NORMALISIEREN
 # ============================================================
 
 def normalize_url(url, base_url=None):
@@ -61,7 +63,7 @@ def normalize_url(url, base_url=None):
     url = url.replace("\\/", "/")
 
     if url.startswith("//"):
-        url = "https:" + url
+        return "https:" + url
 
     if url.startswith(("http://", "https://")):
         return url
@@ -106,7 +108,7 @@ def decode_base64(value):
 
 
 # ============================================================
-# M3U8 EXTRACT
+# M3U8 AUS TEXT HOLEN
 # ============================================================
 
 def extract_m3u8(text, base_url=None):
@@ -138,7 +140,7 @@ def extract_m3u8(text, base_url=None):
         if url:
             found.append(url)
 
-    # Base64 URLs
+    # Base64 encoded URLs
     for token in re.findall(
         r'["\']([A-Za-z0-9+/=_-]{40,})["\']',
         text
@@ -166,7 +168,103 @@ def extract_m3u8(text, base_url=None):
 
 
 # ============================================================
-# HLS VALIDIERUNG
+# TOKEN RESTZEIT
+# ============================================================
+
+def token_remaining_seconds(url):
+
+    match = re.search(
+        r"(?:[?&])e=(\d+)",
+        url
+    )
+
+    if not match:
+        return -1
+
+    try:
+
+        expires = int(
+            match.group(1)
+        )
+
+        return expires - int(
+            time.time()
+        )
+
+    except Exception:
+
+        return -1
+
+
+# ============================================================
+# TOKENISIERT?
+# ============================================================
+
+def is_tokenized(url):
+
+    return (
+        re.search(
+            r"(?:[?&])st=",
+            url
+        ) is not None
+        and
+        re.search(
+            r"(?:[?&])e=\d+",
+            url
+        ) is not None
+    )
+
+
+# ============================================================
+# MASTER / PLAYLIST PRIORITÄT
+# ============================================================
+
+def stream_score(url):
+
+    lower = url.lower()
+
+    score = 0
+
+    # NOW TV CDN
+    if "nowtv-live-ad.ercdn.net" in lower:
+        score += 100
+
+    elif "ercdn.net" in lower:
+        score += 50
+
+    # playlist.m3u8 bevorzugen
+    if "/playlist.m3u8" in lower:
+        score += 80
+
+    # Master playlist
+    if "master" in lower:
+        score += 60
+
+    # Token
+    if is_tokenized(url):
+        score += 100
+
+    # Frischer Token
+    remaining = token_remaining_seconds(url)
+
+    if remaining > 0:
+        score += min(
+            remaining // 60,
+            120
+        )
+
+    # Feste Qualitätsstreams etwas niedriger
+    if re.search(
+        r'_(360|480|720|1080)p\.m3u8',
+        lower
+    ):
+        score += 10
+
+    return score
+
+
+# ============================================================
+# HLS VALIDIEREN
 # ============================================================
 
 def is_hls_response(response):
@@ -238,39 +336,10 @@ def validate_stream(
     except Exception as e:
 
         print(
-            f"[NOW TV] Stream-Kontrolle: {e}"
+            f"[NOW TV] Validierungsfehler: {e}"
         )
 
         return False
-
-
-# ============================================================
-# TOKEN RESTZEIT
-# ============================================================
-
-def token_remaining_seconds(url):
-
-    match = re.search(
-        r"(?:[?&])e=(\d+)",
-        url
-    )
-
-    if not match:
-        return 999999999
-
-    try:
-
-        expires = int(
-            match.group(1)
-        )
-
-        return expires - int(
-            time.time()
-        )
-
-    except Exception:
-
-        return 0
 
 
 # ============================================================
@@ -282,7 +351,7 @@ def scan_page(page):
     urls = []
 
     # --------------------------------------------------------
-    # Performance
+    # Performance resources
     # --------------------------------------------------------
 
     try:
@@ -373,7 +442,7 @@ def scan_page(page):
 
 
 # ============================================================
-# BROWSER SCAN
+# BROWSER
 # ============================================================
 
 def browser_find_stream(browser):
@@ -406,14 +475,14 @@ def browser_find_stream(browser):
             timeout=30000,
         )
 
-        # Erste Requests
+        # Netzwerk starten lassen
         page.wait_for_timeout(3000)
 
         discovered.extend(
             scan_page(page)
         )
 
-        # Video starten
+        # Video automatisch starten
         try:
 
             page.evaluate(
@@ -434,8 +503,8 @@ def browser_find_stream(browser):
         except Exception:
             pass
 
-        # Weitere Netzwerkaktivität abwarten
-        for _ in range(5):
+        # Weitere Requests abwarten
+        for _ in range(8):
 
             page.wait_for_timeout(2000)
 
@@ -447,11 +516,10 @@ def browser_find_stream(browser):
                 dict.fromkeys(discovered)
             )
 
-            if discovered:
-                print(
-                    f"[NOW TV] "
-                    f"{len(discovered)} M3U8 gefunden."
-                )
+            print(
+                f"[NOW TV] "
+                f"{len(discovered)} M3U8 gefunden"
+            )
 
     except Exception as e:
 
@@ -469,7 +537,7 @@ def browser_find_stream(browser):
 
 
 # ============================================================
-# BESTEN STREAM AUSWÄHLEN
+# STREAM AUSWÄHLEN
 # ============================================================
 
 def pick_best_stream(
@@ -480,7 +548,7 @@ def pick_best_stream(
     if not urls:
         return None
 
-    # NOW TV CDN bevorzugen
+    # Nur relevante NOW/ERCDN URLs
     preferred = []
 
     for url in urls:
@@ -488,7 +556,7 @@ def pick_best_stream(
         lower = url.lower()
 
         if (
-            "nowtv" in lower
+            "nowtv-live-ad.ercdn.net" in lower
             or "ercdn.net" in lower
         ):
             preferred.append(url)
@@ -496,35 +564,38 @@ def pick_best_stream(
     if preferred:
         urls = preferred
 
-    # Längste Token-Laufzeit zuerst
+    # Beste URL zuerst
     urls = sorted(
         urls,
-        key=token_remaining_seconds,
+        key=stream_score,
         reverse=True
     )
 
     print("")
-    print(
-        "[NOW TV] Gefundene Streams:"
-    )
+    print("======================================")
+    print("GEFUNDENE NOW TV STREAMS")
+    print("======================================")
 
     for url in urls:
-
-        remaining = token_remaining_seconds(
-            url
-        )
 
         print(
-            f"  {remaining}s -> {url}"
+            f"SCORE {stream_score(url):3d} | "
+            f"TOKEN {token_remaining_seconds(url):6d}s"
         )
 
+        print(url)
+        print()
+
+    # --------------------------------------------------------
     # Validieren
+    # --------------------------------------------------------
+
     for url in urls:
 
-        print("")
         print(
             "[NOW TV] Prüfe:"
         )
+
         print(url)
 
         if validate_stream(
@@ -533,7 +604,7 @@ def pick_best_stream(
         ):
 
             print(
-                "[NOW TV] ✓ HLS Stream gültig."
+                "[NOW TV] ✓ Gültiger Stream"
             )
 
             return url
@@ -546,7 +617,11 @@ def pick_best_stream(
 # ============================================================
 
 FALLBACK_STREAMS = [
-    "https://nowtv-live-ad.ercdn.net/nowtv/playlist.m3u8",
+    "https://uycyyuuzyh.turknet.ercdn.net/"
+    "nphindgytw/nowtv/nowtv.m3u8",
+
+    "https://nowtv-live-ad.ercdn.net/"
+    "nowtv/playlist.m3u8",
 ]
 
 
@@ -555,11 +630,15 @@ def fallback_find(
 ):
 
     print("")
-    print(
-        "[NOW TV] Fallback wird geprüft..."
-    )
+    print("======================================")
+    print("NOW TV FALLBACK")
+    print("======================================")
 
     for url in FALLBACK_STREAMS:
+
+        print(
+            f"[NOW TV] Fallback: {url}"
+        )
 
         if validate_stream(
             url,
@@ -567,10 +646,8 @@ def fallback_find(
         ):
 
             print(
-                "[NOW TV] ✓ Fallback funktioniert:"
+                "[NOW TV] ✓ Fallback funktioniert"
             )
-
-            print(url)
 
             return url
 
@@ -588,8 +665,7 @@ def write_nowtv(stream_url):
         exist_ok=True
     )
 
-    # WICHTIG:
-    # Genau derselbe Dateiname wie in YAML.
+    # EXAKT die Datei aus deiner YAML
     path = "streams/nowtv.m3u8"
 
     content = (
@@ -610,7 +686,7 @@ def write_nowtv(stream_url):
 
     print("")
     print("======================================")
-    print("NOW TV.M3U8 ERSTELLT")
+    print("NOW TV M3U8 ERSTELLT")
     print("======================================")
     print(content)
 
@@ -645,7 +721,7 @@ def main():
 
     print("")
     print("======================================")
-    print("       NOW TV STREAM SCANNER")
+    print("      NOW TV STREAM SCANNER")
     print("======================================")
 
     with sync_playwright() as p:
@@ -683,7 +759,7 @@ def main():
             )
 
             # ------------------------------------------------
-            # Besten Stream wählen
+            # Besten Stream auswählen
             # ------------------------------------------------
 
             stream = pick_best_stream(
@@ -746,9 +822,8 @@ def main():
                     f"✗ {message}"
                 )
 
-                # Vorhandene nowtv.m3u8 NICHT löschen.
-                # So bleibt der letzte funktionierende
-                # Stream erhalten.
+                # Alte funktionierende nowtv.m3u8
+                # NICHT löschen.
 
         finally:
 
