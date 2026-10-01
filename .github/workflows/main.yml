@@ -8,7 +8,7 @@ on:
 
 concurrency:
   group: update-all-channels
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -24,12 +24,13 @@ jobs:
         with:
           fetch-depth: 0
           ref: main
+          persist-credentials: true
 
       - name: Python qur
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          cache: 'pip'
+          cache: pip
 
       - name: Python paketlərini qur
         run: |
@@ -40,13 +41,14 @@ jobs:
         run: |
           python -m playwright install --with-deps chromium
 
+      - name: Main branch-i yenilə
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+
       - name: Streams qovluğunu yarat
         run: |
           mkdir -p streams
-
-      - name: Köhnə error fayllarını sil
-        run: |
-          rm -f streams/*.error.txt || true
 
       - name: Kanal scanner-i işə sal
         run: |
@@ -63,50 +65,52 @@ jobs:
           echo "======================================"
           echo "YARADILAN FAYLLAR"
           echo "======================================"
+
           ls -lah streams/
+
           echo ""
           echo "======================================"
           echo "M3U FAYLLARI"
           echo "======================================"
-          for file in streams/*.m3u
-          do
+
+          shopt -s nullglob
+
+          for file in streams/*.m3u; do
             echo ""
             echo "========== $file =========="
             cat "$file"
           done
+
           echo ""
           echo "======================================"
           echo "ERROR FAYLLARI"
           echo "======================================"
-          for file in streams/*.error.txt
-          do
-            if [ -f "$file" ]; then
-              echo ""
-              cat "$file"
-            fi
+
+          for file in streams/*.error.txt; do
+            echo ""
+            echo "========== $file =========="
+            cat "$file"
           done
 
       - name: Git config
         run: |
           git config user.email \
-            "github-actions[bot]@users.noreply.github.com"
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
           git config user.name \
             "github-actions[bot]"
 
       - name: Dəyişiklikləri commit et
         run: |
           git add streams/
+
           if git diff --cached --quiet; then
             echo "Dəyişiklik yoxdur."
             exit 0
           fi
+
           git commit \
             -m "Update all streams $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
-
-      - name: GitHub ilə sinxronlaşdır
-        run: |
-          git fetch origin main
-          git rebase origin/main
 
       - name: Push
         run: |
