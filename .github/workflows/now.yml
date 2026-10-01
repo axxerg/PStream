@@ -67,7 +67,7 @@ jobs:
       # ============================================================
       - name: NOW TV scannen
         run: |
-          python3 channels.py
+          python3 now.py
 
       # ============================================================
       # Ergebnis anzeigen
