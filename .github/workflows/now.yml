@@ -100,7 +100,7 @@ jobs:
       # ============================================================
       - name: Änderung committen
         run: |
-          git add streams/nowtv.m3u
+          git add streams/nowtv.m3u8
 
           if git diff --cached --quiet; then
             echo "NOW TV URL hat sich nicht geändert."
