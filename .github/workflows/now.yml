@@ -1,0 +1,118 @@
+name: Update NOW TV
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+
+  workflow_dispatch:
+
+concurrency:
+  group: update-nowtv
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  update-nowtv:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # ============================================================
+      # Repository
+      # ============================================================
+      - name: Repository klonen
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+          persist-credentials: true
+
+      # ============================================================
+      # Python
+      # ============================================================
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Playwright installieren
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright
+
+      - name: Chromium installieren
+        run: |
+          python -m playwright install --with-deps chromium
+
+      # ============================================================
+      # Aktuellen Main-Stand holen
+      # ============================================================
+      - name: Main aktualisieren
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+
+      # ============================================================
+      # Streams-Verzeichnis
+      # ============================================================
+      - name: Streams-Verzeichnis vorbereiten
+        run: |
+          mkdir -p streams
+
+      # ============================================================
+      # NOW TV scannen
+      # ============================================================
+      - name: NOW TV scannen
+        run: |
+          python3 channels.py
+
+      # ============================================================
+      # Ergebnis anzeigen
+      # ============================================================
+      - name: NOW TV Ergebnis anzeigen
+        run: |
+          echo ""
+          echo "======================================"
+          echo "NOW TV"
+          echo "======================================"
+
+          if [ -f streams/nowtv.m3u ]; then
+            cat streams/nowtv.m3u
+          else
+            echo "NOW TV wurde nicht gefunden."
+            exit 1
+          fi
+
+      # ============================================================
+      # Git konfigurieren
+      # ============================================================
+      - name: Git konfigurieren
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # ============================================================
+      # Änderung committen
+      # ============================================================
+      - name: Änderung committen
+        run: |
+          git add streams/nowtv.m3u
+
+          if git diff --cached --quiet; then
+            echo "NOW TV URL hat sich nicht geändert."
+            exit 0
+          fi
+
+          git commit \
+            -m "Update NOW TV $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+
+      # ============================================================
+      # Push
+      # ============================================================
+      - name: Push
+        run: |
+          git push origin HEAD:main
