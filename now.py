@@ -8,14 +8,13 @@ from playwright.sync_api import sync_playwright
 
 
 # ============================================================
-# NOW TV
+# KONFIGURATION
 # ============================================================
 
-CHANNEL = {
-    "id": "nowtv",
-    "name": "NOW TV",
-    "url": "https://www.nowtv.com.tr/canli-yayin",
-}
+NOW_URL = "https://www.nowtv.com.tr/canli-yayin"
+
+OUTPUT_FILE = "streams/nowtv.m3u8"
+ERROR_FILE = "streams/nowtv.error.txt"
 
 REFERER = "https://www.nowtv.com.tr/"
 ORIGIN = "https://www.nowtv.com.tr"
@@ -26,20 +25,12 @@ USER_AGENT = (
     "Chrome/131.0.0.0 Safari/537.36"
 )
 
-# ============================================================
-# WICHTIG:
-# Genau diese Datei wird von deiner YAML erwartet
-# ============================================================
-
-OUTPUT_FILE = "streams/nowtv.m3u8"
-ERROR_FILE = "streams/nowtv.error.txt"
-
 
 # ============================================================
-# M3U8 REGEX
+# REGEX
 # ============================================================
 
-STREAM_REGEX = re.compile(
+M3U8_REGEX = re.compile(
     r'https?://[^\s"\'<>]+\.m3u8(?:\?[^\s"\'<>]*)?',
     re.IGNORECASE
 )
@@ -108,7 +99,7 @@ def decode_base64(value):
 
 
 # ============================================================
-# M3U8 AUS TEXT HOLEN
+# M3U8 AUS TEXT EXTRAHIEREN
 # ============================================================
 
 def extract_m3u8(text, base_url=None):
@@ -118,8 +109,8 @@ def extract_m3u8(text, base_url=None):
 
     found = []
 
-    # Absolute URLs
-    for match in STREAM_REGEX.findall(text):
+    # Absolute M3U8 URLs
+    for match in M3U8_REGEX.findall(text):
 
         url = normalize_url(
             match,
@@ -129,7 +120,7 @@ def extract_m3u8(text, base_url=None):
         if url:
             found.append(url)
 
-    # Relative URLs
+    # Relative M3U8 URLs
     for match in RELATIVE_M3U8_REGEX.findall(text):
 
         url = normalize_url(
@@ -140,7 +131,7 @@ def extract_m3u8(text, base_url=None):
         if url:
             found.append(url)
 
-    # Base64 encoded URLs
+    # Base64 kodierte M3U8 URLs
     for token in re.findall(
         r'["\']([A-Za-z0-9+/=_-]{40,})["\']',
         text
@@ -150,7 +141,7 @@ def extract_m3u8(text, base_url=None):
 
         if ".m3u8" in decoded.lower():
 
-            for match in STREAM_REGEX.findall(
+            for match in M3U8_REGEX.findall(
                 decoded
             ):
 
@@ -168,10 +159,10 @@ def extract_m3u8(text, base_url=None):
 
 
 # ============================================================
-# TOKEN RESTZEIT
+# TOKEN
 # ============================================================
 
-def token_remaining_seconds(url):
+def get_expiration(url):
 
     match = re.search(
         r"(?:[?&])e=(\d+)",
@@ -179,125 +170,61 @@ def token_remaining_seconds(url):
     )
 
     if not match:
-        return -1
+        return None
 
     try:
-
-        expires = int(
-            match.group(1)
-        )
-
-        return expires - int(
-            time.time()
-        )
-
+        return int(match.group(1))
     except Exception:
+        return None
 
+
+def token_remaining(url):
+
+    expiration = get_expiration(url)
+
+    if expiration is None:
         return -1
 
+    return expiration - int(time.time())
 
-# ============================================================
-# TOKENISIERT?
-# ============================================================
 
-def is_tokenized(url):
+def has_token(url):
 
     return (
         re.search(
-            r"(?:[?&])st=",
+            r"(?:[?&])st=[^&]+",
             url
-        ) is not None
+        )
+        is not None
         and
         re.search(
             r"(?:[?&])e=\d+",
             url
-        ) is not None
+        )
+        is not None
     )
 
 
 # ============================================================
-# MASTER / PLAYLIST PRIORITÄT
+# IST DIE GEWÜNSCHTE NOW-TV MASTER-PLAYLIST?
 # ============================================================
 
-def stream_score(url):
+def is_nowtv_playlist(url):
 
     lower = url.lower()
 
-    score = 0
-
-    # NOW TV CDN
-    if "nowtv-live-ad.ercdn.net" in lower:
-        score += 100
-
-    elif "ercdn.net" in lower:
-        score += 50
-
-    # playlist.m3u8 bevorzugen
-    if "/playlist.m3u8" in lower:
-        score += 80
-
-    # Master playlist
-    if "master" in lower:
-        score += 60
-
-    # Token
-    if is_tokenized(url):
-        score += 100
-
-    # Frischer Token
-    remaining = token_remaining_seconds(url)
-
-    if remaining > 0:
-        score += min(
-            remaining // 60,
-            120
-        )
-
-    # Feste Qualitätsstreams etwas niedriger
-    if re.search(
-        r'_(360|480|720|1080)p\.m3u8',
-        lower
-    ):
-        score += 10
-
-    return score
+    return (
+        "nowtv-live-ad.ercdn.net" in lower
+        and
+        "/nowtv/playlist.m3u8" in lower
+        and
+        has_token(url)
+    )
 
 
 # ============================================================
 # HLS VALIDIEREN
 # ============================================================
-
-def is_hls_response(response):
-
-    try:
-
-        content_type = (
-            response.headers
-            .get("content-type", "")
-            .lower()
-        )
-
-        if (
-            "mpegurl" in content_type
-            or "vnd.apple.mpegurl" in content_type
-            or "application/x-mpegurl" in content_type
-            or "m3u8" in content_type
-        ):
-            return True
-
-        body = response.text()
-
-        if "#EXTM3U" in body:
-            return True
-
-        if "#EXT-X-" in body:
-            return True
-
-    except Exception:
-        pass
-
-    return False
-
 
 def validate_stream(
     url,
@@ -329,9 +256,30 @@ def validate_stream(
         if response.status != 200:
             return False
 
-        return is_hls_response(
-            response
+        content_type = (
+            response.headers
+            .get("content-type", "")
+            .lower()
         )
+
+        if (
+            "mpegurl" in content_type
+            or "m3u8" in content_type
+        ):
+            return True
+
+        try:
+
+            body = response.text()
+
+            if "#EXTM3U" in body:
+                return True
+
+            if "#EXT-X-" in body:
+                return True
+
+        except Exception:
+            pass
 
     except Exception as e:
 
@@ -339,7 +287,7 @@ def validate_stream(
             f"[NOW TV] Validierungsfehler: {e}"
         )
 
-        return False
+    return False
 
 
 # ============================================================
@@ -351,7 +299,7 @@ def scan_page(page):
     urls = []
 
     # --------------------------------------------------------
-    # Performance resources
+    # Browser Performance
     # --------------------------------------------------------
 
     try:
@@ -402,11 +350,11 @@ def scan_page(page):
 
         try:
 
-            frame_html = frame.content()
+            html = frame.content()
 
             urls.extend(
                 extract_m3u8(
-                    frame_html,
+                    html,
                     frame.url
                 )
             )
@@ -442,14 +390,14 @@ def scan_page(page):
 
 
 # ============================================================
-# BROWSER
+# BROWSER SCAN
 # ============================================================
 
 def browser_find_stream(browser):
 
     print("")
     print("======================================")
-    print("NOW TV SCAN")
+    print("         NOW TV SCAN")
     print("======================================")
 
     context = browser.new_context(
@@ -463,26 +411,62 @@ def browser_find_stream(browser):
 
     discovered = []
 
+    # --------------------------------------------------------
+    # Netzwerk direkt beobachten
+    # --------------------------------------------------------
+
+    def on_response(response):
+
+        try:
+
+            url = response.url
+
+            if ".m3u8" in url.lower():
+
+                if url not in discovered:
+
+                    discovered.append(url)
+
+                    print("")
+                    print(
+                        "[NOW TV] M3U8 RESPONSE:"
+                    )
+                    print(url)
+
+        except Exception:
+            pass
+
+    page.on(
+        "response",
+        on_response
+    )
+
     try:
 
         print(
-            f"[NOW TV] Öffne: {CHANNEL['url']}"
+            f"[NOW TV] Öffne: {NOW_URL}"
         )
 
         page.goto(
-            CHANNEL["url"],
+            NOW_URL,
             wait_until="domcontentloaded",
             timeout=30000,
         )
 
-        # Netzwerk starten lassen
-        page.wait_for_timeout(3000)
+        # ----------------------------------------------------
+        # Erste Netzwerkaktivität
+        # ----------------------------------------------------
+
+        page.wait_for_timeout(4000)
 
         discovered.extend(
             scan_page(page)
         )
 
-        # Video automatisch starten
+        # ----------------------------------------------------
+        # Video starten
+        # ----------------------------------------------------
+
         try:
 
             page.evaluate(
@@ -490,10 +474,10 @@ def browser_find_stream(browser):
                 () => {
                     document
                         .querySelectorAll('video')
-                        .forEach(v => {
+                        .forEach(video => {
                             try {
-                                v.muted = true;
-                                v.play().catch(() => {});
+                                video.muted = true;
+                                video.play().catch(() => {});
                             } catch(e) {}
                         });
                 }
@@ -503,8 +487,11 @@ def browser_find_stream(browser):
         except Exception:
             pass
 
-        # Weitere Requests abwarten
-        for _ in range(8):
+        # ----------------------------------------------------
+        # Weitere Netzwerkaktivität
+        # ----------------------------------------------------
+
+        for _ in range(10):
 
             page.wait_for_timeout(2000)
 
@@ -516,10 +503,33 @@ def browser_find_stream(browser):
                 dict.fromkeys(discovered)
             )
 
-            print(
-                f"[NOW TV] "
-                f"{len(discovered)} M3U8 gefunden"
-            )
+            # Sobald eine signierte Master-Playlist
+            # gefunden wurde, noch kurz weiterlaufen,
+            # damit wir sicher den aktuellen Token haben.
+
+            masters = [
+                url
+                for url in discovered
+                if is_nowtv_playlist(url)
+            ]
+
+            if masters:
+
+                print("")
+                print(
+                    "[NOW TV] ✓ Signierte "
+                    "playlist.m3u8 gefunden."
+                )
+
+                # Noch kurz warten, falls eine neuere
+                # Token-URL auftaucht.
+                page.wait_for_timeout(1000)
+
+                discovered.extend(
+                    scan_page(page)
+                )
+
+                break
 
     except Exception as e:
 
@@ -537,10 +547,10 @@ def browser_find_stream(browser):
 
 
 # ============================================================
-# STREAM AUSWÄHLEN
+# BESTE URL AUSWÄHLEN
 # ============================================================
 
-def pick_best_stream(
+def choose_stream(
     urls,
     request_context
 ):
@@ -548,54 +558,108 @@ def pick_best_stream(
     if not urls:
         return None
 
-    # Nur relevante NOW/ERCDN URLs
-    preferred = []
+    print("")
+    print("======================================")
+    print("       GEFUNDENE NOW TV URLS")
+    print("======================================")
 
     for url in urls:
 
-        lower = url.lower()
+        print(url)
 
-        if (
-            "nowtv-live-ad.ercdn.net" in lower
-            or "ercdn.net" in lower
-        ):
-            preferred.append(url)
+    # ========================================================
+    # 1. ABSOLUTE PRIORITÄT:
+    #
+    # nowtv-live-ad.ercdn.net/nowtv/playlist.m3u8
+    # mit st + e
+    # ========================================================
 
-    if preferred:
-        urls = preferred
+    master_urls = [
+        url
+        for url in urls
+        if is_nowtv_playlist(url)
+    ]
 
-    # Beste URL zuerst
-    urls = sorted(
-        urls,
-        key=stream_score,
+    # Neuester Token zuerst
+    master_urls.sort(
+        key=token_remaining,
         reverse=True
     )
 
     print("")
     print("======================================")
-    print("GEFUNDENE NOW TV STREAMS")
+    print(" SIGNIERTE NOW TV MASTER PLAYLISTS")
     print("======================================")
 
-    for url in urls:
+    for url in master_urls:
 
         print(
-            f"SCORE {stream_score(url):3d} | "
-            f"TOKEN {token_remaining_seconds(url):6d}s"
+            f"Token: {token_remaining(url)} Sekunden"
         )
 
         print(url)
-        print()
 
-    # --------------------------------------------------------
-    # Validieren
-    # --------------------------------------------------------
+    # ========================================================
+    # Master Playlist validieren
+    # ========================================================
 
-    for url in urls:
+    for url in master_urls:
 
+        print("")
         print(
-            "[NOW TV] Prüfe:"
+            "[NOW TV] Prüfe MASTER:"
         )
+        print(url)
 
+        if validate_stream(
+            url,
+            request_context
+        ):
+
+            print("")
+            print(
+                "======================================"
+            )
+            print(
+                "✓ NOW TV MASTER PLAYLIST GEFUNDEN"
+            )
+            print(
+                "======================================"
+            )
+            print(url)
+
+            return url
+
+    # ========================================================
+    # FALLBACK:
+    # Andere tokenisierte NOW-TV-Streams
+    # ========================================================
+
+    other_tokenized = [
+        url
+        for url in urls
+        if (
+            has_token(url)
+            and
+            (
+                "nowtv-live-ad.ercdn.net" in url.lower()
+                or "ercdn.net" in url.lower()
+            )
+        )
+    ]
+
+    other_tokenized.sort(
+        key=token_remaining,
+        reverse=True
+    )
+
+    for url in other_tokenized:
+
+        print("")
+        print(
+            "[NOW TV] Prüfe alternative "
+            "tokenisierte URL:"
+        )
         print(url)
 
         if validate_stream(
@@ -604,7 +668,7 @@ def pick_best_stream(
         ):
 
             print(
-                "[NOW TV] ✓ Gültiger Stream"
+                "[NOW TV] ✓ Alternative URL gültig."
             )
 
             return url
@@ -616,46 +680,43 @@ def pick_best_stream(
 # FALLBACK
 # ============================================================
 
-FALLBACK_STREAMS = [
-    "https://uycyyuuzyh.turknet.ercdn.net/"
-    "nphindgytw/nowtv/nowtv.m3u8",
-
-    "https://nowtv-live-ad.ercdn.net/"
-    "nowtv/playlist.m3u8",
-]
-
-
 def fallback_find(
     request_context
 ):
 
     print("")
     print("======================================")
-    print("NOW TV FALLBACK")
+    print("          NOW TV FALLBACK")
     print("======================================")
 
-    for url in FALLBACK_STREAMS:
+    # Dieser Fallback ist nur die bekannte
+    # ungetokenisierte Master-URL.
+    #
+    # Wenn NOW TV einen Token verlangt,
+    # kann diese URL 403 liefern.
 
-        print(
-            f"[NOW TV] Fallback: {url}"
-        )
+    url = (
+        "https://nowtv-live-ad.ercdn.net/"
+        "nowtv/playlist.m3u8"
+    )
 
-        if validate_stream(
-            url,
-            request_context
-        ):
+    print(
+        "[NOW TV] Fallback:"
+    )
+    print(url)
 
-            print(
-                "[NOW TV] ✓ Fallback funktioniert"
-            )
+    if validate_stream(
+        url,
+        request_context
+    ):
 
-            return url
+        return url
 
     return None
 
 
 # ============================================================
-# NOWTV.M3U8 SCHREIBEN
+# M3U8 SCHREIBEN
 # ============================================================
 
 def write_nowtv(stream_url):
@@ -665,8 +726,8 @@ def write_nowtv(stream_url):
         exist_ok=True
     )
 
-    # EXAKT die Datei aus deiner YAML
-    path = "streams/nowtv.m3u8"
+    # EXAKT der Dateiname aus deiner YAML
+    path = OUTPUT_FILE
 
     content = (
         "#EXTM3U\n"
@@ -686,7 +747,7 @@ def write_nowtv(stream_url):
 
     print("")
     print("======================================")
-    print("NOW TV M3U8 ERSTELLT")
+    print("       NOWTV.M3U8 GESCHRIEBEN")
     print("======================================")
     print(content)
 
@@ -721,7 +782,7 @@ def main():
 
     print("")
     print("======================================")
-    print("      NOW TV STREAM SCANNER")
+    print("       NOW TV STREAM SCANNER")
     print("======================================")
 
     with sync_playwright() as p:
@@ -745,24 +806,28 @@ def main():
         try:
 
             # ------------------------------------------------
-            # Browser Scan
+            # NOW TV scannen
             # ------------------------------------------------
 
             urls = browser_find_stream(
                 browser
             )
 
+            urls = list(
+                dict.fromkeys(urls)
+            )
+
             print("")
             print(
                 f"[NOW TV] "
-                f"{len(urls)} Stream(s) gefunden."
+                f"{len(urls)} M3U8 URL(s) gefunden."
             )
 
             # ------------------------------------------------
-            # Besten Stream auswählen
+            # Gewünschte Master Playlist auswählen
             # ------------------------------------------------
 
-            stream = pick_best_stream(
+            stream = choose_stream(
                 urls,
                 request_context
             )
@@ -778,7 +843,7 @@ def main():
                 )
 
             # ------------------------------------------------
-            # Erfolgreich
+            # ERFOLG
             # ------------------------------------------------
 
             if stream:
@@ -787,7 +852,6 @@ def main():
                     stream
                 )
 
-                # Fehlerdatei löschen
                 if os.path.exists(
                     ERROR_FILE
                 ):
@@ -802,15 +866,14 @@ def main():
                 )
 
             # ------------------------------------------------
-            # Kein Stream
+            # FEHLER
             # ------------------------------------------------
 
             else:
 
                 message = (
-                    "NOW TV Stream wurde "
-                    "nicht gefunden oder "
-                    "konnte nicht validiert werden."
+                    "Keine gültige NOW TV "
+                    "playlist.m3u8 gefunden."
                 )
 
                 write_error(
@@ -822,8 +885,9 @@ def main():
                     f"✗ {message}"
                 )
 
-                # Alte funktionierende nowtv.m3u8
-                # NICHT löschen.
+                # Vorhandene nowtv.m3u8 NICHT löschen.
+                # So bleibt die letzte funktionierende
+                # Version erhalten.
 
         finally:
 
