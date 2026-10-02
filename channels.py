@@ -131,8 +131,7 @@ FALLBACK_STREAMS = {
         "https://trn10.tulix.tv/gt-eurostar/index.m3u8",
     ],
 
-    # CNN TURK absichtlich ohne Fallback.
-    # Der Stream soll von der offiziellen Seite gefunden werden.
+    # CNN TURK bewusst ohne erfundenen Fallback.
 }
 
 
@@ -158,7 +157,7 @@ REFERERS = {
 
 
 # ============================================================
-# SPEZIELLE PROBLEMSENDER
+# SENDER MIT TIEFENSCAN
 # ============================================================
 
 DEEP_SCAN_CHANNELS = {
@@ -166,6 +165,154 @@ DEEP_SCAN_CHANNELS = {
     "eurod",
     "tv8int",
 }
+
+
+# ============================================================
+# SENDER-SPEZIFISCHE STREAM-PRÜFUNG
+# ============================================================
+
+def is_channel_stream(channel_id, url):
+    """
+    Verhindert, dass eine Webseite den Stream eines anderen
+    Senders liefert.
+
+    Besonders wichtig bei CNN TURK, weil die Seite teilweise
+    auch Eurostar-Streams lädt.
+    """
+
+    url = url.lower()
+
+    # --------------------------------------------------------
+    # CNN TURK
+    # --------------------------------------------------------
+
+    if channel_id == "cnnturk":
+        return (
+            "live.duhnet.tv" in url
+            and "cnnturknp" in url
+        )
+
+    # --------------------------------------------------------
+    # EURO D
+    # --------------------------------------------------------
+
+    if channel_id == "eurod":
+        return (
+            "eurod-live.daioncdn.net" in url
+            or "eurod" in url
+        )
+
+    # --------------------------------------------------------
+    # TV8 INTERNATIONAL
+    # --------------------------------------------------------
+
+    if channel_id == "tv8int":
+        return (
+            "tv8.daioncdn.net" in url
+            and "tv8" in url
+        )
+
+    # --------------------------------------------------------
+    # SHOW TV
+    # --------------------------------------------------------
+
+    if channel_id == "showtv":
+        return (
+            "ciner-live.ercdn.net/showtv" in url
+            or "showtv" in url
+        )
+
+    # --------------------------------------------------------
+    # SHOWTURK
+    # --------------------------------------------------------
+
+    if channel_id == "showturk":
+        return (
+            "ciner-live.ercdn.net/showturk" in url
+            or "showturk" in url
+        )
+
+    # --------------------------------------------------------
+    # SHOWMAX
+    # --------------------------------------------------------
+
+    if channel_id == "showmax":
+        return (
+            "ciner-live.ercdn.net/showmax" in url
+            or "showmax" in url
+        )
+
+    # --------------------------------------------------------
+    # NOW TV
+    # --------------------------------------------------------
+
+    if channel_id == "nowtv":
+        return (
+            "ciner-live.ercdn.net/nowtv" in url
+            or "nowtv" in url
+        )
+
+    # --------------------------------------------------------
+    # ATV
+    # --------------------------------------------------------
+
+    if channel_id == "atv":
+        return (
+            "trkvz-live.ercdn.net" in url
+            and "atv" in url
+        )
+
+    # --------------------------------------------------------
+    # TV8
+    # --------------------------------------------------------
+
+    if channel_id == "tv8":
+        return (
+            "tv8.daioncdn.net" in url
+        )
+
+    # --------------------------------------------------------
+    # KANAL D
+    # --------------------------------------------------------
+
+    if channel_id == "kanald":
+        return (
+            "kanald-live.daioncdn.net" in url
+            or "kanald" in url
+        )
+
+    # --------------------------------------------------------
+    # TEVE2
+    # --------------------------------------------------------
+
+    if channel_id == "teve2":
+        return (
+            "teve2-live.daioncdn.net" in url
+            or "teve2" in url
+        )
+
+    # --------------------------------------------------------
+    # STAR TV
+    # --------------------------------------------------------
+
+    if channel_id == "startv":
+        return (
+            "dogus-live.daioncdn.net/startv" in url
+            or "gt-startv" in url
+            or "startv" in url
+        )
+
+    # --------------------------------------------------------
+    # EUROSTAR
+    # --------------------------------------------------------
+
+    if channel_id == "eurostar":
+        return (
+            "gt-eurostar" in url
+            or "eurostar" in url
+        )
+
+    return True
 
 
 # ============================================================
@@ -186,6 +333,7 @@ def normalize_url(url):
         return ""
 
     url = html.unescape(url)
+
     url = url.replace("\\/", "/")
     url = url.replace("\\u0026", "&")
     url = url.replace("\\u003d", "=")
@@ -193,29 +341,6 @@ def normalize_url(url):
     url = url.replace("\\u003f", "?")
 
     return url.strip().strip('"').strip("'")
-
-
-def decode_base64(value):
-    try:
-        value = value.strip()
-
-        missing = len(value) % 4
-
-        if missing:
-            value += "=" * (4 - missing)
-
-        decoded = base64.b64decode(value).decode(
-            "utf-8",
-            errors="ignore",
-        )
-
-        if "m3u8" in decoded.lower():
-            return decoded
-
-    except Exception:
-        pass
-
-    return ""
 
 
 def extract_urls(text):
@@ -230,7 +355,13 @@ def extract_urls(text):
     ]
 
     for pattern in patterns:
-        for match in re.findall(pattern, text, flags=re.IGNORECASE):
+
+        for match in re.findall(
+            pattern,
+            text,
+            flags=re.IGNORECASE,
+        ):
+
             url = normalize_url(match)
 
             if "%3A" in url.upper():
@@ -248,6 +379,7 @@ def extract_m3u8(text):
     unique = []
 
     for url in urls:
+
         if url not in unique:
             unique.append(url)
 
@@ -255,18 +387,21 @@ def extract_m3u8(text):
 
 
 def token_expired(url):
-    """
-    Prüft den häufig verwendeten 'e=' Unix-Zeitstempel.
-    """
 
     try:
+
         parsed = urlparse(url)
-        params = parse_qs(parsed.query)
+
+        params = parse_qs(
+            parsed.query
+        )
 
         if "e" not in params:
             return False
 
-        expiry = int(params["e"][0])
+        expiry = int(
+            params["e"][0]
+        )
 
         return expiry <= int(time.time())
 
@@ -275,6 +410,7 @@ def token_expired(url):
 
 
 def is_valid_m3u8_url(url):
+
     if not url:
         return False
 
@@ -290,13 +426,21 @@ def is_valid_m3u8_url(url):
 
 
 def quality_from_url(url):
+
     text = url.lower()
 
-    match = re.search(r'[_\-/](\d{3,4})p(?:[_\-.?]|$)', text)
+    match = re.search(
+        r'[_\-/](\d{3,4})p(?:[_\-.?]|$)',
+        text,
+    )
 
     if match:
+
         try:
-            return int(match.group(1))
+            return int(
+                match.group(1)
+            )
+
         except Exception:
             pass
 
@@ -318,31 +462,26 @@ def quality_from_url(url):
     return 0
 
 
-def is_master_playlist(text):
-    if not text:
-        return False
-
-    return "#EXT-X-STREAM-INF" in text
-
-
 def score_stream(url):
-    """
-    Höhere Punktzahl = bevorzugter Stream.
-    """
 
     score = 0
+
     lower = url.lower()
 
     quality = quality_from_url(url)
 
     if quality == 1080:
         score += 50
+
     elif quality == 720:
         score += 40
+
     elif quality == 576:
         score += 35
+
     elif quality == 480:
         score += 25
+
     elif quality == 360:
         score += 15
 
@@ -358,17 +497,19 @@ def score_stream(url):
     if "securevideotoken" in lower:
         score -= 100
 
-    if "secure?" in lower:
-        score -= 100
-
     return score
 
 
 # ============================================================
-# HTTP STREAM-VALIDIERUNG
+# STREAM VALIDIEREN
 # ============================================================
 
-def validate_stream(url, referer=None, timeout=5):
+def validate_stream(
+    url,
+    referer=None,
+    timeout=5,
+):
+
     if not is_valid_m3u8_url(url):
         return False
 
@@ -377,13 +518,14 @@ def validate_stream(url, referer=None, timeout=5):
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
             "AppleWebKit/537.36 (KHTML, like Gecko) "
             "Chrome/131.0.0.0 Safari/537.36"
-        ),
+        )
     }
 
     if referer:
         headers["Referer"] = referer
 
     try:
+
         response = requests.get(
             url,
             headers=headers,
@@ -409,7 +551,11 @@ def validate_stream(url, referer=None, timeout=5):
 # MASTER PLAYLIST
 # ============================================================
 
-def parse_master_playlist(master_url, text):
+def parse_master_playlist(
+    master_url,
+    text,
+):
+
     variants = []
 
     if not text:
@@ -426,7 +572,9 @@ def parse_master_playlist(master_url, text):
 
     for index, line in enumerate(lines):
 
-        if not line.startswith("#EXT-X-STREAM-INF"):
+        if not line.startswith(
+            "#EXT-X-STREAM-INF"
+        ):
             continue
 
         if index + 1 >= len(lines):
@@ -443,7 +591,9 @@ def parse_master_playlist(master_url, text):
             variant = "https:" + variant
 
         elif variant.startswith("/"):
-            parsed = urlparse(master_url)
+            parsed = urlparse(
+                master_url
+            )
 
             variant = (
                 f"{parsed.scheme}://"
@@ -452,22 +602,31 @@ def parse_master_playlist(master_url, text):
             )
 
         elif not variant.startswith("http"):
-            base = master_url.rsplit("/", 1)[0]
 
-            variant = f"{base}/{variant}"
+            base = master_url.rsplit(
+                "/",
+                1,
+            )[0]
 
-        variant = normalize_url(variant)
+            variant = (
+                f"{base}/{variant}"
+            )
 
-        if is_valid_m3u8_url(variant):
-            variants.append(variant)
+        variant = normalize_url(
+            variant
+        )
+
+        if is_valid_m3u8_url(
+            variant
+        ):
+            variants.append(
+                variant
+            )
 
     return variants
 
 
 def collect_all_variants(url):
-    """
-    Liest eine Master-M3U8 und sammelt alle Varianten.
-    """
 
     headers = {
         "User-Agent": (
@@ -478,6 +637,7 @@ def collect_all_variants(url):
     }
 
     try:
+
         response = requests.get(
             url,
             headers=headers,
@@ -487,19 +647,21 @@ def collect_all_variants(url):
         if response.status_code != 200:
             return [url]
 
-        text = response.text
-
         variants = parse_master_playlist(
             url,
-            text,
+            response.text,
         )
 
         if variants:
+
             unique = []
 
             for variant in variants:
+
                 if variant not in unique:
-                    unique.append(variant)
+                    unique.append(
+                        variant
+                    )
 
             return unique
 
@@ -514,95 +676,144 @@ def collect_all_variants(url):
 # ============================================================
 
 def extract_atv_m3u8_from_secure(url):
-    """
-    ATV verwendet teilweise:
-    securevideotoken.tmgrup.com.tr/webtv/secure?...&url=...
-
-    Wir holen daraus nur die echte trkvz-live.ercdn.net M3U8.
-    """
 
     candidates = []
 
     try:
+
         parsed = urlparse(url)
 
-        params = parse_qs(parsed.query)
+        params = parse_qs(
+            parsed.query
+        )
 
-        for key in ("url", "url2"):
-            values = params.get(key, [])
+        for key in (
+            "url",
+            "url2",
+        ):
+
+            values = params.get(
+                key,
+                [],
+            )
 
             for value in values:
-                value = unquote(value)
-                value = normalize_url(value)
 
-                if "trkvz-live.ercdn.net" in value:
+                value = unquote(
+                    value
+                )
+
+                value = normalize_url(
+                    value
+                )
+
+                if (
+                    "trkvz-live.ercdn.net"
+                    in value
+                ):
+
                     candidates.extend(
-                        extract_m3u8(value)
+                        extract_m3u8(
+                            value
+                        )
                     )
 
                     if ".m3u8" in value.lower():
-                        candidates.append(value)
+                        candidates.append(
+                            value
+                        )
 
     except Exception:
         pass
 
-    # Zusätzlich direkt aus dem String suchen.
     for value in extract_m3u8(url):
-        if "trkvz-live.ercdn.net" in value:
-            candidates.append(value)
+
+        if (
+            "trkvz-live.ercdn.net"
+            in value
+        ):
+            candidates.append(
+                value
+            )
 
     result = []
 
     for candidate in candidates:
-        candidate = normalize_url(candidate)
+
+        candidate = normalize_url(
+            candidate
+        )
 
         if (
-            "trkvz-live.ercdn.net" in candidate
-            and is_valid_m3u8_url(candidate)
+            "trkvz-live.ercdn.net"
+            in candidate
+            and is_valid_m3u8_url(
+                candidate
+            )
             and candidate not in result
         ):
-            result.append(candidate)
+
+            result.append(
+                candidate
+            )
 
     return result
 
 
 def resolve_atv_stream(url):
-    """
-    ATV:
-    Secure-URL -> echte ercdn URL -> Master -> bevorzugt 576p.
-    """
 
     if not url:
         return []
 
     lower = url.lower()
 
-    if "securevideotoken.tmgrup.com.tr" not in lower:
-        if "trkvz-live.ercdn.net" in lower:
+    if (
+        "securevideotoken.tmgrup.com.tr"
+        not in lower
+    ):
+
+        if (
+            "trkvz-live.ercdn.net"
+            in lower
+        ):
             return [url]
 
         return []
 
-    direct_candidates = extract_atv_m3u8_from_secure(url)
+    direct_candidates = (
+        extract_atv_m3u8_from_secure(
+            url
+        )
+    )
 
     result = []
 
     for candidate in direct_candidates:
 
-        variants = collect_all_variants(candidate)
+        variants = collect_all_variants(
+            candidate
+        )
 
         for variant in variants:
+
             if (
-                "trkvz-live.ercdn.net" in variant
-                and is_valid_m3u8_url(variant)
+                "trkvz-live.ercdn.net"
+                in variant
+                and is_valid_m3u8_url(
+                    variant
+                )
                 and variant not in result
             ):
-                result.append(variant)
 
-    # 576p bevorzugen
+                result.append(
+                    variant
+                )
+
     result.sort(
         key=lambda x: (
-            0 if quality_from_url(x) == 576 else 1,
+            0
+            if quality_from_url(x) == 576
+            else 1,
             -score_stream(x),
         )
     )
@@ -611,44 +822,39 @@ def resolve_atv_stream(url):
 
 
 # ============================================================
-# PLAYWRIGHT SEITEN-SCAN
+# TIEFER SEITENSCAN
 # ============================================================
 
 def scan_page(page):
-    """
-    Sehr tiefer Scan der geladenen Seite.
-
-    Reihenfolge:
-    1. Performance Resources
-    2. kompletter HTML-Code
-    3. Script-Tags
-    4. Data-Attribute
-    5. IFrames
-    6. HTML der IFrames
-    7. Frames
-    8. Scripts innerhalb der Frames
-    """
 
     candidates = []
 
     def add_urls(text):
+
         if not text:
             return
 
         for url in extract_m3u8(text):
 
-            if is_valid_m3u8_url(url):
-                if url not in candidates:
-                    candidates.append(url)
+            if (
+                is_valid_m3u8_url(url)
+                and url not in candidates
+            ):
+
+                candidates.append(
+                    url
+                )
 
     # --------------------------------------------------------
-    # Performance Resources
+    # Performance
     # --------------------------------------------------------
 
     try:
+
         resources = page.evaluate(
             """
-            () => performance.getEntriesByType('resource')
+            () => performance
+                .getEntriesByType('resource')
                 .map(x => x.name)
             """
         )
@@ -660,40 +866,46 @@ def scan_page(page):
         pass
 
     # --------------------------------------------------------
-    # Komplette HTML-Seite
+    # HTML
     # --------------------------------------------------------
 
     try:
+
         source = page.content()
 
         add_urls(source)
 
-        decoded = unquote(source)
-
-        add_urls(decoded)
+        add_urls(
+            unquote(source)
+        )
 
     except Exception:
         pass
 
     # --------------------------------------------------------
-    # Script-Tags
+    # Scripts
     # --------------------------------------------------------
 
     try:
-        scripts = page.locator("script").all()
+
+        scripts = page.locator(
+            "script"
+        ).all()
 
         for script in scripts:
 
             try:
-                content = script.text_content()
-
-                add_urls(content)
-
+                add_urls(
+                    script.text_content()
+                )
             except Exception:
                 pass
 
             try:
-                src = script.get_attribute("src")
+
+                src = script.get_attribute(
+                    "src"
+                )
 
                 if src:
                     add_urls(src)
@@ -709,6 +921,7 @@ def scan_page(page):
     # --------------------------------------------------------
 
     try:
+
         elements = page.locator(
             "[data-src], "
             "[data-url], "
@@ -728,7 +941,10 @@ def scan_page(page):
             ):
 
                 try:
-                    value = element.get_attribute(attribute)
+
+                    value = element.get_attribute(
+                        attribute
+                    )
 
                     if value:
                         add_urls(value)
@@ -744,60 +960,78 @@ def scan_page(page):
     # --------------------------------------------------------
 
     try:
-        iframe_elements = page.locator("iframe").all()
+
+        iframe_elements = page.locator(
+            "iframe"
+        ).all()
 
         for iframe in iframe_elements:
 
+            iframe_page = None
+
             try:
-                src = iframe.get_attribute("src")
+
+                src = iframe.get_attribute(
+                    "src"
+                )
 
                 if not src:
                     continue
 
-                src = normalize_url(src)
+                src = normalize_url(
+                    src
+                )
 
                 if ".m3u8" in src.lower():
+
                     add_urls(src)
+
                     continue
 
-                # IFrame öffnen
                 try:
-                    iframe_page = page.context.new_page()
+
+                    iframe_page = (
+                        page.context.new_page()
+                    )
 
                     iframe_page.goto(
                         src,
-                        wait_until="domcontentloaded",
+                        wait_until=(
+                            "domcontentloaded"
+                        ),
                         timeout=8000,
                     )
 
-                    iframe_page.wait_for_timeout(1500)
+                    iframe_page.wait_for_timeout(
+                        1500
+                    )
 
                     add_urls(
                         iframe_page.content()
                     )
 
-                    try:
-                        resources = iframe_page.evaluate(
-                            """
-                            () => performance
-                                .getEntriesByType('resource')
-                                .map(x => x.name)
-                            """
-                        )
+                    resources = iframe_page.evaluate(
+                        """
+                        () => performance
+                            .getEntriesByType('resource')
+                            .map(x => x.name)
+                        """
+                    )
 
-                        for resource in resources:
-                            add_urls(resource)
-
-                    except Exception:
-                        pass
-
-                    iframe_page.close()
+                    for resource in resources:
+                        add_urls(resource)
 
                 except Exception:
-                    try:
-                        iframe_page.close()
-                    except Exception:
-                        pass
+                    pass
+
+                finally:
+
+                    if iframe_page:
+
+                        try:
+                            iframe_page.close()
+                        except Exception:
+                            pass
 
             except Exception:
                 pass
@@ -806,21 +1040,24 @@ def scan_page(page):
         pass
 
     # --------------------------------------------------------
-    # Alle Frames
+    # Frames
     # --------------------------------------------------------
 
     try:
+
         for frame in page.frames:
 
             try:
-                frame_content = frame.content()
 
-                add_urls(frame_content)
+                add_urls(
+                    frame.content()
+                )
 
             except Exception:
                 pass
 
             try:
+
                 frame_scripts = frame.locator(
                     "script"
                 ).all()
@@ -828,9 +1065,10 @@ def scan_page(page):
                 for script in frame_scripts:
 
                     try:
-                        content = script.text_content()
 
-                        add_urls(content)
+                        add_urls(
+                            script.text_content()
+                        )
 
                     except Exception:
                         pass
@@ -845,59 +1083,120 @@ def scan_page(page):
 
 
 # ============================================================
-# BROWSER STREAM SCANNER
+# BROWSER SCANNER
 # ============================================================
 
-def browser_find_stream(page, channel_id, channel_url):
+def browser_find_stream(
+    page,
+    channel_id,
+    channel_url,
+):
+
     candidates = []
 
-    deep_scan = channel_id in DEEP_SCAN_CHANNELS
+    deep_scan = (
+        channel_id
+        in DEEP_SCAN_CHANNELS
+    )
 
-    max_wait = 14 if deep_scan else 7
+    max_wait = (
+        14
+        if deep_scan
+        else 7
+    )
 
     gefunden = False
 
     def add_candidate(url):
-        url = normalize_url(url)
+
+        nonlocal candidates
+
+        url = normalize_url(
+            url
+        )
 
         if not url:
             return
 
-        # ATV Secure-URL niemals direkt übernehmen
+        # ----------------------------------------------------
+        # ATV Secure-URL niemals speichern
+        # ----------------------------------------------------
+
         if (
             channel_id == "atv"
-            and "securevideotoken.tmgrup.com.tr" in url.lower()
+            and
+            "securevideotoken.tmgrup.com.tr"
+            in url.lower()
         ):
-            resolved = resolve_atv_stream(url)
+
+            resolved = (
+                resolve_atv_stream(
+                    url
+                )
+            )
 
             for item in resolved:
+
                 if item not in candidates:
-                    candidates.append(item)
+                    candidates.append(
+                        item
+                    )
 
             return
 
-        if not is_valid_m3u8_url(url):
+        if not is_valid_m3u8_url(
+            url
+        ):
+            return
+
+        # ----------------------------------------------------
+        # SENDER-FILTER
+        # ----------------------------------------------------
+
+        if not is_channel_stream(
+            channel_id,
+            url,
+        ):
+
+            print(
+                f"  Falscher Sender-Stream "
+                f"ignoriert: {url}"
+            )
+
             return
 
         if url not in candidates:
-            candidates.append(url)
 
-    def capture_response(response):
+            candidates.append(
+                url
+            )
+
+    def capture_response(
+        response
+    ):
+
         nonlocal gefunden
 
         try:
-            url = normalize_url(response.url)
+
+            url = normalize_url(
+                response.url
+            )
 
             if ".m3u8" not in url.lower():
                 return
 
-            # Für die Problem-Sender ALLE Kandidaten sammeln.
             if deep_scan:
-                add_candidate(url)
+
+                add_candidate(
+                    url
+                )
+
                 return
 
-            # Normale Sender
-            add_candidate(url)
+            add_candidate(
+                url
+            )
 
             if candidates:
                 gefunden = True
@@ -905,7 +1204,10 @@ def browser_find_stream(page, channel_id, channel_url):
         except Exception:
             pass
 
-    page.on("response", capture_response)
+    page.on(
+        "response",
+        capture_response,
+    )
 
     try:
 
@@ -919,25 +1221,47 @@ def browser_find_stream(page, channel_id, channel_url):
             timeout=30000,
         )
 
-        # Kurze Grundwartezeit
-        page.wait_for_timeout(1500)
+        page.wait_for_timeout(
+            1500
+        )
 
         start = time.monotonic()
 
-        while time.monotonic() - start < max_wait:
+        while (
+            time.monotonic() - start
+            < max_wait
+        ):
 
-            if gefunden and not deep_scan:
+            if (
+                gefunden
+                and not deep_scan
+            ):
                 break
 
-            page.wait_for_timeout(500)
+            page.wait_for_timeout(
+                500
+            )
 
-        # Bei den Problem-Sendern noch zusätzlich
-        # den kompletten DOM/HTML-Inhalt durchsuchen.
-        if deep_scan or not candidates:
-            print("  Tiefer Seitenscan...")
+        # ----------------------------------------------------
+        # Tiefer Scan
+        # ----------------------------------------------------
 
-            for url in scan_page(page):
-                add_candidate(url)
+        if (
+            deep_scan
+            or not candidates
+        ):
+
+            print(
+                "  Tiefer Seitenscan..."
+            )
+
+            for url in scan_page(
+                page
+            ):
+
+                add_candidate(
+                    url
+                )
 
     except Exception as exc:
 
@@ -945,11 +1269,16 @@ def browser_find_stream(page, channel_id, channel_url):
             f"  Browser-Fehler: {exc}"
         )
 
-        # Auch bei einem Fehler versuchen wir den bereits
-        # geladenen Inhalt auszuwerten.
         try:
-            for url in scan_page(page):
-                add_candidate(url)
+
+            for url in scan_page(
+                page
+            ):
+
+                add_candidate(
+                    url
+                )
+
         except Exception:
             pass
 
@@ -967,22 +1296,33 @@ def browser_find_stream(page, channel_id, channel_url):
                 "securevideotoken.tmgrup.com.tr"
                 in candidate.lower()
             ):
-                for item in resolve_atv_stream(candidate):
+
+                for item in resolve_atv_stream(
+                    candidate
+                ):
 
                     if item not in resolved:
-                        resolved.append(item)
+                        resolved.append(
+                            item
+                        )
 
-            elif "trkvz-live.ercdn.net" in candidate.lower():
+            elif (
+                "trkvz-live.ercdn.net"
+                in candidate.lower()
+            ):
 
                 if candidate not in resolved:
-                    resolved.append(candidate)
+                    resolved.append(
+                        candidate
+                    )
 
         candidates = resolved
 
-        # 576p bevorzugen
         candidates.sort(
             key=lambda x: (
-                0 if quality_from_url(x) == 576 else 1,
+                0
+                if quality_from_url(x) == 576
+                else 1,
                 -score_stream(x),
             )
         )
@@ -995,16 +1335,28 @@ def browser_find_stream(page, channel_id, channel_url):
         )
 
     # --------------------------------------------------------
-    # Kandidaten validieren
+    # Validieren
     # --------------------------------------------------------
 
-    referer = REFERERS.get(channel_id)
+    referer = REFERERS.get(
+        channel_id
+    )
 
     valid = []
 
     for candidate in candidates:
 
-        if not is_valid_m3u8_url(candidate):
+        if not is_valid_m3u8_url(
+            candidate
+        ):
+            continue
+
+        # Sicherheitshalber erneut
+        # Sender prüfen.
+        if not is_channel_stream(
+            channel_id,
+            candidate,
+        ):
             continue
 
         print(
@@ -1016,15 +1368,13 @@ def browser_find_stream(page, channel_id, channel_url):
             referer=referer,
             timeout=5,
         ):
-            valid.append(candidate)
 
-            # Für normale Sender reicht der erste gültige.
-            # Bei Problem-Sendern sammeln wir mehrere.
+            valid.append(
+                candidate
+            )
+
             if not deep_scan:
                 break
-
-    if not valid:
-        return []
 
     return valid
 
@@ -1033,7 +1383,10 @@ def browser_find_stream(page, channel_id, channel_url):
 # FALLBACK
 # ============================================================
 
-def fallback_find(channel_id):
+def fallback_find(
+    channel_id
+):
+
     candidates = FALLBACK_STREAMS.get(
         channel_id,
         [],
@@ -1043,7 +1396,15 @@ def fallback_find(channel_id):
 
     for url in candidates:
 
-        if not is_valid_m3u8_url(url):
+        if not is_valid_m3u8_url(
+            url
+        ):
+            continue
+
+        if not is_channel_stream(
+            channel_id,
+            url,
+        ):
             continue
 
         print(
@@ -1052,10 +1413,15 @@ def fallback_find(channel_id):
 
         if validate_stream(
             url,
-            referer=REFERERS.get(channel_id),
+            referer=REFERERS.get(
+                channel_id
+            ),
             timeout=5,
         ):
-            valid.append(url)
+
+            valid.append(
+                url
+            )
 
     return valid
 
@@ -1064,14 +1430,19 @@ def fallback_find(channel_id):
 # M3U DATEIEN
 # ============================================================
 
-def write_channel_m3u(channel_id, channel, streams):
+def write_channel_m3u(
+    channel_id,
+    channel,
+    streams,
+):
+
     path = os.path.join(
         STREAMS_DIR,
         f"{channel_id}.m3u",
     )
 
     lines = [
-        "#EXTM3U",
+        "#EXTM3U"
     ]
 
     for stream in streams:
@@ -1082,7 +1453,9 @@ def write_channel_m3u(channel_id, channel, streams):
             f'{channel["name"]}'
         )
 
-        lines.append(stream)
+        lines.append(
+            stream
+        )
 
     with open(
         path,
@@ -1101,13 +1474,14 @@ def write_all_variants(
     channel,
     streams,
 ):
+
     path = os.path.join(
         STREAMS_DIR,
         f"{channel_id}_all.m3u8",
     )
 
     lines = [
-        "#EXTM3U",
+        "#EXTM3U"
     ]
 
     for stream in streams:
@@ -1118,7 +1492,9 @@ def write_all_variants(
             f'{channel["name"]}'
         )
 
-        lines.append(stream)
+        lines.append(
+            stream
+        )
 
     with open(
         path,
@@ -1132,19 +1508,24 @@ def write_all_variants(
         )
 
 
-def write_all_m3u(results):
+def write_all_m3u(
+    results
+):
+
     path = os.path.join(
         STREAMS_DIR,
         "all.m3u",
     )
 
     lines = [
-        "#EXTM3U",
+        "#EXTM3U"
     ]
 
     for channel_id, data in results.items():
 
-        channel = CHANNELS[channel_id]
+        channel = CHANNELS[
+            channel_id
+        ]
 
         for stream in data:
 
@@ -1154,7 +1535,9 @@ def write_all_m3u(results):
                 f'{channel["name"]}'
             )
 
-            lines.append(stream)
+            lines.append(
+                stream
+            )
 
     with open(
         path,
@@ -1168,7 +1551,10 @@ def write_all_m3u(results):
         )
 
 
-def write_links(results):
+def write_links(
+    results
+):
+
     path = os.path.join(
         STREAMS_DIR,
         "links.txt",
@@ -1178,14 +1564,18 @@ def write_links(results):
 
     for channel_id, streams in results.items():
 
-        channel = CHANNELS[channel_id]
+        channel = CHANNELS[
+            channel_id
+        ]
 
         lines.append(
             f"### {channel['name']}"
         )
 
         for stream in streams:
-            lines.append(stream)
+            lines.append(
+                stream
+            )
 
         lines.append("")
 
@@ -1208,6 +1598,7 @@ def playlist_channel_matches(
     extinf_line,
     channel_id,
 ):
+
     text = extinf_line.lower()
 
     if channel_id == "showtv":
@@ -1223,7 +1614,9 @@ def playlist_channel_matches(
         )
 
     if channel_id == "showmax":
-        return "showmax" in text
+        return (
+            "showmax" in text
+        )
 
     if channel_id == "nowtv":
         return (
@@ -1233,13 +1626,13 @@ def playlist_channel_matches(
 
     if channel_id == "atv":
         return (
-            "tvg-id=\"atv" in text
+            'tvg-id="atv' in text
             or ",atv" in text
         )
 
     if channel_id == "tv8":
         return (
-            "tvg-id=\"tv8" in text
+            'tvg-id="tv8' in text
             and "international" not in text
         )
 
@@ -1262,7 +1655,9 @@ def playlist_channel_matches(
         )
 
     if channel_id == "teve2":
-        return "teve2" in text
+        return (
+            "teve2" in text
+        )
 
     if channel_id == "startv":
         return (
@@ -1291,11 +1686,19 @@ def playlist_channel_matches(
 # HAUPT-PLAYLIST AKTUALISIEREN
 # ============================================================
 
-def update_existing_playlist(results):
-    if not os.path.exists(PLAYLIST_FILE):
+def update_existing_playlist(
+    results
+):
+
+    if not os.path.exists(
+        PLAYLIST_FILE
+    ):
+
         print(
-            f"Playlist nicht gefunden: {PLAYLIST_FILE}"
+            f"Playlist nicht gefunden: "
+            f"{PLAYLIST_FILE}"
         )
+
         return
 
     with open(
@@ -1315,11 +1718,15 @@ def update_existing_playlist(results):
 
         found_channel = False
 
-        for index in range(len(lines)):
+        for index in range(
+            len(lines)
+        ):
 
             line = lines[index]
 
-            if not line.startswith("#EXTINF"):
+            if not line.startswith(
+                "#EXTINF"
+            ):
                 continue
 
             if not playlist_channel_matches(
@@ -1330,25 +1737,26 @@ def update_existing_playlist(results):
 
             found_channel = True
 
-            # Nur die erste aktive URL nach dem EXTINF
-            # ersetzen.
             for next_index in range(
                 index + 1,
                 len(lines),
             ):
 
-                candidate = lines[next_index].strip()
+                candidate = (
+                    lines[next_index].strip()
+                )
 
                 if not candidate:
                     continue
 
-                # Kommentare / Backups überspringen
-                if candidate.startswith("#"):
+                if candidate.startswith(
+                    "#"
+                ):
                     continue
 
-                # Neue URL einsetzen
                 lines[next_index] = (
-                    replacement + "\n"
+                    replacement
+                    + "\n"
                 )
 
                 break
@@ -1356,6 +1764,7 @@ def update_existing_playlist(results):
             break
 
         if not found_channel:
+
             print(
                 f"  Kein EXTINF-Eintrag gefunden: "
                 f"{CHANNELS[channel_id]['name']}"
@@ -1367,7 +1776,9 @@ def update_existing_playlist(results):
         encoding="utf-8",
     ) as file:
 
-        file.writelines(lines)
+        file.writelines(
+            lines
+        )
 
 
 # ============================================================
@@ -1378,6 +1789,7 @@ def write_error(
     channel_id,
     message,
 ):
+
     path = os.path.join(
         STREAMS_DIR,
         f"{channel_id}_error.txt",
@@ -1390,11 +1802,13 @@ def write_error(
     ) as file:
 
         file.write(
-            f"Kanal: {CHANNELS[channel_id]['name']}\n"
+            f"Kanal: "
+            f"{CHANNELS[channel_id]['name']}\n"
         )
 
         file.write(
-            f"URL: {CHANNELS[channel_id]['url']}\n"
+            f"URL: "
+            f"{CHANNELS[channel_id]['url']}\n"
         )
 
         file.write(
@@ -1402,7 +1816,10 @@ def write_error(
         )
 
 
-def remove_error(channel_id):
+def remove_error(
+    channel_id
+):
+
     path = os.path.join(
         STREAMS_DIR,
         f"{channel_id}_error.txt",
@@ -1420,16 +1837,29 @@ def main():
 
     ensure_directories()
 
-    print("=" * 70)
-    print("IPTV SENDER-SCANNER")
-    print("=" * 70)
+    print(
+        "=" * 70
+    )
+
+    print(
+        "IPTV SENDER-SCANNER"
+    )
+
+    print(
+        "=" * 70
+    )
+
     print(
         f"Playlist: {PLAYLIST_FILE}"
     )
+
     print(
         f"Sender: {len(CHANNELS)}"
     )
-    print("=" * 70)
+
+    print(
+        "=" * 70
+    )
 
     results = {}
 
@@ -1467,7 +1897,9 @@ def main():
 
         def route_handler(route):
 
-            resource_type = route.request.resource_type
+            resource_type = (
+                route.request.resource_type
+            )
 
             if resource_type in {
                 "image",
@@ -1487,25 +1919,32 @@ def main():
         )
 
         # ----------------------------------------------------
-        # Sender nacheinander prüfen
+        # Sender scannen
         # ----------------------------------------------------
 
         for channel_id, channel in CHANNELS.items():
 
             print()
-            print("-" * 70)
+            print(
+                "-" * 70
+            )
+
             print(
                 f"Kanal: {channel['name']}"
             )
+
             print(
                 f"URL: {channel['url']}"
             )
-            print("-" * 70)
+
+            print(
+                "-" * 70
+            )
 
             streams = []
 
             # ------------------------------------------------
-            # Browser / offizielle Seite
+            # Offizielle Webseite
             # ------------------------------------------------
 
             try:
@@ -1537,6 +1976,7 @@ def main():
                 )
 
                 if fallback:
+
                     streams = fallback
 
                     print(
@@ -1550,49 +1990,57 @@ def main():
 
             if streams:
 
-                # Duplikate entfernen
                 unique = []
 
                 for stream in streams:
 
                     if stream not in unique:
-                        unique.append(stream)
+                        unique.append(
+                            stream
+                        )
 
                 streams = unique
 
-                results[channel_id] = streams
+                results[
+                    channel_id
+                ] = streams
 
                 print()
+
                 print(
                     f"  OK: {len(streams)} Stream(s)"
                 )
 
                 for stream in streams:
+
                     print(
                         f"  -> {stream}"
                     )
 
-                # Einzeldatei
                 write_channel_m3u(
                     channel_id,
                     channel,
                     streams,
                 )
 
-                # Alle Varianten
                 write_all_variants(
                     channel_id,
                     channel,
                     streams,
                 )
 
-                remove_error(channel_id)
+                remove_error(
+                    channel_id
+                )
 
             else:
 
-                results[channel_id] = []
+                results[
+                    channel_id
+                ] = []
 
                 print()
+
                 print(
                     "  FEHLER: M3U8 nicht gefunden"
                 )
@@ -1607,24 +2055,38 @@ def main():
         # ----------------------------------------------------
 
         context.close()
+
         browser.close()
 
     # ========================================================
     # GESAMTDATEIEN
     # ========================================================
 
-    write_all_m3u(results)
+    write_all_m3u(
+        results
+    )
 
-    write_links(results)
+    write_links(
+        results
+    )
 
     # ========================================================
     # HAUPT-PLAYLIST
     # ========================================================
 
     print()
-    print("=" * 70)
-    print("HAUPT-PLAYLIST AKTUALISIEREN")
-    print("=" * 70)
+
+    print(
+        "=" * 70
+    )
+
+    print(
+        "HAUPT-PLAYLIST AKTUALISIEREN"
+    )
+
+    print(
+        "=" * 70
+    )
 
     update_existing_playlist(
         results
@@ -1640,31 +2102,50 @@ def main():
         if streams
     )
 
-    fehler = len(CHANNELS) - erfolgreich
-
-    print()
-    print("=" * 70)
-    print("SCAN ABGESCHLOSSEN")
-    print("=" * 70)
-
-    print(
-        f"Erfolgreich: {erfolgreich}/{len(CHANNELS)}"
-    )
-
-    print(
-        f"Fehler:      {fehler}/{len(CHANNELS)}"
+    fehler = (
+        len(CHANNELS)
+        - erfolgreich
     )
 
     print()
+
     print(
-        f"Playlist: {PLAYLIST_FILE}"
+        "=" * 70
     )
 
     print(
-        f"Streams:  {STREAMS_DIR}/"
+        "SCAN ABGESCHLOSSEN"
     )
 
-    print("=" * 70)
+    print(
+        "=" * 70
+    )
+
+    print(
+        f"Erfolgreich: "
+        f"{erfolgreich}/{len(CHANNELS)}"
+    )
+
+    print(
+        f"Fehler:      "
+        f"{fehler}/{len(CHANNELS)}"
+    )
+
+    print()
+
+    print(
+        f"Playlist: "
+        f"{PLAYLIST_FILE}"
+    )
+
+    print(
+        f"Streams:  "
+        f"{STREAMS_DIR}/"
+    )
+
+    print(
+        "=" * 70
+    )
 
 
 if __name__ == "__main__":
