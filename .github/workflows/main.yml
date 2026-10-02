@@ -2,10 +2,10 @@ name: Alle Sender aktualisieren
 
 on:
   schedule:
-    # Alle 15 Minuten ausführen
-    - cron: '*/15 * * * *'
+    # Alle 15 Minuten
+    - cron: "*/15 * * * *"
 
-  # Manueller Start über GitHub Actions
+  # Manueller Start
   workflow_dispatch:
 
 
@@ -45,8 +45,8 @@ jobs:
       - name: Repository klonen
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           ref: main
+          fetch-depth: 0
           persist-credentials: true
 
 
@@ -57,15 +57,15 @@ jobs:
       - name: Python einrichten
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
           cache: pip
 
 
       # ======================================================
-      # PYTHON-PAKETE
+      # PLAYWRIGHT
       # ======================================================
 
-      - name: Python-Pakete installieren
+      - name: Playwright installieren
         run: |
           python -m pip install --upgrade pip
           pip install playwright
@@ -81,45 +81,41 @@ jobs:
 
 
       # ======================================================
-      # MAIN-BRANCH AKTUALISIEREN
-      # ======================================================
-
-      - name: Main-Branch aktualisieren
-        run: |
-          git fetch origin main
-          git reset --hard origin/main
-
-
-      # ======================================================
       # STREAMS-ORDNER
       # ======================================================
 
-      - name: Streams-Ordner erstellen
+      - name: Streams-Ordner vorbereiten
         run: |
           mkdir -p streams
 
 
       # ======================================================
-      # KANAL-SCANNER
+      # SCANNER
       # ======================================================
 
       - name: Sender-Scanner starten
         run: |
+          echo "======================================"
+          echo "TURK TV SCANNER"
+          echo "======================================"
+          echo "Start: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          echo ""
+
           python3 channels.py
 
 
       # ======================================================
-      # LETZTE AKTUALISIERUNG
+      # LETZTE AUSFÜHRUNG
       # ======================================================
 
-      - name: Zeitpunkt der letzten Aktualisierung speichern
+      - name: Letzte Aktualisierung speichern
         run: |
           echo "Letzte Aktualisierung: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" \
             > streams/last_run.txt
 
 
       # ======================================================
-      # ERGEBNISSE ANZEIGEN
+      # ERGEBNISSE
       # ======================================================
 
       - name: Ergebnisse anzeigen
@@ -141,12 +137,9 @@ jobs:
           shopt -s nullglob
 
           for file in streams/*.m3u; do
-
             echo ""
             echo "========== $file =========="
-
             cat "$file"
-
           done
 
 
@@ -156,12 +149,9 @@ jobs:
           echo "======================================"
 
           for file in streams/*.m3u8; do
-
             echo ""
             echo "========== $file =========="
-
             head -30 "$file"
-
           done
 
 
@@ -171,17 +161,14 @@ jobs:
           echo "======================================"
 
           for file in streams/*.error.txt; do
-
             echo ""
             echo "========== $file =========="
-
             cat "$file"
-
           done
 
 
       # ======================================================
-      # GIT KONFIGURIEREN
+      # GIT
       # ======================================================
 
       - name: Git konfigurieren
@@ -203,13 +190,13 @@ jobs:
 
           echo ""
           echo "======================================"
-          echo "ÄNDERUNGEN PRÜFEN"
+          echo "ÄNDERUNGEN"
           echo "======================================"
 
           git status --short
 
 
-          # Streams-Dateien hinzufügen
+          # Streams hinzufügen
           git add streams/
 
 
@@ -225,24 +212,19 @@ jobs:
           git diff --cached --stat
 
 
-          # Prüfen, ob überhaupt Änderungen vorhanden sind
           if git diff --cached --quiet; then
-
             echo ""
             echo "Keine Änderungen vorhanden."
-
             exit 0
-
           fi
 
 
-          # Commit erstellen
           git commit \
             -m "Sender aktualisiert $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
 
 
       # ======================================================
-      # PUSH ZU GITHUB
+      # PUSH
       # ======================================================
 
       - name: Änderungen zu GitHub übertragen
@@ -253,7 +235,7 @@ jobs:
           echo "PUSH"
           echo "======================================"
 
-          git push origin HEAD:main
+          git push origin main
 
           echo ""
           echo "Änderungen erfolgreich zu GitHub übertragen."
