@@ -2,240 +2,136 @@ name: Alle Sender aktualisieren
 
 on:
   schedule:
-    # Alle 15 Minuten
-    - cron: "*/15 * * * *"
-
-  # Manueller Start
+    - cron: '*/15 * * * *'
   workflow_dispatch:
-
-
-# ============================================================
-# KONKURRENZ
-# ============================================================
 
 concurrency:
   group: sender-aktualisierung
   cancel-in-progress: false
 
-
-# ============================================================
-# BERECHTIGUNGEN
-# ============================================================
-
 permissions:
   contents: write
 
-
-# ============================================================
-# JOB
-# ============================================================
-
 jobs:
-
   aktualisieren:
-
     runs-on: ubuntu-latest
 
     steps:
 
-      # ======================================================
-      # REPOSITORY
-      # ======================================================
-
+      # ==================================================
+      # Repository laden
+      # ==================================================
       - name: Repository klonen
         uses: actions/checkout@v4
         with:
-          ref: main
           fetch-depth: 0
+          ref: main
           persist-credentials: true
 
-
-      # ======================================================
-      # PYTHON
-      # ======================================================
-
+      # ==================================================
+      # Python einrichten
+      # ==================================================
       - name: Python einrichten
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
           cache: pip
 
-
-      # ======================================================
-      # PLAYWRIGHT
-      # ======================================================
-
-      - name: Playwright installieren
+      # ==================================================
+      # Python-Pakete installieren
+      # ==================================================
+      - name: Python-Pakete installieren
         run: |
           python -m pip install --upgrade pip
-          pip install playwright
+          pip install playwright requests
 
-
-      # ======================================================
-      # CHROMIUM
-      # ======================================================
-
+      # ==================================================
+      # Chromium installieren
+      # ==================================================
       - name: Chromium installieren
         run: |
           python -m playwright install --with-deps chromium
 
+      # ==================================================
+      # Sicherstellen, dass main aktuell ist
+      # ==================================================
+      - name: Main-Branch aktualisieren
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
 
-      # ======================================================
-      # STREAMS-ORDNER
-      # ======================================================
-
-      - name: Streams-Ordner vorbereiten
+      # ==================================================
+      # Streams-Ordner erstellen
+      # ==================================================
+      - name: Streams-Ordner erstellen
         run: |
           mkdir -p streams
 
-
-      # ======================================================
-      # SCANNER
-      # ======================================================
-
+      # ==================================================
+      # Sender-Scanner starten
+      # ==================================================
       - name: Sender-Scanner starten
+        run: |
+          python3 channels.py
+
+      # ==================================================
+      # Zeitpunkt speichern
+      # ==================================================
+      - name: Zeitpunkt der letzten Aktualisierung speichern
+        run: |
+          echo "Letzte Aktualisierung: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" > streams/last_run.txt
+
+      # ==================================================
+      # Ergebnisse anzeigen
+      # ==================================================
+      - name: Ergebnisse anzeigen
         run: |
           echo "======================================"
           echo "TURK TV SCANNER"
           echo "======================================"
           echo "Start: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
           echo ""
-
-          python3 channels.py
-
-
-      # ======================================================
-      # LETZTE AUSFÜHRUNG
-      # ======================================================
-
-      - name: Letzte Aktualisierung speichern
-        run: |
-          echo "Letzte Aktualisierung: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" \
-            > streams/last_run.txt
-
-
-      # ======================================================
-      # ERGEBNISSE
-      # ======================================================
-
-      - name: Ergebnisse anzeigen
-        run: |
-
+          echo "Streams:"
+          ls -lah streams/ || true
           echo ""
-          echo "======================================"
-          echo "ERSTELLTE DATEIEN"
-          echo "======================================"
-
-          ls -lah streams/
-
-
+          echo "Playlist:"
+          ls -lah 2026/playlist.m3u || true
           echo ""
-          echo "======================================"
-          echo "M3U-DATEIEN"
-          echo "======================================"
-
-          shopt -s nullglob
-
-          for file in streams/*.m3u; do
-            echo ""
-            echo "========== $file =========="
-            cat "$file"
-          done
-
-
-          echo ""
-          echo "======================================"
-          echo "M3U8-DATEIEN"
+          echo "Letzte Aktualisierung:"
+          cat streams/last_run.txt || true
           echo "======================================"
 
-          for file in streams/*.m3u8; do
-            echo ""
-            echo "========== $file =========="
-            head -30 "$file"
-          done
-
-
-          echo ""
-          echo "======================================"
-          echo "FEHLERDATEIEN"
-          echo "======================================"
-
-          for file in streams/*.error.txt; do
-            echo ""
-            echo "========== $file =========="
-            cat "$file"
-          done
-
-
-      # ======================================================
-      # GIT
-      # ======================================================
-
+      # ==================================================
+      # Git konfigurieren
+      # ==================================================
       - name: Git konfigurieren
         run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
 
-          git config user.email \
-            "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git config user.name \
-            "github-actions[bot]"
-
-
-      # ======================================================
-      # ÄNDERUNGEN COMMITTEN
-      # ======================================================
-
-      - name: Änderungen committen
+      # ==================================================
+      # Änderungen vorbereiten
+      # ==================================================
+      - name: Änderungen vorbereiten
         run: |
-
-          echo ""
-          echo "======================================"
-          echo "ÄNDERUNGEN"
-          echo "======================================"
-
-          git status --short
-
-
-          # Streams hinzufügen
           git add streams/
-
-
-          # Hauptplaylist hinzufügen
           git add 2026/playlist.m3u
 
-
-          echo ""
-          echo "======================================"
-          echo "VORBEREITETE ÄNDERUNGEN"
-          echo "======================================"
-
-          git diff --cached --stat
-
-
           if git diff --cached --quiet; then
-            echo ""
             echo "Keine Änderungen vorhanden."
             exit 0
           fi
 
+      # ==================================================
+      # Commit erstellen
+      # ==================================================
+      - name: Änderungen committen
+        run: |
+          git commit -m "Sender aktualisiert $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
 
-          git commit \
-            -m "Sender aktualisiert $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
-
-
-      # ======================================================
-      # PUSH
-      # ======================================================
-
+      # ==================================================
+      # Zu GitHub übertragen
+      # ==================================================
       - name: Änderungen zu GitHub übertragen
         run: |
-
-          echo ""
-          echo "======================================"
-          echo "PUSH"
-          echo "======================================"
-
           git push origin main
-
-          echo ""
-          echo "Änderungen erfolgreich zu GitHub übertragen."
