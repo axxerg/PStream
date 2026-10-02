@@ -1,117 +1,195 @@
-name: Update All Channels
+name: Alle Sender aktualisieren
 
 on:
   schedule:
+    # Alle 15 Minuten ausführen
     - cron: '*/15 * * * *'
 
+  # Manueller Start über GitHub Actions
   workflow_dispatch:
 
 concurrency:
-  group: update-all-channels
+  group: sender-aktualisierung
   cancel-in-progress: false
 
 permissions:
   contents: write
 
 jobs:
-  update:
+  aktualisieren:
+
     runs-on: ubuntu-latest
 
     steps:
 
-      - name: Repoyu klonla
+      # ======================================================
+      # REPOSITORY
+      # ======================================================
+
+      - name: Repository klonen
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: main
           persist-credentials: true
 
-      - name: Python qur
+
+      # ======================================================
+      # PYTHON
+      # ======================================================
+
+      - name: Python einrichten
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
           cache: pip
 
-      - name: Python paketlərini qur
+
+      # ======================================================
+      # PYTHON-PAKETE
+      # ======================================================
+
+      - name: Python-Pakete installieren
         run: |
           python -m pip install --upgrade pip
           pip install playwright
 
-      - name: Chromium qur
+
+      # ======================================================
+      # CHROMIUM
+      # ======================================================
+
+      - name: Chromium installieren
         run: |
           python -m playwright install --with-deps chromium
 
-      - name: Main branch-i yenilə
+
+      # ======================================================
+      # MAIN-BRANCH AKTUALISIEREN
+      # ======================================================
+
+      - name: Main-Branch aktualisieren
         run: |
           git fetch origin main
           git reset --hard origin/main
 
-      - name: Streams qovluğunu yarat
+
+      # ======================================================
+      # STREAMS-ORDNER
+      # ======================================================
+
+      - name: Streams-Ordner erstellen
         run: |
           mkdir -p streams
 
-      - name: Kanal scanner-i işə sal
+
+      # ======================================================
+      # KANAL-SCANNER
+      # ======================================================
+
+      - name: Sender-Scanner starten
         run: |
           python3 channels.py
 
-      - name: Last run
+
+      # ======================================================
+      # ZEITPUNKT DER LETZTEN AKTUALISIERUNG
+      # ======================================================
+
+      - name: Zeitpunkt der letzten Aktualisierung speichern
         run: |
-          echo "Son yenilenme: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" \
+          echo "Letzte Aktualisierung: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" \
             > streams/last_run.txt
 
-      - name: Nəticələri göstər
+
+      # ======================================================
+      # ERGEBNISSE ANZEIGEN
+      # ======================================================
+
+      - name: Ergebnisse anzeigen
         run: |
+
           echo ""
           echo "======================================"
-          echo "YARADILAN FAYLLAR"
+          echo "ERSTELLTE DATEIEN"
           echo "======================================"
 
           ls -lah streams/
 
+
           echo ""
           echo "======================================"
-          echo "M3U FAYLLARI"
+          echo "M3U-DATEIEN"
           echo "======================================"
 
           shopt -s nullglob
 
           for file in streams/*.m3u; do
+
             echo ""
             echo "========== $file =========="
+
             cat "$file"
+
           done
+
 
           echo ""
           echo "======================================"
-          echo "ERROR FAYLLARI"
+          echo "FEHLERDATEIEN"
           echo "======================================"
 
           for file in streams/*.error.txt; do
+
             echo ""
             echo "========== $file =========="
+
             cat "$file"
+
           done
 
-      - name: Git config
+
+      # ======================================================
+      # GIT KONFIGURIEREN
+      # ======================================================
+
+      - name: Git konfigurieren
         run: |
+
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
 
           git config user.name \
             "github-actions[bot]"
 
-      - name: Dəyişiklikləri commit et
+
+      # ======================================================
+      # ÄNDERUNGEN COMMITTEN
+      # ======================================================
+
+      - name: Änderungen committen
         run: |
+
           git add streams/
+          git add PStream/2026/playlist.m3u
 
           if git diff --cached --quiet; then
-            echo "Dəyişiklik yoxdur."
+
+            echo "Keine Änderungen vorhanden."
+
             exit 0
+
           fi
 
           git commit \
-            -m "Update all streams $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            -m "Sender aktualisiert $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
 
-      - name: Push
+
+      # ======================================================
+      # ZURÜCK ZU GITHUB PUSHEN
+      # ======================================================
+
+      - name: Änderungen zu GitHub übertragen
         run: |
+
           git push origin HEAD:main
