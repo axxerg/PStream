@@ -411,6 +411,9 @@ http://46.32.176.50/ahaber/playlist.m3u8
 #CNN TÜRK
 
 #EXTINF:-1 tvg-id="CNN TÜRK HD.tr" tvg-name="CNN TURK" tvg-logo="https://i.ibb.co/bFsmkwJ/cnn-turk.png" ,CNN TURK
+
+
+#EXTINF:-1 tvg-id="CNN TÜRK HD.tr" tvg-name="CNN TURK" tvg-logo="https://i.ibb.co/bFsmkwJ/cnn-turk.png" ,CNN TURK
 http://46.32.176.50/cnnturk/playlist.m3u8
 
 #EXTINF:-1  tvg-name="CNN TÜRK " tvg-id="live" tvg-logo="https://i.ibb.co/LdzKYB1c/MG-6446.jpg", CNN TÜRK 
