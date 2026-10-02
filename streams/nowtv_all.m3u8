@@ -1,8 +1,8 @@
 #EXTM3U
 #EXT-X-VERSION:3
 #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=950000,RESOLUTION=1280x720
-https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p.m3u8?e=1791000932&st=Tw0LIE4l1MHBHED4UjlKSA
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_720p.m3u8?e=1791002739&st=eH_fbM2Cr37SOyiplB320g
 #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=700000,RESOLUTION=854x480
-https://nowtv-live-ad.ercdn.net/nowtv/nowtv_480p.m3u8?e=1791000932&st=Tw0LIE4l1MHBHED4UjlKSA
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_480p.m3u8?e=1791002739&st=eH_fbM2Cr37SOyiplB320g
 #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=500000,RESOLUTION=640x360
-https://nowtv-live-ad.ercdn.net/nowtv/nowtv_360p.m3u8?e=1791000932&st=Tw0LIE4l1MHBHED4UjlKSA
+https://nowtv-live-ad.ercdn.net/nowtv/nowtv_360p.m3u8?e=1791002739&st=eH_fbM2Cr37SOyiplB320g
