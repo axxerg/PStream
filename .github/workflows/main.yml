@@ -8,14 +8,30 @@ on:
   # Manueller Start über GitHub Actions
   workflow_dispatch:
 
+
+# ============================================================
+# KONKURRENZ
+# ============================================================
+
 concurrency:
   group: sender-aktualisierung
   cancel-in-progress: false
 
+
+# ============================================================
+# BERECHTIGUNGEN
+# ============================================================
+
 permissions:
   contents: write
 
+
+# ============================================================
+# JOB
+# ============================================================
+
 jobs:
+
   aktualisieren:
 
     runs-on: ubuntu-latest
@@ -93,7 +109,7 @@ jobs:
 
 
       # ======================================================
-      # ZEITPUNKT DER LETZTEN AKTUALISIERUNG
+      # LETZTE AKTUALISIERUNG
       # ======================================================
 
       - name: Zeitpunkt der letzten Aktualisierung speichern
@@ -136,6 +152,21 @@ jobs:
 
           echo ""
           echo "======================================"
+          echo "M3U8-DATEIEN"
+          echo "======================================"
+
+          for file in streams/*.m3u8; do
+
+            echo ""
+            echo "========== $file =========="
+
+            head -30 "$file"
+
+          done
+
+
+          echo ""
+          echo "======================================"
           echo "FEHLERDATEIEN"
           echo "======================================"
 
@@ -170,26 +201,59 @@ jobs:
       - name: Änderungen committen
         run: |
 
-          git add streams/
-          git add PStream/2026/playlist.m3u
+          echo ""
+          echo "======================================"
+          echo "ÄNDERUNGEN PRÜFEN"
+          echo "======================================"
 
+          git status --short
+
+
+          # Streams-Dateien hinzufügen
+          git add streams/
+
+
+          # Hauptplaylist hinzufügen
+          git add 2026/playlist.m3u
+
+
+          echo ""
+          echo "======================================"
+          echo "VORBEREITETE ÄNDERUNGEN"
+          echo "======================================"
+
+          git diff --cached --stat
+
+
+          # Prüfen, ob überhaupt Änderungen vorhanden sind
           if git diff --cached --quiet; then
 
+            echo ""
             echo "Keine Änderungen vorhanden."
 
             exit 0
 
           fi
 
+
+          # Commit erstellen
           git commit \
             -m "Sender aktualisiert $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
 
 
       # ======================================================
-      # ZURÜCK ZU GITHUB PUSHEN
+      # PUSH ZU GITHUB
       # ======================================================
 
       - name: Änderungen zu GitHub übertragen
         run: |
 
+          echo ""
+          echo "======================================"
+          echo "PUSH"
+          echo "======================================"
+
           git push origin HEAD:main
+
+          echo ""
+          echo "Änderungen erfolgreich zu GitHub übertragen."
