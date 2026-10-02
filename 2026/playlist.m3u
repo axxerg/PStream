@@ -24,7 +24,7 @@ https://tv-trtturk.medya.trt.com.tr/master_1440.m3u8
 #ATV 
 
 #EXTINF:-1 tvg-id="ATV.tr" , ATV HD
-https://trkvz-live.ercdn.net/atvavrupa/atvavrupa_576p.m3u8?st=VFm54sXlv4OexcpQtzmEiQ&e=1790990503
+https://trkvz-live.ercdn.net/atvavrupa/atvavrupa_576p.m3u8?st=MHaOVTi_9G9CnRFD-K4WaQ&e=1790990981
 
 #EXTINF:-1 tvg-id="ATV.tr" , ATV HD
 https://turkuaz.tecostream.xyz/atv?m3u8
@@ -50,7 +50,7 @@ https://turkuaz.tecostream.xyz/atv?m3u8
 #NOW
 
 #EXTINF:-1 tvg-id="FOX.tr" tvg-logo="https://i.ibb.co/WDfRpwV/now.jpg" , NOW
-https://nowtv-live-ad.ercdn.net/nowtv/playlist.m3u8?st=IGjlJfGochYMjEkbDxLl7w&e=1790959539
+https://nowtv-live-ad.ercdn.net/nowtv/playlist.m3u8?st=QP33YDJ2GThWq5ewSIsGng&e=1790959905
 
 #EXTINF:-1 tvg-id="FOX.tr" tvg-logo="https://i.ibb.co/WDfRpwV/now.jpg" , NOW
 http://tv.dsmart-go.workers.dev/?ID=https://www.nowtv.com.tr/canli-yayin
@@ -64,7 +64,7 @@ http://tv.dsmart-go.workers.dev/?ID=https://www.nowtv.com.tr/canli-yayin
 #SHOW TV
 
 #EXTINF:-1 tvg-id="Show.TV..tr" tvg-logo="https://i.ibb.co/BrGNZJ4/showtv.png",SHOW TV
-https://ciner.daioncdn.net/showtv/showtv_1080p.m3u8?ex=1664766175&st=RBzhSuGauna0OGld-DJUVA&tv=1&sid=8stx5vvu3jeq&app=4bc856ef-4c68-4a94-bc87-37dfaaa66558&ce=3
+https://ciner.daioncdn.net/showtv/showtv_1080p.m3u8?ex=1664766175&st=RBzhSuGauna0OGld-DJUVA&tv=1&sid=8stxvhthvkhw&app=4bc856ef-4c68-4a94-bc87-37dfaaa66558&ce=3
 
 #EXTINF:-1 tvg-id="Show.TV..tr" tvg-logo="https://i.ibb.co/BrGNZJ4/showtv.png",SHOW TV
 #http://tv.dsmart-go.workers.dev/?ID=https://www.showtv.com.tr/canli-yayin
@@ -102,13 +102,13 @@ http://46.32.176.50/startv/index.m3u8
 #EUROSTAR
 
 #EXTINF:-1 tvg-id="EuroStar.tr"  tvg-logo="https://i.ibb.co/Lg90xsB/eurostar22.png",EURO STAR
-https://dogusdyg-eurostar.lg.mncdn.com/dogusdyg_eurostar/live.m3u8?st=tLpNGdqKMyR2gD-QYDhpvg&e=1791031739
+https://dogusdyg-eurostar.lg.mncdn.com/dogusdyg_eurostar/live.m3u8?st=8tI2El36BqOa1w_-wVBfRg&e=1791032218
 
 
 #KANAL D 
 
 #EXTINF:-1 tvg-id="Kanal.D..tr" tvg-logo="https://i.ibb.co/s9mVqWH/kanald.png",KANAL D 
-https://demiroren.daioncdn.net/kanald/kanald.m3u8?app=kanald_web&ce=3&ppid=2f1462e07b8e8be0fc663eb0e7d477f7&dfp_paln=AQzzBGQEhJqZtPN-hHHuynDuL4270FLgeusbCl32_ml86kzEEspIhvISqIPadpJpFbhY80zYLDPnWE4XYGCCrBPQShi_K7WS9TNOz9FOHaRMtVp0dknCv3EMIfPwfe5K94MR3GrLMA040P29aGFQP8qIQQFL-5gAAQRwtAZMhYtfJwpWNM-hbS-sSIt42v5uQLWcoVFi9NBBT1mr_3HUtmZCTUmikrRBT9SPWCGMCh4Rj1f9w0m3jbYtXecH7DN_v15NiO4h-ty4djyWm9fQvuhVXtB5C5n0Y7MKRKD3uiRnRjpinjm9csE8I2CCmCv9eCTf9IExovtAJfC4vr-XnaUGVseWIVMBOlrT2j3gg4xZ1QNrhqsNy4qzeqyak14drNks8qV8m5OHCfmd0vJQmP9xpryxTiN7BLIHLPnqgFRsucCtMhuG3HJUkQbHJKrDxLjrJ-VHhJOj-P3_b-K6l_EJNXkrBPuQqDkDK8CEZHX5xQgOqWfHX3SGwR2R90ussW3ctm8grbR5pb3_2UEWLDdhGc3hN0SR7q9YTW1CUZ-QBitdpcVZS-yGKLnJ5Gs2d10e3Xm2xzia3cTYiUjnOo9X_UcURXwX_hFar0dmXvlKTBwQ-a_Ih7E-62DqKNBG1Ph6XhjT5oitNkGFujev0gt4mnoFiolm3Pcbg5UKlCKyT5n-XXBUpcxfR7TVmcfId6XY5pRErmEi52uYuxyuPqzWf_rSdGcVafrcxusmVl2pTU1czg6dzkulMuM8qikIQ8MIyKNI7q2x-dQAnLWycs4vYlfSXK-e1NmW2ZxVY8ONuWsxQxZSigJCrHhUytX5wHatfEqRwzjQ0OaeJ5c2hnBJrPBD88W1cpZytBMIP8ago3NMh3LfrtOwD6F1y-iFcfsoX9F0L4n0160ZvtJsd-lEHfSpByphgVb_tuCTlkPCFdWZ8hjLhusYzCeqUjhhA04FlzHpxmN6JV-6JWhwfE5JMoQPaYabUpg5SGiPkbGKSqjOfN5Hkkl0RKKhtvODWQRHZ_KzkS0ykOBc0n7T8Gc5vOvAOKwqoKI6mQ..
+https://demiroren.daioncdn.net/kanald/kanald.m3u8?app=kanald_web&ce=3&ppid=566b36e56b911076b03287e1c0d83200&dfp_paln=AQzzBGQEWM-tJvFHnyJZnqGSQjujKO-IalRhmYOlJw6130c3Tjx6zHzIK7Z7ODEJqqgHUMu6xlv70Ymmc2adhK4Lpsk_tCs2RpYtGk9pT3XJR7vruUG6BdHXJ243PCi4ycxWME-kUlC7jEVmXazt1JVxyvOoRhxhex66wAGTByiKz8WXWe8CSAksdpFa0KPP8syYrXuL1YZSIjWowQ8oqeQIB3lgJPfxriw6TlUmKLtMV84i3JqKS7S-sqHP_2IdRBPvLXni0R6icin9yf2zsTxDnV9oWPvONBN308HJoXeUnJQIf6F5MKl0FdLxZPawHoRM3SNL5Ote-lpwcZQ4_UCYFZJScwzV0a0mjYb0KX0ACAOVE4CqHa4lGhWap2KEisBNR0E-nyW2VyVwfu_2E6-grLifkM9PZrX9issKNwaDOlt0jffeZzQRK7ekHTQKKqKTFco2abSqhtq_h1BQxbobK0uuoLM5gi1Zw-Rp4lvL4qCn-j7xYPOlgytwymGd61p2EVI4Hv28hZo9SEYPui3xRdxtyqtUDAHCeVP5qbsvoOwuZ1Xno_85eaqkt_X7nIMxpkD7g9VC05Kckba74phYuNlzB7qFcOnsmutQqItfPt84X8KLFal5gYSmcQiSTawMqNgzb83viWFUyFDpEyYGnS4BIlYQosD6FZnG5-4h7IVjYpZGHUmwywEXoHWujS3RhQ8Ig-tzawgN485le_Ixm0xIyHqDPUWZaOPDNkZoP5CjO6RJsbbImkEYLMBaLB2vRt7Ko03gvx0mlWkDd7qDocT8FEXxT3umbfG8ILIQFjDsgHRfrG3Esklq453eHoIx7akIRg0iTOZFAtT1jDc-R6scq_E6gsrcrqMBOYY_Z0cEolmGWhFl5HtlM2tgxYgFZu2qlj1KxpLw-vsQ8Dyxt9hONIedn8UPTRPyhPViBijFDoGsZhylvJcJgSLmHrKm0K0dhAgAN1w2HYhjC9L2bADFidwarrB9Vtk2mTc25Rk4ABY3UrNOTkIaa9GomIT0-93O6oNeEiuBRpmTdppb
 
 #EXTINF:-1 tvg-id="Kanal.D..tr" tvg-logo="https://i.ibb.co/s9mVqWH/kanald.png",KANAL D 
 https://ackaxsqacw.turknet.ercdn.net/ozfkfbbjba/kanald/kanald_1080p.m3u8
