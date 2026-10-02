@@ -1,10 +1,3 @@
 #EXTM3U
-#EXT-X-VERSION:3
-#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2200000,RESOLUTION=1920x1080
-https://demiroren.daioncdn.net/kanald/kanald_1080p.m3u8?&sid=8stxy5ms0gwc&app=da2109ea-5dfe-4107-89ab-23593336ed61&ce=3
-#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1050000,RESOLUTION=1280x720
-https://demiroren.daioncdn.net/kanald/kanald_720p.m3u8?&sid=8stxy5ms0gwc&app=da2109ea-5dfe-4107-89ab-23593336ed61&ce=3
-#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=800000,RESOLUTION=854x480
-https://demiroren.daioncdn.net/kanald/kanald_480p.m3u8?&sid=8stxy5ms0gwc&app=da2109ea-5dfe-4107-89ab-23593336ed61&ce=3
-#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=550000,RESOLUTION=640x360
-https://demiroren.daioncdn.net/kanald/kanald_360p.m3u8?&sid=8stxy5ms0gwc&app=da2109ea-5dfe-4107-89ab-23593336ed61&ce=3
+#EXTINF:-1 tvg-id="kanald" tvg-name="Kanal D",Kanal D
+https://demiroren.daioncdn.net/kanald/kanald_1080p.m3u8?&sid=8stynjgp8knj&app=da2109ea-5dfe-4107-89ab-23593336ed61&ce=3

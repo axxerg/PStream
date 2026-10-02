@@ -1,0 +1,3 @@
+Kanal: ATV
+URL: https://www.atv.com.tr/canli-yayin
+Status: M3U8 nicht gefunden
