@@ -40,6 +40,10 @@ CHANNELS = {
         "name": "ATV",
         "url": "https://www.atv.com.tr/canli-yayin",
     },
+    "atv": {
+        "name": "cnn",
+        "url": "https://www.cnnturk.com/canli-yayin",
+    },
     "tv8": {
         "name": "TV8",
         "url": "https://www.tv8.com.tr/canli-yayin",
@@ -142,6 +146,7 @@ REFERERS = {
     "showmax": "https://www.showmax.com.tr/",
     "nowtv": "https://www.nowtv.com.tr/",
     "atv": "https://www.atv.com.tr/",
+    "cnn"": "https://www.cnnturk.com/canli-yayin/",
     "tv8": "https://www.tv8.com.tr/",
     "tv8int": "https://www.tv8.com.tr/",
     "kanald": "https://www.kanald.com.tr/",
