@@ -64,7 +64,7 @@ http://tv.dsmart-go.workers.dev/?ID=https://www.nowtv.com.tr/canli-yayin
 #SHOW TV
 
 #EXTINF:-1 tvg-id="Show.TV..tr" tvg-logo="https://i.ibb.co/BrGNZJ4/showtv.png",SHOW TV
-https://ciner.daioncdn.net/showtv/showtv_1080p.m3u8?ex=1664766175&st=RBzhSuGauna0OGld-DJUVA&tv=1&sid=8svo19fjkeat&app=4bc856ef-4c68-4a94-bc87-37dfaaa66558&ce=3
+https://ciner.daioncdn.net/showtv/showtv_1080p.m3u8?ex=1664766175&st=RBzhSuGauna0OGld-DJUVA&tv=1&sid=8swg8fhy2k5y&app=4bc856ef-4c68-4a94-bc87-37dfaaa66558&ce=3
 
 #EXTINF:-1 tvg-id="Show.TV..tr" tvg-logo="https://i.ibb.co/BrGNZJ4/showtv.png",SHOW TV
 #http://tv.dsmart-go.workers.dev/?ID=https://www.showtv.com.tr/canli-yayin
@@ -102,13 +102,13 @@ http://46.32.176.50/startv/index.m3u8
 #EUROSTAR
 
 #EXTINF:-1 tvg-id="EuroStar.tr"  tvg-logo="https://i.ibb.co/Lg90xsB/eurostar22.png",EURO STAR
-https://dogusdyg-eurostar.lg.mncdn.com/dogusdyg_eurostar/live.m3u8?st=NE1SNUxknmQCI47S0mNYZQ&e=1791074045
+https://dogusdyg-eurostar.lg.mncdn.com/dogusdyg_eurostar/live.m3u8?st=XsTZhBVfqSQLxS0j4Wue6g&e=1791093020
 
 
 #KANAL D 
 
 #EXTINF:-1 tvg-id="Kanal.D..tr" tvg-logo="https://i.ibb.co/s9mVqWH/kanald.png",KANAL D 
-https://demiroren.daioncdn.net/kanald/kanald_1080p.m3u8?&sid=8svo56igriqz&app=da2109ea-5dfe-4107-89ab-23593336ed61&ce=3
+https://demiroren.daioncdn.net/kanald/kanald_1080p.m3u8?&sid=8swgcjub616b&app=da2109ea-5dfe-4107-89ab-23593336ed61&ce=3
 
 #EXTINF:-1 tvg-id="Kanal.D..tr" tvg-logo="https://i.ibb.co/s9mVqWH/kanald.png",KANAL D 
 https://ackaxsqacw.turknet.ercdn.net/ozfkfbbjba/kanald/kanald_1080p.m3u8
@@ -148,7 +148,7 @@ http://live.duhnet.tv/S2/HLS_LIVE/eurodnp/playlist.m3u8
 #http://rkhubpaomb.turknet.ercdn.net/fwjkgpasof/tv8/tv8_720p.m3u8
 
 #EXTINF:-1 tvg-id="" tvg-name="TV8" tvg-logo="https://i.ibb.co/tXKXNDz/tv8.png",TV8
-https://tv8.daioncdn.net/tv8/tv8_1080p.m3u8?&sid=8svo3mjuhczx&app=7ddc255a-ef47-4e81-ab14-c0e5f2949788&ce=3
+https://tv8.daioncdn.net/tv8/tv8_1080p.m3u8?&sid=8swgavvt0t43&app=7ddc255a-ef47-4e81-ab14-c0e5f2949788&ce=3
 
 #EXTINF:-1 tvg-id="" tvg-name="TV8" tvg-logo="https://i.ibb.co/tXKXNDz/tv8.png",TV8
 http://89.187.191.41/TV8-HD-TR/video.m3u8
@@ -275,7 +275,7 @@ https://turkmedya-live.ercdn.net/tv360/tv360.m3u8
 #https://dsmartgo-live.ercdn.net/dsmartgo/teve2/teve2.isml/teve2.m3u8
 
 #EXTINF:-1 tvg-logo="https://i.ibb.co/KHFPKwM/Bild-2026-01-02-122003446.png" tvg-id="TEVE2.HD.tr" ,tv2
-https://demiroren.daioncdn.net/teve2/teve2_720p.m3u8?&sid=8svo5g0uuh0y&app=6aab838a-437e-4a1b-bbd0-e30f79cdbbbd&ce=3
+https://demiroren.daioncdn.net/teve2/teve2_720p.m3u8?&sid=8swgcx2nayyk&app=6aab838a-437e-4a1b-bbd0-e30f79cdbbbd&ce=3
 
 #EXTINF:-1 tvg-logo="https://i.ibb.co/KHFPKwM/Bild-2026-01-02-122003446.png" tvg-id="TEVE2.HD.tr" ,tv2
 ##http://176.65.146.123:6002/play/a010/index.m3u8
