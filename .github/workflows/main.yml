@@ -2,8 +2,7 @@ name: Alle Sender aktualisieren
 
 on:
   schedule:
-    # 17:00 Uhr Hamburg = 15:00 UTC
-    # Danach alle 15 Minuten
+    # Alle 15 Minuten
     - cron: '0,15,30,45 * * * *'
 
   workflow_dispatch:
