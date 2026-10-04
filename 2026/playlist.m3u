@@ -9,7 +9,7 @@ https://tv-trtturk.medya.trt.com.tr/master_1440.m3u8
 #EXTINF:-1 tvg-id="ATV.tr" , ATV HD
 https://turkuaz.tecostream.xyz/atv?m3u8
 
-#EXTINF:-1 tvg-id="FOX.tr" tvg-logo="https://i.ibb.co/WDfRpwV/now.jpg" , NOW
+#EXTINF:-1 tvg-id="FOX.tr" tvg-logo="https://i.ibb.co/WDfRpwV/now.jpg" , NOW TV
 https://nowtv-live-ad.ercdn.net/nowtv/playlist.m3u8?st=QP33YDJ2GThWq5ewSIsGng&e=1790959905
 
 #EXTINF:-1 tvg-id="Show.TV..tr" tvg-logo="https://i.ibb.co/BrGNZJ4/showtv.png",SHOW TV
