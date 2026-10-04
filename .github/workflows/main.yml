@@ -2,8 +2,8 @@ name: Alle Sender aktualisieren
 
 on:
   schedule:
-    # Alle 15 Minuten
     - cron: '0,15,30,45 * * * *'
+      timezone: "Europe/Berlin"
 
   workflow_dispatch:
 
