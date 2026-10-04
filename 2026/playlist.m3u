@@ -58,7 +58,7 @@ https://tv-trtavaz.medya.trt.com.tr/master.m3u8
 
 ################################################################################
 
-#EXTINF:-1 group-title="🏖 EĞLENCE "  tvg-name="no epg" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/b/b9/CNBC-e-Logo.png" ,CNBC-E
+#EXTINF:-1 group-title="🏖 EĞLENCE " tvg-logo="https://i.ibb.co/kcpSwmK/cnbce.png",CNBC-E
 https://hnpsechtsc.turknet.ercdn.net/xpnvudnlsv/cnbc-e/cnbc-e.m3u8
 
 #EXTINF:-1 group-title="🏖 EĞLENCE " tvg-id="Film Screen.tr" tvg-logo="https://www.dsmart.com.tr/api/v1/public/images/kanallar/FILMSCREEN.png" , Film Screen INT
