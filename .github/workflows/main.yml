@@ -5,6 +5,7 @@ on:
     # Alle 15 Minuten
     - cron: '0,15,30,45 * * * *'
 
+  # Manueller Start weiterhin möglich
   workflow_dispatch:
 
 concurrency:
@@ -51,7 +52,7 @@ jobs:
       # Chromium installieren
       # ==================================================
       - name: Chromium installieren
-        run: |
+      run: |
           python -m playwright install --with-deps chromium
 
       # ==================================================
@@ -130,22 +131,27 @@ jobs:
           git config user.name "github-actions[bot]"
 
       # ==================================================
-      # Änderungen vorbereiten
+      # Änderungen prüfen
       # ==================================================
-      - name: Änderungen vorbereiten
+      - name: Änderungen prüfen
+        id: changes
         run: |
           git add streams/
           git add 2026/playlist.m3u
 
           if git diff --cached --quiet; then
             echo "Keine Änderungen vorhanden."
-            exit 0
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Änderungen gefunden."
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
       # ==================================================
       # Commit erstellen
       # ==================================================
       - name: Änderungen committen
+        if: steps.changes.outputs.changed == 'true'
         run: |
           git commit -m "Sender aktualisiert $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
 
@@ -153,5 +159,6 @@ jobs:
       # Zu GitHub übertragen
       # ==================================================
       - name: Änderungen zu GitHub übertragen
+        if: steps.changes.outputs.changed == 'true'
         run: |
           git push origin main
