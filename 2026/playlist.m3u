@@ -33,6 +33,9 @@ http://live.duhnet.tv/S2/HLS_LIVE/eurodnp/playlist.m3u8
 #EXTINF:-1 tvg-id="" tvg-name="TV8" tvg-logo="https://i.ibb.co/tXKXNDz/tv8.png",TV8
 http://89.187.191.41/TV8-HD-TR/video.m3u8
 
+#EXTINF:-1 tvg-logo="https://i.ibb.co/tXKXNDz/tv8.png",TV8
+https://rkhubpaomb.turknet.ercdn.net/fwjkgpasof/tv8/tv8.m3u8
+
 #EXTINF:-1 tvg-name="no epg" tvg-logo="https://www.dsmart.com.tr/epg/images/0x60/5924449cd6f439663be1e725", tv8.5 
 https://rkhubpaomb.turknet.ercdn.net/fwjkgpasof/tv8bucuk/tv8bucuk_1080p.m3u8
 
