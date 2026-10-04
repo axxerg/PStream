@@ -1,53 +1,16 @@
-
-
-#EXTINF:-1 tvg-id="" tvg-name="TRT 1 HD" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/0/04/TRT_1_HD_kurumsal_logo_%282012-2021%29.png" group-title="📺 ULUSAL" ,TRT 1 HD
-https://turkuaz.tecostream.xyz/proxy?url=https://tv-trt1.medya.trt.com.tr/master_1440.m3u8
-
-#https://trt.daioncdn.net/trt-1/master.m3u8?app=web
-#https://tv-trt1.medya.trt.com.tr/master.m3u8
-
-#EXTINF:-1 tvg-id="" tvg-name="TRT 1 HD" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/0/04/TRT_1_HD_kurumsal_logo_%282012-2021%29.png" group-title="📺 ULUSAL" ,TRT 1 HD
-#http://89.187.191.41/TRT-1-HD-TR/video.m3u8
-
-#EXTINF:-1 tvg-id="" tvg-name="TRT 1 HD" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/0/04/TRT_1_HD_kurumsal_logo_%282012-2021%29.png" group-title="📺 ULUSAL" ,TRT 1 HD
-#http://89.187.191.41/TRT-1-HD-TR/video.m3u8
+#EXTM3U
 
 #EXTINF:-1 tvg-id="" tvg-name="TRT 1 HD" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/0/04/TRT_1_HD_kurumsal_logo_%282012-2021%29.png" group-title="📺 ULUSAL" ,TRT 1 HD
 https://tv-trt1.medya.trt.com.tr/master_1440.m3u8
 
-#EXTINF:-1 tvg-id="" tvg-name="TRT 1 HD" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/0/04/TRT_1_HD_kurumsal_logo_%282012-2021%29.png" group-title="📺 ULUSAL" ,TRT 1 HD
-#http://46.32.176.50/trt1/index.m3u8
-
 #EXTINF:-1 tvg-name="TRT TÜRK"  tvg-logo="https://www.trtturk.com.tr/public/logo/d60ab555-f948-464a-a139-df5410d2a7b5/trtturk_logo.png",TRT TÜRK
 https://tv-trtturk.medya.trt.com.tr/master_1440.m3u8
-
-#ATV 
-
-#EXTINF:-1 tvg-id="ATV.tr" , ATV HD
-https://trkvz-live.ercdn.net/atvavrupa/atvavrupa_576p.m3u8?st=MHaOVTi_9G9CnRFD-K4WaQ&e=1790990981
 
 #EXTINF:-1 tvg-id="ATV.tr" , ATV HD
 https://turkuaz.tecostream.xyz/atv?m3u8
 
 #EXTINF:-1 tvg-id="ATV.tr" , ATV HD
 #https://rnttwmjcin.turknet.ercdn.net/lcpmvefbyo/atv/atv_720p.m3u8
-
-#EXTINF:-1 tvg-id="ATV.tr" , ATV HD
-#http://46.32.176.50/atvturk/index.m3u8
-
-#EXTINF:-1 tvg-id="ATV.tr" , ATV HD
-#https://rnttwmjcin.turknet.ercdn.net/lcpmvefbyo/atv/atv_480p.m3u8
-
-#ATV AVRUPA
-
-#EXTINF:-1 tvg-name="Atv avrupa " tvg-id="live" tvg-logo="https://i.tmgrup.com.tr/aav/site/v1/i/atv-avrupa-logo.png",ATV AVRUPA
-#https://www.youtube.com/watch?v=7e9GkX0MmTs
-
-
-#EXTINF:-1 tvg-name="Atv avrupa ", 1
-#https://raw.githubusercontent.com/axxerg/PStream/refs/heads/main/output/atv.m3u8
-
-#NOW
 
 #EXTINF:-1 tvg-id="FOX.tr" tvg-logo="https://i.ibb.co/WDfRpwV/now.jpg" , NOW
 https://nowtv-live-ad.ercdn.net/nowtv/playlist.m3u8?st=QP33YDJ2GThWq5ewSIsGng&e=1790959905
