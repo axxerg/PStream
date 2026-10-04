@@ -2,9 +2,9 @@ name: Alle Sender aktualisieren
 
 on:
   schedule:
-    - cron: '0,15,30,45 * * * *'
-      timezone: "Europe/Berlin"
-
+ - cron: '7,22,37,52 * * * *'
+  timezone: "Europe/Berlin"
+  
   workflow_dispatch:
 
 concurrency:
