@@ -2,7 +2,10 @@ name: Alle Sender aktualisieren
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    # 17:00 Uhr Hamburg = 15:00 UTC
+    # Danach alle 15 Minuten
+    - cron: '0,15,30,45 * * * *'
+
   workflow_dispatch:
 
 concurrency:
@@ -53,7 +56,7 @@ jobs:
           python -m playwright install --with-deps chromium
 
       # ==================================================
-      # Sicherstellen, dass main aktuell ist
+      # Main-Branch aktualisieren
       # ==================================================
       - name: Main-Branch aktualisieren
         run: |
@@ -72,6 +75,13 @@ jobs:
       # ==================================================
       - name: Sender-Scanner starten
         run: |
+          echo "======================================"
+          echo "TURK TV SCANNER"
+          echo "======================================"
+          echo "Start UTC:     $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          echo "Start Hamburg: $(TZ=Europe/Berlin date +'%Y-%m-%d %H:%M:%S %Z')"
+          echo "======================================"
+
           python3 channels.py
 
       # ==================================================
@@ -79,7 +89,8 @@ jobs:
       # ==================================================
       - name: Zeitpunkt der letzten Aktualisierung speichern
         run: |
-          echo "Letzte Aktualisierung: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" > streams/last_run.txt
+          echo "Letzte Aktualisierung UTC: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" > streams/last_run.txt
+          echo "Letzte Aktualisierung Hamburg: $(TZ=Europe/Berlin date +'%Y-%m-%d %H:%M:%S %Z')" >> streams/last_run.txt
 
       # ==================================================
       # Ergebnisse anzeigen
@@ -89,16 +100,26 @@ jobs:
           echo "======================================"
           echo "TURK TV SCANNER"
           echo "======================================"
-          echo "Start: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+
+          echo "UTC:"
+          date -u
+
+          echo ""
+          echo "Hamburg:"
+          TZ=Europe/Berlin date
+
           echo ""
           echo "Streams:"
           ls -lah streams/ || true
+
           echo ""
           echo "Playlist:"
           ls -lah 2026/playlist.m3u || true
+
           echo ""
           echo "Letzte Aktualisierung:"
           cat streams/last_run.txt || true
+
           echo "======================================"
 
       # ==================================================
