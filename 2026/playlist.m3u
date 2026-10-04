@@ -163,31 +163,17 @@ https://603c568fccdf5.streamlock.net/live2/dhaweb2/chunklist_w1843782493.m3u8
 
 ################################################################################
 
-#EXTINF:-1 group-title="🌏 BELGESEL " tvg-logo="http://www.logolynx.com/images/logolynx/18/1893f4a6975ba780487003511e42329f.jpeg", ╭─➤  🌏 BELGESEL ▼
-#http://cdn-radyokulup.yayin.com.tr/radyokulup/radyokulup/chunklist.m3u8
-#https://stream1.mfm.plexpark.com/radio/8000/simulcast-berlin-sd-64.aac
-
-
-
 #EXTINF:-1 group-title="🌏 BELGESEL "  tvg-logo="https://www.trtbelgesel.com.tr/images/logo.svg", TRT BELGESEL
 https://turkuaz.tecostream.xyz/proxy?url=https://tv-trtbelgesel.medya.trt.com.tr/master_1440.m3u8
-
-
-
-#TRT AVAZ
 
 #EXTINF:-1 group-title="🌏 BELGESEL "  tvg-logo="https://i.ibb.co/xzZk0Yq/trtavaz.png" tvg-id="TRT.Avaz.tr", TRT AVAZ
 https://tv-trtavaz.medya.trt.com.tr/master.m3u8
 
-
 #EXTINF:-1 group-title="🌏 BELGESEL " tvg-name="GZT TV" tvg-logo="https://gzttv.tr/logo.png",GZT TV
 https://gzttv-live.lg.mncdn.com/gzttv/gzttv/playlist.m3u8
 
-
 #EXTINF:0 tvg-logo="https://www.tierwelt-live.de/static/twl/logo.png" ,Tierwelt
 https://jmp2.uk/stvp-DEAJ0500423A
-
-#TBMM TV 
 
 #EXTINF:-1 tvg-logo="https://i.ibb.co/BN9tk1q/tbmm22.png",TBMM TV 
 http://meclistv-live.ercdn.net/meclistv/meclistv_720p.m3u8
@@ -195,15 +181,8 @@ http://meclistv-live.ercdn.net/meclistv/meclistv_720p.m3u8
 #EXTINF:-1 tvg-logo="https://i.ibb.co/8g20RBH/ebatek.png",TRT EBA TV
 https://tv-e-okul01.medya.trt.com.tr/master.m3u8
 
-
-#EXTINF:-1 tvg-country="TR" tvg-language="Türkçe" tvg-logo="https://raw.githubusercontent.com/GitLatte/temporarylists/refs/heads/main/img/mywaytv.png" ,TRT GENÇ
-#https://turkuaz.tecostream.xyz/proxy?url=hhttps://tv-trtgenc.medya.trt.com.tr/master.m3u8
-
 #EXTINF:-1  tvg-logo="https://i.ibb.co/S9vQJd3/Download.png" ,Wild Earth
 https://wildearth-plex.amagi.tv/masterR1080p.m3u8
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/S9vQJd3/Download.png" ,RELAX TV
-#
 
 #EXTINF:-1 tvg-logo="https://picon-13398.kxcdn.com/turkey.jpg" , DOĞA
 http://185.57.68.33:8091/232/tracks-v1a1/index.m3u8
@@ -217,7 +196,6 @@ https://airvuz-dronetv-1-br.tcl.wurl.tv/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://i.hizliresim.com/i21k4te.png" , ŞÖMİNE
 http://iptv.prosto.tv:7000/ch328/video.m3u8
 
-
 ################################################################################
 
 #EXTINF:-1 tvg-name="no epg" tvg-id="live" group-title="🎸 MÜZIK"
@@ -225,40 +203,14 @@ http://iptv.prosto.tv:7000/ch328/video.m3u8
 
 ################################################################################
 
-#EXTINF:-1 tvg-name="no epg" tvg-id="live" group-title="🎸 MÜZIK" tvg-logo="http://www.logolynx.com/images/logolynx/18/1893f4a6975ba780487003511e42329f.jpeg", ╭─➤ 🎸 MÜZIK ▼
-#https://www.youtube.com/watch?v=A49bKX8gb-8
-#https://stream1.mfm.plexpark.com/radio/8000/simulcast-berlin-sd-64.aac
-
-#TRT MÜZIK 
-
 #EXTINF:-1 group-title="🎸 MÜZIK" tvg-id="TRT.MÃ¼zik.tr" tvg-logo="http://www.dsmart.com.tr/epg/images/0x60/59f19761cfef0b221f7da94b", TRT MÜZIK 
-#https://trtmuzik.blutv.com/blutv_trtmuzik2/live.m3u8
 https://tv-trtmuzik.medya.trt.com.tr/master.m3u8
-
-#PowerTürk
 
 #EXTINF:-1 tvg-logo="https://i.ibb.co/wy1H8jM/pturkttaze.png" ,POWER TÜRK TAPTAZE
 http://livetv.powerapp.com.tr/pturktaptaze/taptaze.smil/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.ibb.co/rZxNWKv/pslow.png",POWER TÜRK SLOW
-http://livetv.powerapp.com.tr/pturkslow/slow.smil/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.ibb.co/FgCW885/pturkakustik.png",POWER TÜRK AKUSTİK
-http://livetv.powerapp.com.tr/pturkakustik/akustik.smil/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.ibb.co/B6N9KsN/powerturk22.png",POWER TÜRK
-http://livetv.powerapp.com.tr/powerturkTV/powerturkhd.smil/playlist.m3u8
-#EXTINF:-1 tvg-logo="https://i.ibb.co/B6N9KsN/powerturk22.png",POWER TÜRK
-#https://live.artidijitalmedya.com/artidijital_powerturktv/powerturktv/playlist.m3u8
-
-#KRAL POP 
 
 #EXTINF:-1 tvg-id="kralpop.tr" tvg-logo="https://i.ibb.co/kmdLWwD/kral-pop.png", KRAL POP 
 http://dygvideo.dygdigital.com/live/hls/kralpop?m3u8
-#EXTINF:-1 tvg-id="kralpop.tr" tvg-logo="https://i.ibb.co/kmdLWwD/kral-pop.png", KRAL POP 
-#https://dogus.daioncdn.net/kralpoptv/kralpoptv.m3u8?app=kralpoptv_web
-
-#EXTINF:-1 tvg-name="no epg" tvg-id="live" tvg-logo="https://i.ibb.co/kmdLWwD/kral-pop.png", KRAL POP 
-#https://www.youtube.com/watch?v=GuFTuKoXepw
-
-#NR1 ASK
 
 #EXTINF:-1 tvg-logo="https://i.ibb.co/jJWLsCQ/nr1ask.jpg",NR1 ASK 
 https://b01c02nl.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/broadcast_5c9e18f9c54e6.smil/playlist.m3u8
@@ -266,79 +218,17 @@ https://b01c02nl.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/broadcast_5c9e18
 #EXTINF:-1 tvg-name="Slow karadeniz "tvg-id=""tvg-logo="https://sun9-47.userapi.com/cNMeSqe2qmAMFedKnkpi69RM4y5qSn2KqsbMTQ/y7OtjI3mljU.jpg",Slow karadeniz 
 https://yayin.slowkaradeniztv.com:3390/hybrid/play.m3u8
 
-#EXTINF:-1 tvg-name="no epg" tvg-id="live" tvg-logo="https://velloflix.com/wp-content/uploads/2025/09/hq720-34.jpg"  , Slow Time 
-#https://www.youtube.com/watch?v=XFLDi8EK7FQ
-
-#EXTINF:-1 tvg-name="no epg" tvg-id="live" tvg-logo="https://velloflix.com/wp-content/uploads/2025/09/hq720-34.jpg" , Şömine 
-#https://github.com/tecotv2025/tecotv/raw/refs/heads/main/playlist/Somine_TV.m3u8
-
-#EXTINF:-1 tvg-logo="https://velloflix.com/wp-content/uploads/2025/09/hq720-34.jpg"  , iTV Turkish Music
-#https://ca1.buximedia.com/itv/turkish/tracks-v1a1/mono.m3u8
-
 #EXTINF:-1 tvg-country="TR" tvg-language="Türkçe" tvg-logo="https://i.ibb.co/tMyGBtkr/Bild-2026-06-04-182234805.png", MUSIC TURK HD
 https://cdn-4turkpop.yayin.com.tr/4turkpop/4turkpop/chunklist.m3u8
-
-
-#TATLISES TV 
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/cQfPfgR/tatlises.png", TATLISES 
-#https://live.artidijitalmedya.com/artidijital_tatlisestv/tatlisestv/playlist.m3u8
-
-#DREAM TÜRK
 
 #EXTINF:-1 tvg-logo="https://i.ibb.co/4SsJS4R/dreamturk.png", dream TÜRK
 http://live.duhnet.tv/S2/HLS_LIVE/dreamturknp/playlist.m3u8
 
-
-#EXTINF:-1 tvg-id="Dream.TÃ¼rk.tr" tvg-logo="https://i.ibb.co/4SsJS4R/dreamturk.png", dream TÜRK 
-#http://176.65.146.123:6002/play/a013/index.m3u8
-
-#EXTINF:-1 tvg-id="Dream.TÃ¼rk.tr" tvg-logo="https://i.ibb.co/4SsJS4R/dreamturk.png", dream TÜRK 
-#http://live.duhnet.tv/S2/HLS_LIVE/dreamturknp/playlist.m3u8
-
-#EXTINF:-1 tvg-id="Dream.Türk.tr" tvg-logo="https://i.ibb.co/4SsJS4R/dreamturk.png", dream TÜRK 
-#http://live.duhnet.tv/S2/HLS_LIVE/dreamturknp/playlist.m3u8
-
-#MILYON TV
-
-#EXTINF:-1 tvg-name="MILYON TV" tvg-id="" tvg-logo="https://i.ibb.co/Jqzzby7/milyontv.png" ,MILYON TV 
-#
-
-#EXTINF:-1 tvg-name="MILYON TV" tvg-id="" tvg-logo="https://i.ibb.co/Jqzzby7/milyontv.png" ,MILYON TV 
-#https:/https://pull1-poc.blutv.com/live/2ZJ6X7A9/index.m3u8
-
-
-
-#NR1 TÜRK 
-
 #EXTINF:-1 tvg-id="Number1Turk.tr" tvg-logo="https://i.ibb.co/wSPFds2/nr1turk.png", NR1 TÜRK 
-#https://pull1-poc.blutv.com/live/U6D3B4S2/index.m3u8
 https://b01c02nl.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/broadcast_5c9e187770143.smil/playlist.m3u8
-#http://pull1-poc.blutv.com/live/U6D3B4S2/U6D3B4S2_720p.m3u8
-
-
-#NR1 DAMAR
 
 #EXTINF:-1 tvg-logo="https://i.ibb.co/824MwJ6/nr1damar.jpg",NR1 RAP
 https://b01c02nl.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/u_stream_5c9e198784bdc_1/playlist.m3u8
-
-#EXTINF:-1  tvg-logo="https://i.ibb.co/824MwJ6/nr1damar.jpg",NR1 RAP
-#https://b01c02nl.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/u_stream_5c9e198784bdc_1/playlist.m3u8
-#https://b01c02nl.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/broadcast_5c9e19877b340.smil/playlist.m3u8
-
-
-#EXTINF:-1 tvg-country="TR" tvg-language="Türkçe" tvg-logo="https://raw.githubusercontent.com/GitLatte/temporarylists/refs/heads/main/img/mywaytv.png", 4Turkpop
-#https://cdn-4turkpop.yayin.com.tr/4turkpop/4turkpop/playlist.m3u8
-
-#EXTINF:-1 tvg-logo="https://i.postimg.cc/HsRz4Mfp/In-Shot-20251027-110432000.png", TMB TV
-#https://raw.githubusercontent.com/UzunMuhalefet/streams/refs/heads/main/myvideo-az/tmb-azerbaycan.m3u8
-
-
-#EXTINF:1 tvg-copyright="@aligoshgartv" tvg-id="" tvg-logo="https://i.ibb.co/VC7Q18V/azflag.png" tvg-language="Azerbaijani" , KANAL 65
-#https://github.com/axxerg/catextender/raw/refs/heads/main/catcast/kanal-65.m3u8
-
-#EXTINF:1 tvg-copyright="@aligoshgartv" tvg-id="" tvg-logo="https://i.ibb.co/VC7Q18V/azflag.png" tvg-language="Azerbaijani" ,RIHAT MÜZIK
-#https://github.com/axxerg/catextender/raw/refs/heads/main/catcast/rihatmusic.m3u8
 
 #EXTINF:1 tvg-copyright="@aligoshgartv" tvg-id="" tvg-logo="https://i.ibb.co/VC7Q18V/azflag.png" tvg-language="Azerbaijani" ,NOW MUSIC TV
 https://github.com/axxerg/catextender/raw/refs/heads/main/catcast/now-music.m3u8
@@ -352,157 +242,14 @@ https://cdn4.yayin.com.tr/kntv/video.m3u8
 #EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/4/4d/Music_logo.png" tvg-id="Dummy" , KTV MUSIC
 https://cdn4.yayin.com.tr/bakixebertv/video.m3u8
 
-#EXTINF:-1 tvg-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGO4uXHTFwnWH0EUMq_D1n7-IJYXISUTB2zg&s" ,Vostok Tv
-#http://911play.ru:3456/live/VostokSite/cdnVostaoc911tv123456/489.m3u8
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/VC7Q18V/azflag.png",  ARI MUSIC
-#https://live.yayingold.com.tr/arimusiclive/tracks-v1a1/mono.m3u8
-#EXTINF:-1 tvg-logo="https://i.ibb.co/VC7Q18V/azflag.png", CMD MUSIC
-#https://live.yayingold.com.tr/cmdmusiclive/index.m3u8
-#EXTINF:-1 tvg-logo="https://i.ibb.co/VC7Q18V/azflag.png", HTV MUSIC
-#https://live.yayingold.com.tr/htvmusic87/tracks-v1a1/mono.m3u8
-#EXTINF:-1 tvg-logo="https://i.ibb.co/VC7Q18V/azflag.png", KANAL 65 MUSIC
-#https://live.yayingold.com.tr/kanal65music/tracks-v1a1/mono.m3u8
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/VC7Q18V/azflag.png", TMB TV 
-#https://raw.githubusercontent.com/UzunMuhalefet/streams/refs/heads/main/myvideo-az/tmb-tv.m3u8
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/VC7Q18V/azflag.png", Biz Music UZ
-#https://raw.githubusercontent.com/axxerg/catextender/refs/heads/main/catcast/biztv.m3u8
-
-#EXTINF:-1 tvg-id="kurdmaxmusic" tvg-name="KurdMax Music" tvg-country="iq" tvg-language="iq" , KurdMax Music
-#https://6476e46b58f91.streamlock.net/music/MUSIC2402/playlist.m3u8
-
 #EXTINF:1 tvg-id="ArabicaTV.lb" tvg-logo="https://arabica-tv.com/wp-content/uploads/2022/07/cropped-Arabica-tv-Logo-1.png"status="timeout", Arabica TV  
 http://istream.binarywaves.com:8081/hls/arabica/playlist.m3u8
-
-#EXTINF:-1 tvg-country="TR" tvg-language="Türkçe" tvg-logo="https://pic.rutubelist.ru/video/93/2f/932f0ae97477a98a8ecdf02b46893a44.png" ", 4 Kurd MUSIC 
-#https://4kuhls.persiana.live/hls/stream.m3u8
-
-
-#EXTINF:-1  tvg-name="no epg" tvg-id="live" tvg-logo="https://i.ibb.co/R615tsF/youtube.png",♫ Viva Slow 
-#https://www.youtube.com/watch?v=ANYzZozjZb8
-
-#EXTINF:-1 tvg-name="no epg" tvg-id="live"  tvg-logo="https://i.ibb.co/R615tsF/youtube.png",♫ Viva Pop
-#https://www.youtube.com/watch?v=RmVzS9vGLsc
-
-#EXTINF:-1 tvg-name="no epg" tvg-id="live"  tvg-logo="https://i.ibb.co/R615tsF/youtube.png",♫ Radyo POP MIX
-#https://www.youtube.com/watch?v=ZTgOayHfSPE
-
-#EXTINF:-1 tvg-name="no epg" tvg-id="live"  tvg-logo="https://i.ibb.co/R615tsF/youtube.png",♫ Radyo 44
-#https://www.youtube.com/watch?v=gSBZcx5YbH4
-
-#EXTINF:-1 tvg-name="no epg" tvg-id="live"  tvg-logo="https://i.ibb.co/R615tsF/youtube.png",♫ Türkce POP MIX
-#https://www.youtube.com/watch?v=exENdG8YrP8
-
-#EXTINF:-1 tvg-name="no epg" tvg-id="live"  tvg-logo="https://i.ibb.co/R615tsF/youtube.png",♫ Türkce POP REMIX
-#https://www.youtube.com/watch?v=LYQn1dI_caI
-
-
-###################### INT MUSIC #####################
-#PMC 
-
-#EXTINF:-1 group-title="🎸 INT MÜZIK" tvg-logo="https://i.ibb.co/zmxq396/pmc.png",PMC 
-#https://hls.pmc.live/hls/stream.m3u8
-
-#EXTINF:-1 tvg-id="TN.us" tvg-logo="https://i.postimg.cc/sxyZD7F8/IMG-3510.png" , 🇹🇭 Hot Wave
-#https://atimehd.smartclick.co.th/hotwave/hls/hotwave.m3u8
-
-#PERSIANA MUSIC 
-
-#EXTINF:-1 tvg-logo="https://images.persianagroup.cloud/channels/smallThumbnail/persiana-music.png", Persiana Music
-#https://musichls.persiana.live/hls/stream.m3u8
-
-#KAYHAN TV
-
-#EXTINF:-1 tvg-logo="https://i2.wp.com/www.afghanlive.tv/wp-content/uploads/2015/04/kayhant-tv-live.jpg", KAYHAN TV 
-#https://playout395.livestreamingcdn.com/live/Stream1/chunklist_w523424868.m3u8
-
-#COMPANY TV
-
-#EXTINF:-1 tvg-logo="https://www.coolstreaming.us/img/ch/image87899621576.jpg",COMPANY TV 
-#https://5929b138b139d.streamlock.net/CompanyTV/livestream/playlist.m3u8
-
-#NR1 
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/bQHyST5/nr1tv.png", NR1 
-#http://pull1-poc.blutv.com/live/3Z8CC727/3Z8CC727_720p.m3u8
-#http://pull1-poc.blutv.com/live/3Z8CC727/index.m3u8
-#https://b01c02nl.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/broadcast_5c9e17cd59e8b.smil/playlist.m3u8
-
-#POWER 
-
-#EXTINF:-1 tvg-id="PowerTV.tr" tvg-logo="http://upload.wikimedia.org/wikipedia/tr/b/b5/Power_TV_logosu.png", POWER 
-#http://livetv.powerapp.com.tr/powerTV/power.smil/chunklist.m3u8
-#https://power.blutv.com/blutv_power/smil:blutv_power.smil/playlist.m3u8
-
-#POWER DANCE
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/FVNL477/pdance.png",POWER DANCE
-#http://livetv.powerapp.com.tr/dance/dance.smil/playlist.m3u8
-#https://power.blutv.com/blutv_power2/live.m3u8
-
-#NR1  DANCE
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/LR5v10B/nr1dance.jpg",NR1  DANCE
-#https://b01c02nl.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/u_stream_5c9e2aa8acf44_1/playlist.m3u8
-#https://b01c02nl.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/broadcast_5c9e2aa89e721.smil/playlist.m3u8
-
-#EXTINF:-1 tvg-logo="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC3600008WY_20230809T005428SQUARE.png_20230809005429.png" , Vevo Pop 
-#https://d28edobz3hqdpi.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-shs19slqofvwj-ssai-prd/playlist.m3u8?
-
-#Vevo R&B 
-
-#EXTINF:-1 tvg-logo="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC3900009K5_20230322T000038SQUARE.png_20230322000039.png" , Vevo R&B 
-#https://d188921up0bidw.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-nlgl4ktqwvge1-ssai-prd/playlist.m3u8?
-
-#Vevo Hip-Hop 
-
-#EXTINF:-1 tvg-logo="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBC3600002EK_20230322T000030SQUARE.png_20230322000031.png" , Vevo Hip-Hop 
-#https://d2p8vga36q26tv.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-tbi3tu3ko2mz4-ssai-prd/playlist.m3u8?
-
-#Vevo Features 
-
-#EXTINF:-1 tvg-logo="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD1200008GL_20230726T004513SQUARE.png_20230726004514.png" , Vevo Features 
-#https://d281w17vgfepv6.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-00dgfxdry0m4p/playlist.m3u8?
-
-#TRACE URBAN 
-
-#EXTINF:-1 tvg-logo="http://idata.over-blog.com/0/20/49/74/logos-/trace-urban-rvb.jpg", TRACE URBAN 
-#http://lightning-traceurban-samsungau.amagi.tv/playlist.m3u8
-
-#TRACE LATINA 
-
-#EXTINF:-1 tvg-logo="https://www.lyngsat.com/logo/tv/tt/trace-latina-fr.png",TRACE LATINA 
-#https://cdn-uw2-prod.m3u8v2.amagi.tv/linear/amg01131-tracetv-tracelatinaes-samsungspain/playlist.m3u8
-
-#TRACE BRASIL 
-
-#EXTINF:-1 tvg-logo="https://github.com/inspirationlinks/inspiration-1/raw/master/trace.png",TRACE BRASIL 
-#https://cdn-uw2-prod.m3u8v2.amagi.tv/linear/amg00520-tcl-tracebrazuca-tcl/playlist.m3u8
-
-#Bblack! Africa
-
-#EXTINF:-1 tvg-logo="https://www.tv-direct.fr/assem3u8/logo/chaines/bblack-africa.jpg",Bblack! Africa
-#http://livevideo.vedge.infomaniak.com/livecast/ik:bblackafrica/manifest.m3u8
-
-#Bblack! Caribbean
 
 #EXTINF:-1 tvg-logo="https://www.tv-direct.fr/assem3u8/logo/chaines/bblack-caribbean.jpg",Bblack! Caribbean
 #http://livevideo.vedge.infomaniak.com/livecast/ik:bblackcaribbean/manifest.m3u8
 
-#BBLACK CLASSIK
-
-#EXTINF:-1 tvg-logo="https://www.tv-direct.fr/assem3u8/logo/chaines/bblack-classik.jpg",Bblack! Classik
-#http://livevideo.vedge.infomaniak.com/livecast/ik:bblackclassik/manifest.m3u8
-
-
 #EXTINF:-1 tvg-name="no epg" tvg-id="live"  tvg-logo="https://i.ibb.co/R615tsF/youtube.png",♫ Enstrümantal Fon Müzikleri
 https://www.youtube.com/watch?v=EmdtE7sRMSY
-
-
-
-
 
 #EXTINF:-1 tvg-name="no epg"  group-title="🎸 MÜZIK"  tvg-logo="http://www.logolynx.com/images/logolynx/18/1893f4a6975ba780487003511e42329f.jpeg", ╭─➤ 🎶  RADYO ▼
 https://cdn-radyokulup.yayin.com.tr/radyokulup/radyokulup/playlist.m3u8
