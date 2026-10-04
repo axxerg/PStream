@@ -64,7 +64,7 @@ http://tv.dsmart-go.workers.dev/?ID=https://www.nowtv.com.tr/canli-yayin
 #SHOW TV
 
 #EXTINF:-1 tvg-id="Show.TV..tr" tvg-logo="https://i.ibb.co/BrGNZJ4/showtv.png",SHOW TV
-https://ciner.daioncdn.net/showtv/showtv_1080p.m3u8?ex=1664766175&st=RBzhSuGauna0OGld-DJUVA&tv=1&sid=8sz7yesua6zo&app=4bc856ef-4c68-4a94-bc87-37dfaaa66558&ce=3
+https://ciner.daioncdn.net/showtv/showtv_1080p.m3u8?ex=1664766175&st=RBzhSuGauna0OGld-DJUVA&tv=1&sid=8t030eigpu7p&app=4bc856ef-4c68-4a94-bc87-37dfaaa66558&ce=3
 
 #EXTINF:-1 tvg-id="Show.TV..tr" tvg-logo="https://i.ibb.co/BrGNZJ4/showtv.png",SHOW TV
 #http://tv.dsmart-go.workers.dev/?ID=https://www.showtv.com.tr/canli-yayin
@@ -102,13 +102,13 @@ http://46.32.176.50/startv/index.m3u8
 #EUROSTAR
 
 #EXTINF:-1 tvg-id="EuroStar.tr"  tvg-logo="https://i.ibb.co/Lg90xsB/eurostar22.png",EURO STAR
-https://dogusdyg-eurostar.lg.mncdn.com/dogusdyg_eurostar/live.m3u8?st=s3P-cf90ur9Iw4xjCjAHZA&e=1791160094
+https://dogusdyg-eurostar.lg.mncdn.com/dogusdyg_eurostar/live_480p900000kbps/index.m3u8?st=EO0Z3FZ5TWBE-iO8b94AhA&e=1791180985
 
 
 #KANAL D 
 
 #EXTINF:-1 tvg-id="Kanal.D..tr" tvg-logo="https://i.ibb.co/s9mVqWH/kanald.png",KANAL D 
-https://demiroren.daioncdn.net/kanald/kanald_1080p.m3u8?&sid=8sz82o4yvcpz&app=da2109ea-5dfe-4107-89ab-23593336ed61&ce=3
+https://demiroren.daioncdn.net/kanald/kanald.m3u8?app=kanald_web&ce=3&ppid=7ab76bb57a2f42ab4a29094a3336465e&dfp_paln=AQzzBGQEeXwUmE9tBhrQXbJDGQ3Budgdkiz6AfQdBvGHfvL5dYgxn31N7_SBPva3Xq2f2sIeOWfYf-RrY6n2WPdMSoiJyK5LtVnVh-iGOy9DdUE_JhWxeTgXbzz6nbxNvCyWOVbUi0q_VzbuZRcw-3HLPI0BGeJawVCnZvN35jVhB2RN7fI7tZ91zVr5x9MA8WHN9FiD5neCPTbyQcRfouQvUP_KsNBPsgFfFqxrYEDVGiLW5HAzvhd2h4PTYOnpX8NE_URyYENVDC7RzKMDyahUfgYrR2bmBc1Dg5Qjmu2c93pWo8UKLCUpptnNsakvm6Ua040KFj3M1ir0cIdGkUB9C-QovwvEbx3UcCH4trfJKjQ3_ky5lDaytsZdBwlzqasX0JSd9a3e7JRHcKGk5FzBnFamcrwbHZqV6-qPCKi_pRJ3IoCZrXft9hi43CZFkUvTwkDaYwQh7QQVBVumB6mUazur9mFL-JBbsxxE03mMnMxaMMYZE550kqQXcF78YgZoLLQFbiFHpNut9YMH3ZJCYUuDGzlF_KNMjNBx5JIkHbMVEe9hmIkaOQhGt-qrFJN060-uEw6CQ6wDMJ-situojqMux_3R7PEda8HUIZf4gFrZtej0obAbcf2l2vX_3yPKZaKNd5q1IvEKu7gMCEDJYDZgvihZlQ-lta_lW9E2K81PMgSSeydIry61SjMK-2LgPAqn0RdPQE56Ujyi5DDpyDnbujjT44sdWRMS742_5jg4sBu8LG6KUVdhH2QAo7zcNdai2hzB6ccVFV9xRUSm2B7nGMos-tWwozoV8J3Cfq2IFb3XuDNz70wf-zuO-I5fAWDWjfeUqzS-lR4CFO4P2UhRuv_zo2tHXSm5w3aPhqc3RbWHj0YYfhcuY0ZNvGxDkgOUk3eVy2eX4cvkfqArL54JlZ3gkXC3B_O8k5iY9AS2xtWpwLpok9G0JFB9UT1aZZzHF69-ycp7Wt__FGVa4YKKFT9I0xJkRJwxW-iDXBkuKV9eoqT5lzUNd4mLhW7Rub-uBygg0K8pG51Fukx5Pi3--k2QEgTEALPcQNSSRttRkAHbYM0aHSoy8ITu_wEu4Tg0pzkzoDhneJkT0gi5Dcxa6ExlWW9bDhkxdgos76WmCVSNRMZvOXtVxHQR6FHJesR2T9SBZ1QmtRo2tfqwk6BhhjQTGyVLLCBbpMJGvXF9
 
 #EXTINF:-1 tvg-id="Kanal.D..tr" tvg-logo="https://i.ibb.co/s9mVqWH/kanald.png",KANAL D 
 https://ackaxsqacw.turknet.ercdn.net/ozfkfbbjba/kanald/kanald_1080p.m3u8
@@ -148,7 +148,7 @@ http://live.duhnet.tv/S2/HLS_LIVE/eurodnp/playlist.m3u8
 #http://rkhubpaomb.turknet.ercdn.net/fwjkgpasof/tv8/tv8_720p.m3u8
 
 #EXTINF:-1 tvg-id="" tvg-name="TV8" tvg-logo="https://i.ibb.co/tXKXNDz/tv8.png",TV8
-https://tv8.daioncdn.net/tv8/tv8_1080p.m3u8?&sid=8sz81161d89y&app=7ddc255a-ef47-4e81-ab14-c0e5f2949788&ce=3
+https://tv8.daioncdn.net/tv8/tv8_1080p.m3u8?&sid=8t033bz9xhc4&app=7ddc255a-ef47-4e81-ab14-c0e5f2949788&ce=3
 
 #EXTINF:-1 tvg-id="" tvg-name="TV8" tvg-logo="https://i.ibb.co/tXKXNDz/tv8.png",TV8
 http://89.187.191.41/TV8-HD-TR/video.m3u8
@@ -275,7 +275,7 @@ https://turkmedya-live.ercdn.net/tv360/tv360.m3u8
 #https://dsmartgo-live.ercdn.net/dsmartgo/teve2/teve2.isml/teve2.m3u8
 
 #EXTINF:-1 tvg-logo="https://i.ibb.co/KHFPKwM/Bild-2026-01-02-122003446.png" tvg-id="TEVE2.HD.tr" ,tv2
-https://demiroren.daioncdn.net/teve2/teve2_720p.m3u8?&sid=8sz830wl6r71&app=6aab838a-437e-4a1b-bbd0-e30f79cdbbbd&ce=3
+https://demiroren.daioncdn.net/teve2/teve2.m3u8?ce=3&app=6aab838a-437e-4a1b-bbd0-e30f79cdbbbd&ppid=7ab76bb57a2f42ab4a29094a3336465e&dfp_paln=AQzzBGQE4rSnOxD6xbPzfRcQNyFh9DqHbQnFFjN8wBRFp690JNFXMr0AqCOO2Jn_WfxGnxhL6X3ww4bThj7UH9A9oZoO59uEkMNF-rHAuFMyaGT_zxUnmw35m8o7tw21Tkv_auGuEiZT0slbBQi1Ylrg820KlcOa7FWv2qw-hFejaBzcGV0IIeZSZEy7x7zvsZFT1MYgVeareo261nScysHP7xnENclpcTOeS8UkAVl_H_0cbd7InD79Nn3NIPLh2_IwoBKS7J5b00_Lt1iGmrueZRt_COrFcbmo6QJhMXbrScNg0j0b8ru4QsZobuIcmkF-rf4wwXlXE5YsdzvwvrDvxT1AQ_kIr_OSxGfjf-OLa4Y1kh0dyb-zvNo7I19ktDtzQjZvNcUVhDQ23h-FIM3jA5OtnYzykoLHvyRVJSmLsEse2-EiHAKRXNEpyXq_SSJnztVocDxEiX0esgUquT3VzJvoC0Pw5rMWMVtW8Aa5IguIqh-yI171lR9f3EZ8poTRR8v2n-kQL-GaJ9ROtKIRNwYj6FChi1QEME3Tm6s5VR14f7cOxkYZFRiQkqC197iqks0sWx6iVUadEGROwlngD9nQDfx6idw3DBdoeFDxTkGfvrhjo-67N5aFO55xD6auuiYXBpjsg1N5_HMFSryWlUy-KnKG1Msry3_1_GuLgo7KdMNdWzz6KO0VCBvDQIQVjxPCtys4Yqhy6iDTnCRjM5bTVFSkouVKiXULJZxvXtaf3APlylRCcLtXAY7P1T0Opyfz7oZQHp2ca4ETBdU7dGboer4aXz7hX5Mj9EogxjURX4FwmBPbzMJ-Qd0_zg2TjxR9OkIR42uMdg5Jt1NtdJvEh055a-DLQbxcnOzxDuxdOUP-15_fBM7N0e8HTAJSXTOgGRnF7UqwbWyDFgCcZVxLSsgVypBd6JQD-gxdUid-CMjcT2lL_83A5Rmwz2vGtnbkBd8ObYD5OBY4rZhqpRhxB34S1L9_sFg5hgyShZ3ETfY6gS4D0o73B-EhGahWPAv0XOyv_PDVdjU3a0bWrOZbVC_XKnSGys8UFFa4mQ2CYNE712W0bs6o_QRPN9K1BMfhdI6PoCYsHLX0NWbnW5B9EwpTwf5h7n8wyL8qbQIIgnsqVmNWk_fiQ3ixWxXQfRhiFFLVn91M8t_XDUpuSMgoMzZ-cVEbM_LbQ2fIaDTDLxjEjoQ.
 
 #EXTINF:-1 tvg-logo="https://i.ibb.co/KHFPKwM/Bild-2026-01-02-122003446.png" tvg-id="TEVE2.HD.tr" ,tv2
 ##http://176.65.146.123:6002/play/a010/index.m3u8
