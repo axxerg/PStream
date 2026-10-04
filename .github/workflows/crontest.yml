@@ -2,7 +2,7 @@ name: CRON TEST
 
 on:
   schedule:
-    - cron: '13,23,25,27,29 * * * *'
+    - cron: '*/15 * * * *'
       timezone: "Europe/Berlin"
   workflow_dispatch:
 
@@ -17,6 +17,9 @@ jobs:
           echo "CRON TEST"
           echo "======================================"
           echo "Event: ${{ github.event_name }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo ""
           echo "UTC:"
           date -u
           echo ""
