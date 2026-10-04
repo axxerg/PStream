@@ -5,7 +5,6 @@ on:
     # Alle 15 Minuten
     - cron: '0,15,30,45 * * * *'
 
-  # Manueller Start weiterhin möglich
   workflow_dispatch:
 
 concurrency:
@@ -52,7 +51,7 @@ jobs:
       # Chromium installieren
       # ==================================================
       - name: Chromium installieren
-      run: |
+        run: |
           python -m playwright install --with-deps chromium
 
       # ==================================================
