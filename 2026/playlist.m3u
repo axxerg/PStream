@@ -105,7 +105,7 @@ https://amg02631-amg02631c4-amgplt0165.playout.now3.amagi.tv/ts-eu-w1-n2/playlis
 
 ################################################################################
 
-#EXTINF:-1 group-title="🗞 HABER"  tvg-id="TRT HABER HD.tr" tvg-name="TRT HABER HD.tr" tvg-logo="https://i.ibb.co/Bt6frts/trthaber.png" ,TRT HABER
+#EXTINF:-1 group-title="🗞 HABER" tvg-logo="https://i.ibb.co/Bt6frts/trthaber.png" ,TRT HABER
 https://tv-trthaber.medya.trt.com.tr/master.m3u8
 
 #EXTINF:-1 tvg-id="AHaber.tr" tvg-name="A Haber "  tvg-logo="https://i.ibb.co/1X8nWHc/ahaber.png",A HABER 
