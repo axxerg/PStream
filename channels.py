@@ -24,7 +24,7 @@ CHANNELS = {
 
 
 # ============================================================
-# FALLBACK-STREAMS
+# FALLBACK
 # ============================================================
 
 FALLBACK_STREAMS = {
@@ -150,9 +150,7 @@ def token_expired(url):
             params["e"][0]
         )
 
-        return (
-            expiry <= int(time.time())
-        )
+        return expiry <= int(time.time())
 
     except Exception:
         return False
@@ -370,10 +368,7 @@ def scan_page(page):
         source = page.content()
 
         add_urls(source)
-
-        add_urls(
-            unquote(source)
-        )
+        add_urls(unquote(source))
 
     except Exception:
         pass
@@ -391,11 +386,9 @@ def scan_page(page):
         for script in scripts:
 
             try:
-
                 add_urls(
                     script.text_content()
                 )
-
             except Exception:
                 pass
 
@@ -536,10 +529,6 @@ def browser_find_stream(
                 500
             )
 
-        # ----------------------------------------------------
-        # Tiefer Seitenscan
-        # ----------------------------------------------------
-
         if not candidates:
 
             print(
@@ -547,7 +536,6 @@ def browser_find_stream(
             )
 
             for url in scan_page(page):
-
                 add_candidate(url)
 
     except Exception as exc:
@@ -559,14 +547,13 @@ def browser_find_stream(
         try:
 
             for url in scan_page(page):
-
                 add_candidate(url)
 
         except Exception:
             pass
 
     # --------------------------------------------------------
-    # Qualität
+    # BESTEN STREAM ZUERST
     # --------------------------------------------------------
 
     candidates.sort(
@@ -575,7 +562,7 @@ def browser_find_stream(
     )
 
     # --------------------------------------------------------
-    # Validieren
+    # VALIDIEREN
     # --------------------------------------------------------
 
     valid = []
@@ -606,8 +593,6 @@ def browser_find_stream(
                 candidate
             )
 
-            # Besten funktionierenden
-            # Stream verwenden.
             break
 
     return valid
@@ -649,7 +634,7 @@ def fallback_find():
 
 
 # ============================================================
-# NOW-TV STREAMDATEI
+# STREAM-DATEI
 # ============================================================
 
 def write_channel_m3u(
@@ -668,12 +653,13 @@ def write_channel_m3u(
     for stream in streams:
 
         lines.append(
-            '#EXTINF:-1 tvg-id="nowtv" '
-            'tvg-name="NOW TV" '
-            'group-title="Turkiye",NOW TV'
+            '#EXTINF:-1 tvg-id="FOX.tr" '
+            'tvg-logo="https://i.ibb.co/WDfRpwV/now.jpg",NOW TV'
         )
 
-        lines.append(stream)
+        lines.append(
+            stream
+        )
 
     with open(
         path,
@@ -715,7 +701,7 @@ def write_links(
 
 
 # ============================================================
-# PLAYLIST MATCHING
+# NOW-TV EINTRAG IN DER HAUPTPLAYLIST FINDEN
 # ============================================================
 
 def playlist_channel_matches(
@@ -724,17 +710,23 @@ def playlist_channel_matches(
 
     text = extinf_line.lower()
 
+    # Wichtig:
+    # Dein vorhandener Eintrag hat:
+    #
+    # tvg-id="FOX.tr"
+    # ...
+    # NOW TV
+    #
+    # Deshalb NICHT nach tvg-id="nowtv" suchen.
+
     return (
-        'tvg-id="nowtv"' in text
-        or "tvg-name=\"now tv\"" in text
-        or "tvg-name=\"nowtv\"" in text
-        or ",now tv" in text
-        or ",nowtv" in text
+        "now tv" in text
+        or "nowtv" in text
     )
 
 
 # ============================================================
-# HAUPT-PLAYLIST AKTUALISIEREN
+# HAUPTPLAYLIST AKTUALISIEREN
 # ============================================================
 
 def update_existing_playlist(
@@ -780,6 +772,14 @@ def update_existing_playlist(
 
         found_channel = True
 
+        print(
+            f"  NOW-TV-Eintrag gefunden:"
+        )
+
+        print(
+            f"  {line.strip()}"
+        )
+
         for next_index in range(
             index + 1,
             len(lines),
@@ -805,6 +805,10 @@ def update_existing_playlist(
                 "  NOW TV in Playlist aktualisiert."
             )
 
+            print(
+                f"  Neue URL: {stream}"
+            )
+
             break
 
         break
@@ -824,7 +828,9 @@ def update_existing_playlist(
         encoding="utf-8",
     ) as file:
 
-        file.writelines(lines)
+        file.writelines(
+            lines
+        )
 
 
 # ============================================================
@@ -924,7 +930,7 @@ def main():
         page = context.new_page()
 
         # ----------------------------------------------------
-        # Ressourcen blockieren
+        # RESSOURCEN BLOCKIEREN
         # ----------------------------------------------------
 
         def route_handler(route):
@@ -1035,9 +1041,8 @@ def main():
 
         remove_error()
 
-        # Nur NOW TV in der
-        # bestehenden Hauptplaylist
-        # aktualisieren.
+        # Nur die URL des bestehenden
+        # NOW-TV-Eintrags ändern.
         update_existing_playlist(
             streams[0]
         )
@@ -1063,11 +1068,24 @@ def main():
     print("=" * 70)
 
     if streams:
-        print("Erfolgreich: 1/1")
-        print("Fehler:      0/1")
+
+        print(
+            "Erfolgreich: 1/1"
+        )
+
+        print(
+            "Fehler:      0/1"
+        )
+
     else:
-        print("Erfolgreich: 0/1")
-        print("Fehler:      1/1")
+
+        print(
+            "Erfolgreich: 0/1"
+        )
+
+        print(
+            "Fehler:      1/1"
+        )
 
     print()
 
