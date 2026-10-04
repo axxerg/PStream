@@ -6,8 +6,11 @@ https://tv-trt1.medya.trt.com.tr/master_1440.m3u8
 #EXTINF:-1 tvg-name="TRT TÜRK"  tvg-logo="https://www.trtturk.com.tr/public/logo/d60ab555-f948-464a-a139-df5410d2a7b5/trtturk_logo.png",TRT TÜRK
 https://tv-trtturk.medya.trt.com.tr/master_1440.m3u8
 
-#EXTINF:-1 tvg-logo="https://i.ibb.co/n1SCYqN/atv.png", tvg-id="ATV.tr" , ATV HD
+#EXTINF:-1 tvg-logo="https://i.ibb.co/n1SCYqN/atv.png", tvg-id="ATV.tr" , ATV 
 https://andro.3749206.xyz/checklist/androstreamliveatv.m3u8
+
+#EXTINF:-1 tvg-logo="https://i.ibb.co/n1SCYqN/atv.png",ATV
+https://rnttwmjcin.turknet.ercdn.net/lcpmvefbyo/atv/atv_480p.m3u8
 
 #EXTINF:-1 tvg-id="FOX.tr" tvg-logo="https://i.ibb.co/WDfRpwV/now.jpg" , NOW TV
 https://nowtv-live-ad.ercdn.net/nowtv/playlist.m3u8?st=lew3cjTMrHm95hkoBiJ6xw&e=1791124041
