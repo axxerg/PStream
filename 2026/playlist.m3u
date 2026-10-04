@@ -51,7 +51,16 @@ https://cdn-kanalavrupa.yayin.com.tr/kanalavrupa/index.m3u8
 #EXTINF:-1 tvg-id="TRTAVAZ.tr" tvg-name="TRT AVAZ" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/turkey/trt-avaz-tr.png" ,TRT AVAZ
 https://tv-trtavaz.medya.trt.com.tr/master.m3u8
 
-#TRT 2
+#BELGESEL 
+
+#EXTINF:-1 group-title="🏖 EĞLENCE "  tvg-name="no epg" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/b/b9/CNBC-e-Logo.png" ,CNBC-E
+https://hnpsechtsc.turknet.ercdn.net/xpnvudnlsv/cnbc-e/cnbc-e.m3u8
+
+#EXTINF:-1 group-title="🏖 EĞLENCE " tvg-id="360.tr" tvg-name="360" tvg-logo="https://i.ibb.co/FVnG3Zr/360tv.png" ,360 
+https://turkmedya-live.ercdn.net/tv360/tv360.m3u8
+
+#EXTINF:-1 tvg-logo="https://i.ibb.co/N2n2tqMz/tyt.png",TYT TÜRK
+https://tytturk-live.ercdn.net/tytturk/tytturk.m3u8
 
 #EXTINF:-1 group-title="🏖 EĞLENCE " tvg-name="TRT 2" tvg-id="TRT2.tr" tvg-logo="https://i.ibb.co/0JcxnSL/trt-2.png", TRT 2
 #EXTVLCOPT:http-referrer=https://www.dsmartgo.com.tr/tv-izle
@@ -63,17 +72,8 @@ https://turkuaz.tecostream.xyz/proxy?url=http://tv-trt2.medya.trt.com.tr/master_
 #https://trn03.tulix.tv/gt-trt2/index.m3u8
 #http://87.246.54.249:8085/TRT2/mpegts
 
-
-#EXTINF:-1 group-title="🏖 EĞLENCE "  tvg-name="no epg" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/b/b9/CNBC-e-Logo.png" ,CNBC-E
-https://hnpsechtsc.turknet.ercdn.net/xpnvudnlsv/cnbc-e/cnbc-e.m3u8
-
 #EXTINF:-1 tvg-logo="https://i.ibb.co/QQQR6VK/dmax.png" tvg-id="DMAX.tr", DMAX
 http://46.32.176.50/dmax/index.m3u8
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/N2n2tqMz/tyt.png",TYT TÜRK
-https://tytturk-live.ercdn.net/tytturk/tytturk.m3u8
-								
-#BLOOMBERG
 
 #EXTINF:-1 tvg-id="BloombergHT.tr" tvg-logo="https://i.ibb.co/HXKrJRC/blght22.png" ,Bloomberg HT           
 https://rmtftbjlne.turknet.ercdn.net/bpeytmnqyp/bloomberght/bloomberght.m3u8
@@ -93,8 +93,6 @@ https://rmtftbjlne.turknet.ercdn.net/bpeytmnqyp/bloomberght/bloomberght.m3u8
 
 #360
 
-#EXTINF:-1 group-title="🏖 EĞLENCE " tvg-id="360.tr" tvg-name="360" tvg-logo="https://i.ibb.co/FVnG3Zr/360tv.png" ,360 
-https://turkmedya-live.ercdn.net/tv360/tv360.m3u8
 
 #EXTINF:-1 group-title="🏖 EĞLENCE " tvg-id="360.tr" tvg-name="360" tvg-logo="https://i.ibb.co/FVnG3Zr/360tv.png" ,360 
 #http://turkmedya-live.ercdn.net/tv360/tv360_1080p.m3u8
