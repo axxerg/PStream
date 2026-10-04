@@ -230,9 +230,6 @@ https://b01c02nl.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/broadcast_5c9e18
 #EXTINF:-1 tvg-logo="https://i.ibb.co/824MwJ6/nr1damar.jpg",NR1 RAP
 https://b01c02nl.mediatriple.net/videoonlylive/mtkgeuihrlfwlive/u_stream_5c9e198784bdc_1/playlist.m3u8
 
-#EXTINF:1 tvg-copyright="@aligoshgartv" tvg-id="" tvg-logo="https://i.ibb.co/VC7Q18V/azflag.png" tvg-language="Azerbaijani" ,NOW MUSIC TV
-https://github.com/axxerg/catextender/raw/refs/heads/main/catcast/now-music.m3u8
-
 #EXTINF:1 tvg-copyright="@aligoshgartv" tvg-id="" tvg-logo="https://i.ibb.co/VC7Q18V/azflag.png" tvg-language="Azerbaijani" ,MUSIC AZERBAIJAN TV
 https://cdn-sinematv.yayin.com.tr/sinematv/sinematv/playlist.m3u8
 
@@ -242,7 +239,7 @@ https://cdn4.yayin.com.tr/kntv/video.m3u8
 #EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/4/4d/Music_logo.png" tvg-id="Dummy" , KTV MUSIC
 https://cdn4.yayin.com.tr/bakixebertv/video.m3u8
 
-#EXTINF:1 tvg-id="ArabicaTV.lb" tvg-logo="https://arabica-tv.com/wp-content/uploads/2022/07/cropped-Arabica-tv-Logo-1.png"status="timeout", Arabica TV  
+#EXTINF:1 tvg-id="ArabicaTV.lb" tvg-logo="https://www.arabicagroup.tv/images/logo.png" , Arabica TV  
 http://istream.binarywaves.com:8081/hls/arabica/playlist.m3u8
 
 #EXTINF:-1 tvg-logo="https://www.tv-direct.fr/assem3u8/logo/chaines/bblack-caribbean.jpg",Bblack! Caribbean
