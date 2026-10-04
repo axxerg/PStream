@@ -19,10 +19,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      # ==================================================
-      # Repository laden
-      # ==================================================
       - name: Repository klonen
         uses: actions/checkout@v4
         with:
@@ -30,48 +26,30 @@ jobs:
           ref: main
           persist-credentials: true
 
-      # ==================================================
-      # Python einrichten
-      # ==================================================
       - name: Python einrichten
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
           cache: pip
 
-      # ==================================================
-      # Python-Pakete installieren
-      # ==================================================
       - name: Python-Pakete installieren
         run: |
           python -m pip install --upgrade pip
           pip install playwright requests
 
-      # ==================================================
-      # Chromium installieren
-      # ==================================================
       - name: Chromium installieren
         run: |
           python -m playwright install --with-deps chromium
 
-      # ==================================================
-      # Main-Branch aktualisieren
-      # ==================================================
       - name: Main-Branch aktualisieren
         run: |
           git fetch origin main
           git reset --hard origin/main
 
-      # ==================================================
-      # Streams-Ordner erstellen
-      # ==================================================
       - name: Streams-Ordner erstellen
         run: |
           mkdir -p streams
 
-      # ==================================================
-      # Sender-Scanner starten
-      # ==================================================
       - name: Sender-Scanner starten
         run: |
           echo "======================================"
@@ -83,55 +61,37 @@ jobs:
 
           python3 channels.py
 
-      # ==================================================
-      # Zeitpunkt speichern
-      # ==================================================
-      - name: Zeitpunkt der letzten Aktualisierung speichern
+      - name: Zeitpunkt speichern
         run: |
           echo "Letzte Aktualisierung UTC: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" > streams/last_run.txt
           echo "Letzte Aktualisierung Hamburg: $(TZ=Europe/Berlin date +'%Y-%m-%d %H:%M:%S %Z')" >> streams/last_run.txt
 
-      # ==================================================
-      # Ergebnisse anzeigen
-      # ==================================================
       - name: Ergebnisse anzeigen
         run: |
           echo "======================================"
           echo "TURK TV SCANNER"
           echo "======================================"
-
           echo "UTC:"
           date -u
-
           echo ""
           echo "Hamburg:"
           TZ=Europe/Berlin date
-
           echo ""
           echo "Streams:"
           ls -lah streams/ || true
-
           echo ""
           echo "Playlist:"
           ls -lah 2026/playlist.m3u || true
-
           echo ""
           echo "Letzte Aktualisierung:"
           cat streams/last_run.txt || true
-
           echo "======================================"
 
-      # ==================================================
-      # Git konfigurieren
-      # ==================================================
       - name: Git konfigurieren
         run: |
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
 
-      # ==================================================
-      # Änderungen prüfen
-      # ==================================================
       - name: Änderungen prüfen
         id: changes
         run: |
@@ -146,18 +106,12 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      # ==================================================
-      # Commit erstellen
-      # ==================================================
       - name: Änderungen committen
         if: steps.changes.outputs.changed == 'true'
         run: |
           git commit -m "Sender aktualisiert $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
 
-      # ==================================================
-      # Zu GitHub übertragen
-      # ==================================================
-      - name: Änderungen zu GitHub übertragen
+      - name: Zu GitHub übertragen
         if: steps.changes.outputs.changed == 'true'
         run: |
           git push origin main
