@@ -51,10 +51,18 @@ https://cdn-kanalavrupa.yayin.com.tr/kanalavrupa/index.m3u8
 #EXTINF:-1 tvg-id="TRTAVAZ.tr" tvg-name="TRT AVAZ" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/turkey/trt-avaz-tr.png" ,TRT AVAZ
 https://tv-trtavaz.medya.trt.com.tr/master.m3u8
 
-#BELGESEL 
+################################################################################
+
+#EXTINF:-1 group-title="BELGESEL" 
+# Ⓑ Ⓓ Ⓜ  Ⓣ  Ⓢ Ⓨ
+
+################################################################################
 
 #EXTINF:-1 group-title="🏖 EĞLENCE "  tvg-name="no epg" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/b/b9/CNBC-e-Logo.png" ,CNBC-E
 https://hnpsechtsc.turknet.ercdn.net/xpnvudnlsv/cnbc-e/cnbc-e.m3u8
+
+#EXTINF:-1 group-title="🏖 EĞLENCE " tvg-id="Film Screen.tr" tvg-logo="https://www.dsmart.com.tr/api/v1/public/images/kanallar/FILMSCREEN.png" , Film Screen INT
+https://edge-e3.evrideo.tv/f2dcbecf-5af0-47db-a82e-032112050a23_1000027346_HLS/manifest.m3u8
 
 #EXTINF:-1 group-title="🏖 EĞLENCE " tvg-id="360.tr" tvg-name="360" tvg-logo="https://i.ibb.co/FVnG3Zr/360tv.png" ,360 
 https://turkmedya-live.ercdn.net/tv360/tv360.m3u8
@@ -62,104 +70,14 @@ https://turkmedya-live.ercdn.net/tv360/tv360.m3u8
 #EXTINF:-1 tvg-logo="https://i.ibb.co/N2n2tqMz/tyt.png",TYT TÜRK
 https://tytturk-live.ercdn.net/tytturk/tytturk.m3u8
 
-#EXTINF:-1 group-title="🏖 EĞLENCE " tvg-name="TRT 2" tvg-id="TRT2.tr" tvg-logo="https://i.ibb.co/0JcxnSL/trt-2.png", TRT 2
-#EXTVLCOPT:http-referrer=https://www.dsmartgo.com.tr/tv-izle
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://turkuaz.tecostream.xyz/proxy?url=http://tv-trt2.medya.trt.com.tr/master_1440.m3u8
-
-#http://85.209.248.3:9897/trt2
-#http://95.174.71.114:80/TR-TRT2/index.m3u8
-#https://trn03.tulix.tv/gt-trt2/index.m3u8
-#http://87.246.54.249:8085/TRT2/mpegts
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/QQQR6VK/dmax.png" tvg-id="DMAX.tr", DMAX
-http://46.32.176.50/dmax/index.m3u8
-
 #EXTINF:-1 tvg-id="BloombergHT.tr" tvg-logo="https://i.ibb.co/HXKrJRC/blght22.png" ,Bloomberg HT           
 https://rmtftbjlne.turknet.ercdn.net/bpeytmnqyp/bloomberght/bloomberght.m3u8
-
-#EXTINF:-1 tvg-id="BloombergHT.tr" tvg-logo="https://i.ibb.co/HXKrJRC/blght22.png" ,Bloomberg HT           
-#http://ciner.daioncdn.net/bloomberght/bloomberght_720p.m3u8
-
-#EXTINF:-1 tvg-id="BloombergHT.tr" tvg-logo="https://i.ibb.co/HXKrJRC/blght22.png" ,Bloomberg HT   
-##http://176.65.146.123:6002/play/a01h/index.m3u8
-
-#EXTINF:-1 tvg-id="BloombergHT.tr" tvg-logo="https://i.ibb.co/HXKrJRC/blght22.png" ,Bloomberg HT 
-#http://bloomberght-live.daioncdn.net/bloomberght/bloomberght.m3u8
-
-#EXTINF:-1 tvg-id="A.PARA.tr" tvg-logo="https://play-lh.googleusercontent.com/BCV0M24ufvt6FzjW_eLpETj6LTWGyHrPvcPZhWToH1wJF6dEgYEdshr-xNYbZUGdtA",A Para   
-#
-
-
-#360
-
-
-#EXTINF:-1 group-title="🏖 EĞLENCE " tvg-id="360.tr" tvg-name="360" tvg-logo="https://i.ibb.co/FVnG3Zr/360tv.png" ,360 
-#http://turkmedya-live.ercdn.net/tv360/tv360_1080p.m3u8
-#https://turkmedya-live.ercdn.net/tv360/tv360.m3u8
-#http://turkmedya-live.ercdn.net/tv360/tv360_720p.m3u8
-
-#EXTINF:-1 group-title="🏖 EĞLENCE " tvg-id="360.tr" tvg-name="360" tvg-logo="https://i.ibb.co/FVnG3Zr/360tv.png" ,360 
-#https://tv.ensonhaber.com/tv360/tv360_720p.m3u8
-
-#EXTINF:-1 group-title="🏖 EĞLENCE " tvg-id="360.tr" tvg-name="360" tvg-logo="https://i.ibb.co/FVnG3Zr/360tv.png" ,360 
-#http://185.234.111.229:8000/play/a05a
-
-#TEVE 2
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/KHFPKwM/Bild-2026-01-02-122003446.png" tvg-name="TEVE 2" tvg-id="live" , tv2
-#https://www.youtube.com/watch?v=A32ePdlFt7U
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/KHFPKwM/Bild-2026-01-02-122003446.png" tvg-id="TEVE2.HD.tr" ,tv2
-#https://dsmartgo-live.ercdn.net/dsmartgo/teve2/teve2.isml/teve2.m3u8
 
 #EXTINF:-1 tvg-logo="https://i.ibb.co/KHFPKwM/Bild-2026-01-02-122003446.png" tvg-id="TEVE2.HD.tr" ,tv2
 https://demiroren.daioncdn.net/teve2/teve2.m3u8?ce=3&app=6aab838a-437e-4a1b-bbd0-e30f79cdbbbd&ppid=25a73df79d03ade08cfc830fd59d2e83&dfp_paln=AQzzBGQEJzAdFOZJ2Xvu6qvYajXdxdit-d1JGKPKmsySDEz-pC0exFAV28JdwgJqrAI8Vy4OLF2mRWJ3aUzcqGaLIsJeB6zev_JMwPw4YGkmPz3IJGORABu9R_neRo_wY6wErPyUkS6Kpq_zzgIAxWC48VpbLRyhWcQDL01RW-as6cqLfU_nuQpsBCvvH8Z4NugNwRzJcEaIB8DUF7b511rLqRLsQv5pQQ1KQNzQtX0i8vc6d9U15cAwSKeK465iruq-54vda7pj4ltPRxKXupD7SjScmjQuyDp2DmVp0Sep5WE2UzVj6s9R17RFkTqQ-6U004W8fvXC0hT4o-yrWzvUjNNoWKujLW1cVdrPuAj8Suy4sx7O4tZCDp9tHStzQSp23SlWOXjbNNsER62A8oKcExlQnvrPEiJd_96hkWHmkQFggJM9K9fTPhruskzsjpr6vYHkHL7fKAtShyuVBXLsYqqJ9-s1aqAOE6c-8TttSarV3l9eSTjd2u-oP_zLzLXNAaqjhg6oWdnBmoxvSkLO6t7zdwvkH1vM7QVH7VOUR3qbpFgMglPXfPGmrcSQzuJgE_QCNSO_xkFCfSWY-7eaIHCBokKqpcOHbOU9G2jr2zDLsoDWzSgDmBWOvGV8wgFMF-h_Fhsj6gnCMe-0jyJmYz7xiWD0O-fM-fcUL4467aDR8IdbUXVG3QHrqR7RZUoddf2DH00Rik60YLAQw8prtFOc_NEpvQGxGPxWDj1oInIL_3KDMhLMJyRlz5u4xarap12I-UJixBC7kQnv1BI1iCLJMI_Qj6I1rp4bL2hEmTAzPm8cEXdt7qLfetimt5mWtKQIxo6KDJJI9dxxyM9NkLbqhB6BlkFx_Irafr67SjMGqzlGfhSNaxGrn8rAZBh9FbuG52D8KRkJJiMhy4l3eaBvd7WzDVpJyLo2Nkm72au9VWO00lTmfdhJyS9yigPZr5KifPREuH1EAjV7HEObAqwocicUDedtgzrjycxw-2aKbT4KMMsHN9IvsJkW-RBw1xM67jV0niLP0KADrja7GWMF7kHvKqUujcezgo1exNJmu2QdQvyN9-fd0H5WgUv6pmZeCxp8oIB3Ej0-NABaOAhvvSqA8TBz-Vzd7Zl8vzDoWSHhy_pnR93WQnCWzqYB9GW-Hp7xwO0AtRWvTL2APAIC5L7bmAM08MepH_pFPannj-RWYeqyCXMcsB8SRuCosp3KpEaKYpEW
 
-#EXTINF:-1 tvg-logo="https://i.ibb.co/KHFPKwM/Bild-2026-01-02-122003446.png" tvg-id="TEVE2.HD.tr" ,tv2
-##http://176.65.146.123:6002/play/a010/index.m3u8
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/KHFPKwM/Bild-2026-01-02-122003446.png" tvg-id="TEVE2.HD.tr" ,tv2
-#http://teve2.duhnet.tv/S2/HLS_LIVE/teve2np/track_4_1000/playlist.m3u8
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/KHFPKwM/Bild-2026-01-02-122003446.png" tvg-id="TEVE2.HD.tr" ,tv2
-#https://live.duhnet.tv/S2/HLS_LIVE/teve2np/playlist.m3u8
-#https://live.duhnet.tv/S2/HLS_LIVE/teve2np/track_4_1000/playlist.m3u8
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/KHFPKwM/Bild-2026-01-02-122003446.png" tvg-id="TEVE2.HD.tr" ,tv2
-#https://ackaxsqacw.turknet.ercdn.net/ozfkfbbjba/teve2/teve2_1080p.m3u8
-
-
 #EXTINF:-1 tvg-logo="https://static.wikia.nocookie.net/logopedia/images/8/8e/TV4_logo_2022_-_Current.png/revision/latest/scale-to-width-down/1000?cb=20240811203828" tvg-id="TV4.tr",tv4 TR
 https://turkmedya-live.ercdn.net/tv4/tv4.m3u8
-
-#tv8.5
-
-#EXTINF:-1 tvg-id="TV.8,5.tr" tvg-logo="https://www.dsmart.com.tr/epg/images/0x60/5924449cd6f439663be1e725", tv8.5
-#https://rkhubpaomb.turknet.ercdn.net/fwjkgpasof/tv8bucuk/tv8bucuk.m3u8
-
-#EXTINF:-1 tvg-id="TV.8,5.tr" tvg-logo="https://www.dsmart.com.tr/epg/images/0x60/5924449cd6f439663be1e725", tv8.5
-#https://dsmartgo-live.ercdn.net/tv8_5/tv8_5.m3u8
-#EXTINF:-1 tvg-id="TV.8,5.tr" tvg-logo="https://www.dsmart.com.tr/epg/images/0x60/5924449cd6f439663be1e725", tv8.5
-#https://boncuktv.atakan1983.workers.dev/stream/tv85/https://helga.iptv2022.com/TV8.5/tracks-v1a1/mono.ts.m3u8?filter.tracks=a1v1v2v3v4
-#EXTINF:-1 tvg-id="TV.8,5.tr" tvg-logo="https://www.dsmart.com.tr/epg/images/0x60/5924449cd6f439663be1e725", tv8.5
-#http://176.65.146.123:6003/play/a00x/index.m3u8
-#EXTINF:-1 tvg-id="TV.8,5.tr" tvg-logo="https://www.dsmart.com.tr/epg/images/0x60/5924449cd6f439663be1e725", tv8.5 
-#https://rkhubpaomb.turknet.ercdn.net/fwjkgpasof/tv8bucuk/tv8bucuk_1080p.m3u8
-#EXTINF:-1 tvg-id="TV.8,5.tr" tvg-logo="https://www.dsmart.com.tr/epg/images/0x60/5924449cd6f439663be1e725", tv8.5 
-#http://dvrfl05.tulix.tv/gin-sekizbucuk/playlist.m3u8
-#EXTINF:-1 tvg-id="TV.8,5.tr" tvg-logo="https://www.dsmart.com.tr/epg/images/0x60/5924449cd6f439663be1e725", tv8.5 
-#http://116.202.238.88/TV8.5_TR/tracks-v1a1/mono.m3u8
-#EXTINF:-1 tvg-id="TV.8,5.tr" tvg-logo="https://www.dsmart.com.tr/epg/images/0x60/5924449cd6f439663be1e725", tv8.5 
-#https://tv.arectv3.xyz/live/tv85.m3u8
-#EXTINF:-1 tvg-id="TV.8,5.tr" tvg-logo="https://www.dsmart.com.tr/epg/images/0x60/5924449cd6f439663be1e725", tv8.5 
-#https://trn03.tulix.tv/gt-tv8_5/tracks-v1a1/mono.m3u8
-
-#EXTINF:-1 tvg-id="TV.8,5.tr" tvg-logo="https://www.dsmart.com.tr/epg/images/0x60/5924449cd6f439663be1e725", tv8.5 
-#https://tv8.daioncdn.net/tv8bucuk/tv8bucuk.m3u8?app=tv8bucuk_web
-
-#EXTINF:-1 tvg-logo="https://i.ibb.co/kxjKk89/showmax.png",SHOWMAX 
-#http://rmtftbjlne.turknet.ercdn.net/bpeytmnqyp/showmax/showmax.m3u8
 
 #EXTINF:-1  tvg-id="A2.tr"  tvg-logo="https://www.canlitv.me/poster/a2-tv.png" ,A2 
 https://rnttwmjcin.turknet.ercdn.net/lcpmvefbyo/a2tv/a2tv.m3u8
@@ -167,40 +85,17 @@ https://rnttwmjcin.turknet.ercdn.net/lcpmvefbyo/a2tv/a2tv.m3u8
 #EXTINF:-1 group-title="🏖 EĞLENCE " tvg-logo="https://raw.githubusercontent.com/GitLatte/temporarylists/refs/heads/main/img/mywaytv.png" , SIRIUS HD - FILM & SPOR
 https://raw.githubusercontent.com/Elvin4K/restream/refs/heads/pro4k/1siriustv.m3u8
 
-#EXTINF:-1 group-title="🏖 EĞLENCE " tvg-id="Film Screen.tr" tvg-logo="https://www.dsmart.com.tr/api/v1/public/images/kanallar/FILMSCREEN.png" , Film Screen INT
-https://edge-e3.evrideo.tv/f2dcbecf-5af0-47db-a82e-032112050a23_1000027346_HLS/manifest.m3u8
-
 #EXTINF:-1 tvg-logo="https://i.ibb.co/Jj3HD3KX/bikanal.png",Bİ 1! KANAL
 https://bikanal-live.ercdn.net/bikanal/bikanal.m3u8
 
 #EXTINF:-1 group-title="🏖 EĞLENCE "  tvg-id="tabii TV.tr" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Tabii_-_TRT_Logo.png/500px-Tabii_-_TRT_Logo.png" ,TABII TV
 https://ceokzokgtd.erbvr.com/tabiitv/tabiitv_1080p.m3u8?sid=IUlyczhCBES7nvvwJSIycw&bvr_flags=10&bvr_ch=tabiitv&bvr_bw=2800000
 
-#EXTINF:-1 tvg-name="Flux Akasya Durağı" tvg-logo="logo" ,Flux Akasya Durağı
-#https://a8.radyotelekom.com.tr:3232/stream/play.m3u8
-
-#EXTINF:-1 tvg-country="TR" tvg-language="Türkçe" tvg-logo="https://raw.githubusercontent.com/GitLatte/temporarylists/refs/heads/main/img/mywaytv.png" ,Yansıma Sinema
-#https://catcast.ismailturret.workers.dev/yansinematv.m3u8
-#https://tvbox2026.baba-zirvede-az-biz-ismayil-baba.workers.dev/teberstar12.m3u8
-
-#EXTINF:-1 tvg-country="TR" tvg-language="Türkçe" tvg-logo="https://raw.githubusercontent.com/GitLatte/temporarylists/refs/heads/main/img/mywaytv.png" , TÜRK FILM
-#https://catcast.ismailturret.workers.dev/turkuzplay1.m3u8
-
 #EXTINF:0 tvg-logo="https://images-2.rakuten.tv/storage/global-live-channel/translation/artwork/0ec2cde4-8bf2-4cde-92d6-abf614870a71/variants/49f6b89bd291722c227e312eaa7d04e4380b4c0b7611bf68a82c328d2c00fcb9-width308-quality90.webp", TÜRK FILM - RAKUTEN TV
 https://amg02631-amg02631c1-amgplt0146.playout.now3.amagi.tv/ts-eu-w1-n2/playlist/amg02631-amg02631c1-amgplt0146/playlist.m3u8?ads_amagi_channel_id=1085&ads_amznbrmid=&ads_amznregion=&ads_amznslots=&ads_app_bundle=com.rakutentv.web&ads_app_store_url=rakuten.tv&ads_app_version=&ads_brand_name=&ads_content_categories=IAB1&ads_content_genre=drama%2Csoap-opera&ads_content_livestream=0&ads_device_lmt=0&ads_device_make=opera&ads_device_model=GENERIC&ads_device_type=web&ads_device_year=1970&ads_env=prod&ads_extra_eids=1S-id5-sync.com%2C1ID-ID5%2AtG0Hsun8s1zMO4xf7KJyPLBkZutGCHvkt_2jDzJxGKL__2n7aMNaAAEBCmn7V-cAqIAKNi-W-mExZZ0MG2KfJqiBCFiLZRl460phfXJwqQOoglWBaVewin6m9V9RGSmSqMdFhl89vYjJwbgqUgjB6qiI2N_MvGUREwxw2l5x-QSoyfIm7YaXT3cNkWP2BeYOqIrb-p7iRTqQBsk87krAgqjMsKKQZrJ3Kz-KMK20WXqozcFX4jo0eBHJx3QpfsCTqND87VRy2E_i_QNdU1cWFKiTX_equCNtRp9ywvKCej2o2UR7-su_zRvqc38zZDWHqpv6OSdKXDjYdbyRN6fvRKigksINJjcIoYYGChvHWxKo4dmyYgqAPhruYMda8FEqqOIdAH2j9JW7Ornk9xXntqilMXFkSihzDZzQeyP9Oi6oqCNeyDjyWE8Qt0Q48P9JqKmfRyKkfWrWxBX-DAWH4KiqGQxTw2xA9ddD3h-Xds-orQJo4BO1PYbvqk3FnObRqLDHeLqBbRfwY-8G54it7aiz7nMKe_K2efVGl_4VKDOotBC2cZ5JCeryfpC6-gY1qLbVgWiHworHtWGyP9mFDKi3muLEXuCjMe48wwzP192ouBmXFo126M2g4V6stpcqqL2CEVZeRY-5OHxLQuYQA6i-2o507vx61UefnVqFbcKovxkkGJf6k0eGmRNcilPO%2C1ATYPE-1&ads_gam_correlator=479120856451459&ads_gdpr_consent=CQjyBPAQjyBPAAcABBENCdFsAP_gAEPgACiQLdsRxC5cTWFgeTJ1QLsEeYQH1sAggkAAAACBAiABCDAEIBQAgyEgMASABAACABIAIBBBAQAkCAAEAEAAAIAACABIIACAwBAIIABAABEBAABACAACAAAAAACIggAVAAEAkAAEAFKEAEAAAAACAkAgAAAAAAAAAAIABAAIQAIAAFAAAigAAQAAgAAAAAAAARgIAAkAAAAAACAQAAgAAAAQEAAAAAAgABAAACAAgBAAAAAAAiAABAAEAACC3cEkABYAFQALgAcAA8ACAAEgAKgAZQA0ADUAHAAPAAigBMAC6AGIANAAbwA_ACEAENAIgAiQBhgDKAGaANEAc4A7gB-gEIAIsARoAjoBIgCSgGKANeAbgA4gB2wD-gH_AReAkQBKwCYgFIgK7AWwAvMBiwDLAGqgNZAbKA8cB9wD-wIAgQrAjeBHYCVoE5gJ3AUVApMBUsCqwFYAK-AWFAt2AAAA.f_wACHwAAAAA.ILdsRxC5cTWFkeTJ1QLsEeYQX1sAggkAAAACBIiABCDAEIBQAkyEgMASABAACABIAIBBBAQAkCAgEAEAAAIAACABoIACAwBAIIABAABEBAABACAACAAAAAACIggAVAAEAkAAEAFKEAEAAAAACIkAgAAAAAAAAAAIABAAIQAIAAFAAgigAAQAAgAAAAAAAARgIEAkAAAAAACAQAAgAAAAQEAAAAAAgABAAACAAgBAEAAAAQiAABAAEAAC&ads_google_ad_manager_nonce=&ads_ifa_type=ppid&ads_inv_partner_domain=rakuten.tv&ads_ip=79.209.229.31&ads_market=de&ads_network_name=RakutenTV&ads_os_language=&ads_placement=1&ads_player_height=1080&ads_player_width=1920&ads_pod_type=playerpage_midroll&ads_ppid=fc226f6f-9b9b-42ac-9618-eb1e0ff931ae&ads_prodq=1&ads_rating=12&ads_rtv_content_id=7620&ads_rtv_content_language=de&ads_rtvid=271862&ads_streaming_id=18031787-3c94-4f75-9029-43a94446ea69&ads_tivo_devcountry=&ads_tivo_devmakedate=&ads_tivo_mvpd=&ads_tivo_platform=&ads_tivo_usid=&ads_tivo_uxloc=&ads_user_type=visitor
 
 #EXTINF:0 tvg-logo="https://images-0.rakuten.tv/storage/global-live-channel/translation/artwork/fd8fc33e-cdb3-436a-b272-d8307842f3e6/variants/49f6b89bd291722c227e312eaa7d04e4380b4c0b7611bf68a82c328d2c00fcb9-width308-quality90.webp", TÜRK DIZI - RAKUTEN TV
 https://amg02631-amg02631c4-amgplt0165.playout.now3.amagi.tv/ts-eu-w1-n2/playlist/amg02631-amg02631c4-amgplt0165/playlist.m3u8?ads_amagi_channel_id=1110&ads_amznbrmid=&ads_amznregion=&ads_amznslots=&ads_app_bundle=com.rakutentv.web&ads_app_store_url=rakuten.tv&ads_app_version=&ads_brand_name=&ads_content_categories=IAB1&ads_content_genre=drama%2Csoap-opera&ads_content_livestream=0&ads_device_lmt=1&ads_device_make=opera&ads_device_model=GENERIC&ads_device_type=web&ads_device_year=1970&ads_env=prod&ads_extra_eids=&ads_gam_correlator=997792602880702&ads_gdpr_consent=&ads_google_ad_manager_nonce=&ads_ifa_type=ppid&ads_inv_partner_domain=rakuten.tv&ads_ip=79.209.229.31&ads_market=de&ads_network_name=RakutenTV&ads_os_language=&ads_placement=1&ads_player_height=1080&ads_player_width=1920&ads_pod_type=playerpage_midroll&ads_ppid=fc226f6f-9b9b-42ac-9618-eb1e0ff931ae&ads_prodq=1&ads_rating=12&ads_rtv_content_id=7702&ads_rtv_content_language=de&ads_rtvid=271862&ads_streaming_id=79bbfbc7-6362-4934-8824-eecea43770ab&ads_tivo_devcountry=&ads_tivo_devmakedate=&ads_tivo_mvpd=&ads_tivo_platform=&ads_tivo_usid=&ads_tivo_uxloc=&ads_user_type=visitor
-
-
-#EXTINF:-1 tvg-country="TR" tvg-language="Türkçe" tvg-logo="https://raw.githubusercontent.com/GitLatte/temporarylists/refs/heads/main/img/mywaytv.png" , KANAL F
-#https://catcast.ismailturret.workers.dev/kanal-f.m3u8
-
-#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Show_MAX_logo.svg/1280px-Show_MAX_logo.svg.png" tvg-id="ShowMax.tr" , SHOWMAX
-#https://rmtftbjlne.turknet.ercdn.net/bpeytmnqyp/showmax/showmax.m3u8
-
-#EXTINF:-1 group-title="🏖 EĞLENCE " tvg-name="TRT4K TR" tvg-logo="https://i.hizliresim.com/lezd6k8.png" tvg-id="TRT4K.TR" ,TRT 4K 
-#http://sewv654wfcsdwfi87fwvgbngh.siauliairsavlt.pw/iptv/HW7DHBZQE4ZYG9/4001/index.m3u8
 
 
 ################################################################################
