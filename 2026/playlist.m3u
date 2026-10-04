@@ -45,6 +45,9 @@ https://rkhubpaomb.turknet.ercdn.net/fwjkgpasof/tv8/tv8.m3u8
 #EXTINF:-1 tvg-name="no epg" tvg-logo="https://www.dsmart.com.tr/epg/images/0x60/5924449cd6f439663be1e725", tv8.5 
 https://rkhubpaomb.turknet.ercdn.net/fwjkgpasof/tv8bucuk/tv8bucuk_1080p.m3u8
 
+#EXTINF:-1 tvg-name="no epg" tvg-logo="https://www.dsmart.com.tr/epg/images/0x60/5924449cd6f439663be1e725", tv8.5 
+https://rkhubpaomb.turknet.ercdn.net/fwjkgpasof/tv8bucuk/tv8bucuk.m3u8
+
 #EXTINF:-1 tvg-id="BEYAZ.TV.HD.tr" tvg-name="BeyazTV" tvg-logo="https://i.ibb.co/0tc3PYz/beyaz22b.png",BEYAZ TV 
 https://beyaztv-live.daioncdn.net/beyaztv/beyaztv_1080p.m3u8
 
