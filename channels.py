@@ -33,10 +33,6 @@ CHANNELS = {
         "name": "NOW TV",
         "url": "https://www.nowtv.com.tr/canli-yayin",
     },
-    "atv": {
-        "name": "ATV",
-        "url": "https://www.atv.com.tr/canli-yayin",
-    },
     "tv8": {
         "name": "TV8",
         "url": "https://www.tv8.com.tr/canli-yayin",
@@ -250,16 +246,6 @@ def is_channel_stream(channel_id, url):
         return (
             "ciner-live.ercdn.net/nowtv" in url
             or "nowtv" in url
-        )
-
-    # --------------------------------------------------------
-    # ATV
-    # --------------------------------------------------------
-
-    if channel_id == "atv":
-        return (
-            "trkvz-live.ercdn.net" in url
-            and "atv" in url
         )
 
     # --------------------------------------------------------
