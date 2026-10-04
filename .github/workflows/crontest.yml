@@ -1,0 +1,25 @@
+name: CRON TEST
+
+on:
+  schedule:
+    - cron: '13,21,43,58 * * * *'
+      timezone: "Europe/Berlin"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cron wurde ausgelöst
+        run: |
+          echo "======================================"
+          echo "CRON TEST"
+          echo "======================================"
+          echo "Event: ${{ github.event_name }}"
+          echo "UTC:"
+          date -u
+          echo ""
+          echo "Hamburg:"
+          TZ=Europe/Berlin date
+          echo "======================================"
