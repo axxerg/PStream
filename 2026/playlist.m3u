@@ -178,7 +178,7 @@ https://603c568fccdf5.streamlock.net/live2/dhaweb2/chunklist_w1843782493.m3u8
 #EXTINF:-1 group-title="🌏 BELGESEL "  tvg-logo="https://www.trtbelgesel.com.tr/images/logo.svg", TRT BELGESEL
 https://turkuaz.tecostream.xyz/proxy?url=https://tv-trtbelgesel.medya.trt.com.tr/master_1440.m3u8
 
-#EXTINF:-1 group-title="🌏 BELGESEL "  tvg-logo="https://i.ibb.co/xzZk0Yq/trtavaz.png" tvg-id="TRT.Avaz.tr", TRT AVAZ
+#EXTINF:-1 group-title="🌏 BELGESEL " tvg-id="TRTAVAZ.tr" tvg-name="TRT AVAZ"  tvg-logo="https://i.ibb.co/xzZk0Yq/trtavaz.png" tvg-id="TRT.Avaz.tr", TRT AVAZ
 https://tv-trtavaz.medya.trt.com.tr/master.m3u8
 
 #EXTINF:-1 group-title="🌏 BELGESEL " tvg-name="GZT TV" tvg-logo="https://gzttv.tr/logo.png",GZT TV
