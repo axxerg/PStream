@@ -2,7 +2,7 @@ name: CRON TEST
 
 on:
   schedule:
-    - cron: '13,21,43,58 * * * *'
+    - cron: '13,23,43,58 * * * *'
       timezone: "Europe/Berlin"
   workflow_dispatch:
 
