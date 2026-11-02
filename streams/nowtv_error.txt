@@ -1,0 +1,3 @@
+Kanal: NOW TV
+URL: https://www.nowtv.com.tr/canli-yayin
+Status: M3U8 nicht gefunden
